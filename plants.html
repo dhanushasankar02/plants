@@ -2188,10 +2188,19 @@
             folderName = 'Patio & Balcony';
           }
 
+          let categoryDisplay = 'Easy Care';
+          if (categoryVal === 'rare') {
+            categoryDisplay = 'Rare Foliage';
+          } else if (categoryVal === 'pet') {
+            categoryDisplay = 'Pet Friendly';
+          } else if (categoryVal === 'succulent') {
+            categoryDisplay = 'Trailing Succulent';
+          }
+
           const newItem = {
             id: name.toLowerCase().replace(/\s+/g, '-'),
             name: name,
-            category: categoryVal.charAt(0).toUpperCase() + categoryVal.slice(1) + ' Care',
+            category: categoryDisplay,
             desc: desc,
             price: price,
             image: image,
