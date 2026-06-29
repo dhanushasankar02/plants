@@ -1,0 +1,1545 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Botanical Collections - Greenery</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow-x: clip;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Wrapper */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+    }
+
+    .app-header.scrolled .navbar {
+      padding-block: 0.6rem;
+    }
+
+    .navbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      transition: padding var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--primary);
+      justify-self: start;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo:hover svg {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .nav-menu > ul {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.7rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--card-bg);
+      min-width: 160px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .dropdown-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding-inline-start: 1.25rem;
+    }
+
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-self: end;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      background: var(--primary);
+      color: white;
+    }
+
+    .login-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.15);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .login-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(20, 83, 45, 0.25);
+    }
+
+    .hamburger-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      transition: all var(--transition-speed) ease;
+    }
+
+    .hamburger-toggle:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    @media (max-width: 1100px) {
+      .nav-menu {
+        display: none;
+      }
+      .hamburger-toggle {
+        display: flex;
+      }
+      .navbar {
+        grid-template-columns: 1fr auto;
+      }
+      .nav-utilities .login-btn,
+      .nav-utilities #themeToggle,
+      .nav-utilities #rtlToggleBtn {
+        display: none;
+      }
+    }
+
+    /* Mobile Drawer */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 320px;
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+      z-index: 201;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      transition: right var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-drawer.open {
+      right: 0;
+    }
+
+    html[dir="rtl"] .mobile-drawer {
+      right: auto;
+      left: -320px;
+      box-shadow: 10px 0 40px rgba(0, 0, 0, 0.15);
+      transition: left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html[dir="rtl"] .mobile-drawer.open {
+      left: 0;
+      right: auto;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--navbar-border);
+      padding-bottom: 1.2rem;
+    }
+
+    .drawer-close {
+      font-size: 2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-close:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-nav-link {
+      padding: 0.8rem 1rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mobile-dropdown-btn {
+      font-size: 0.75rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link.active .mobile-dropdown-btn {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-inline-start: 1.5rem;
+      padding-block: 0.5rem;
+      border-left: 2px solid var(--primary-light);
+      margin-left: 1.2rem;
+    }
+
+    html[dir="rtl"] .mobile-dropdown-menu {
+      border-left: none;
+      border-right: 2px solid var(--primary-light);
+      margin-left: 0;
+      margin-right: 1.2rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      display: flex;
+    }
+
+    .drawer-utilities {
+      border-top: 1px solid var(--navbar-border);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .mobile-toggles {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .drawer-utilities .login-btn {
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* Common Section Styles */
+    section {
+      padding: 4rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: 2.3rem;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      font-weight: 600;
+      border-radius: 30px;
+      transition: all var(--transition-speed) ease;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    /* ==========================================
+       Collections Page Specific CSS
+       ========================================== */
+
+    /* Filter pills deck */
+    .filter-deck {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 2rem auto 4rem;
+      max-width: 1100px;
+      padding-inline: 2rem;
+    }
+
+    .filter-pill {
+      padding: 0.6rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      color: var(--text-color);
+      box-shadow: 0 4px 10px var(--shadow-color);
+      transition: all var(--transition-speed) ease;
+    }
+
+    .filter-pill:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .filter-pill.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 6px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    /* Collection List Container */
+    .collections-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+      max-width: 1440px;
+      margin: 0 auto 5rem;
+      padding-inline: 2rem;
+    }
+
+    /* Asymmetric Grid Sections */
+    .collection-section {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 24px;
+      padding: 3.5rem;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+      align-items: center;
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      margin: 0;
+    }
+
+    /* Fading animations for filtering */
+    .collection-section.fading-out {
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+    }
+
+    .collection-section.hidden {
+      display: none !important;
+    }
+
+    /* Alternate order for even items */
+    .collection-section:nth-child(even) .collection-img-column {
+      order: 2;
+    }
+
+    .collection-section:nth-child(even) .collection-info-column {
+      order: 1;
+    }
+
+    /* Image Wrapper with Zoom Hover */
+    .collection-img-column {
+      width: 100%;
+    }
+
+    .collection-img-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.25;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+    }
+
+    .collection-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .collection-img-wrapper:hover .collection-img {
+      transform: scale(1.04);
+    }
+
+    /* Info text panel */
+    .collection-info-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .collection-category-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .collection-info-column h2 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      color: var(--text-color);
+      line-height: 1.25;
+    }
+
+    .collection-info-column p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* Botanical Registry Card */
+    .registry-card {
+      background: var(--bg-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .registry-card:hover {
+      border-color: var(--primary);
+    }
+
+    .registry-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .registry-title i {
+      font-size: 1rem;
+    }
+
+    .registry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .registry-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .registry-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .registry-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+      width: fit-content;
+    }
+
+    .complexity-easy {
+      background: hsl(142, 30%, 90%);
+      color: hsl(142, 72%, 20%);
+    }
+
+    .complexity-medium {
+      background: hsl(38, 85%, 90%);
+      color: hsl(38, 85%, 25%);
+    }
+
+    .complexity-hard {
+      background: hsl(355, 84%, 93%);
+      color: hsl(355, 84%, 40%);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .collection-section {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        padding: 2.5rem 2rem;
+      }
+
+      .collection-section:nth-child(even) .collection-img-column {
+        order: 1;
+      }
+
+      .collection-section:nth-child(even) .collection-info-column {
+        order: 2;
+      }
+
+      .collection-info-column h2 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .filter-deck {
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .filter-pill {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .collections-deck {
+        gap: 3rem;
+        padding-inline: 1rem;
+      }
+
+      .collection-img-wrapper {
+        aspect-ratio: 1.35;
+      }
+
+      .registry-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+      }
+    }
+
+    /* RTL specific direction mappings */
+    html[dir="rtl"] .collection-info-column {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .registry-title {
+      flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    /* Footer Styling */
+    .app-footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--navbar-border);
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+      font-size: 1rem;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-menu-col h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .footer-menu-col h3::after {
+      left: auto;
+      right: 0;
+    }
+
+    .footer-menu-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .footer-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .footer-bottom {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Footer */
+    @media (max-width: 992px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .footer-info {
+        align-items: center;
+        text-align: center;
+      }
+      .footer-description {
+        max-width: 100%;
+      }
+      .footer-menu-col {
+        text-align: center;
+      }
+      .footer-menu-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Newsletter Column Styling */
+    .newsletter-col p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border: 1px solid var(--navbar-border);
+      border-radius: 30px;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .newsletter-form:focus-within {
+      border-color: var(--primary);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .newsletter-form button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Single-Line App Header -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Logo (Column 1 - Left) -->
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Greenery
+      </a>
+
+      <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <ul>
+          <!-- Home Dropdown Link -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              Home <span class="arrow-icon">&#9660;</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html" class="dropdown-link active">Home 1</a></li>
+              <li><a href="home2.html" class="dropdown-link">Home 2</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="plants.html" class="nav-link">Plants</a></li>
+          <li class="nav-item"><a href="collections.html" class="nav-link"> Collections</a></li>
+          <li class="nav-item"><a href="guides.html" class="nav-link"> Guides</a></li>
+          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="subscription.html" class="nav-link"> Subscription</a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-link"> Wishlist </a></li>
+          <li class="nav-item"><a href="delivery.html" class="nav-link">Delivery</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utilities (Column 3 - Right) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login-btn" id="loginBtn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Login
+        </a>
+        <!-- Hamburger Menu button (Mobile) -->
+        <button id="hamburgerToggle" class="hamburger-toggle" aria-label="Open Navigation Drawer">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
+        </svg>
+        Greenery
+      </a>
+      <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mobile Navigation List -->
+    <nav class="mobile-nav-list">
+      <div class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link active" id="mobileDropdownBtn">
+          Home <span class="mobile-dropdown-btn">&#9660;</span>
+        </a>
+        <ul class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <li><a href="index.html" class="mobile-nav-link active">Home 1</a></li>
+          <li><a href="home2.html" class="mobile-nav-link">Home 2</a></li>
+        </ul>
+      </div>
+      <div class="mobile-nav-item"><a href="about.html" class="mobile-nav-link">About Us</a></div>
+      <div class="mobile-nav-item"><a href="plants.html" class="mobile-nav-link">Plants</a></div>
+      <div class="mobile-nav-item"><a href="collections.html" class="mobile-nav-link"> Collections</a></div>
+      <div class="mobile-nav-item"><a href="guides.html" class="mobile-nav-link"> Guides</a></div>
+      <div class="mobile-nav-item"><a href="gallery.html" class="mobile-nav-link">Gallery</a></div>
+      <div class="mobile-nav-item"><a href="subscription.html" class="mobile-nav-link">Subscription </a></div>
+      <div class="mobile-nav-item"><a href="wishlist.html" class="mobile-nav-link"> Wishlist </a></div>
+      <div class="mobile-nav-item"><a href="delivery.html" class="mobile-nav-link">Delivery</a></div>
+      <div class="mobile-nav-item"><a href="contact.html" class="mobile-nav-link">Contact</a></div>
+    </nav>
+
+    <!-- Mobile Drawer Utilities -->
+    <div class="drawer-utilities">
+      <div class="mobile-toggles">
+        <button class="icon-btn" id="mobileRtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <button id="mobileThemeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="mobileThemeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="login.html" class="login-btn" id="mobileLoginBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Overlay -->
+
+  <main>
+    <!-- Section Header Intro -->
+    <section class="section-header" style="padding-top: 4rem; padding-bottom: 1rem;">
+      <h2>Botanical Curated Collections</h2>
+      <p>Explore our scientifically categorized selections grown for home suitability and aesthetic value.</p>
+    </section>
+
+    <!-- Interactive Filter Deck -->
+    <div class="filter-deck">
+      <button class="filter-pill active" data-filter="all">All Specimen Groups</button>
+      <button class="filter-pill" data-filter="rare">Rare & Exotic</button>
+      <button class="filter-pill" data-filter="statement">Statement Foliage</button>
+      <button class="filter-pill" data-filter="low-light">Low-Light Survivors</button>
+      <button class="filter-pill" data-filter="desk">Desktop & Miniatures</button>
+      <button class="filter-pill" data-filter="vertical">Vertical Gardens</button>
+      <button class="filter-pill" data-filter="hydro">Smart Hydro</button>
+    </div>
+
+    <!-- Collections Sections Container -->
+    <div class="collections-deck">
+
+      <!-- Section 1: Hero & Intro Curation (Always visible) -->
+      <section id="collections-hero" class="collection-section" data-categories="all">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/hero_plants.png" alt="Introductory Botanical Showcase">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">General Registry</span>
+          <h2>The Art & Science of Plant Curation</h2>
+          <p>Each cohort in our catalog has been categorized based on its light respiration demands, cellular water retention capacity, and spatial styling role. By grouping plants into structured classes, we help you establish healthy domestic microclimates.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Cohort Statistics</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Total Collections:</span>
+                <span class="registry-value">7 Specialized Classes</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Sourcing:</span>
+                <span class="registry-value">100% Peat-free Coir</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Rare & Exotic Aroids -->
+      <section id="exotic-aroids" class="collection-section" data-categories="rare">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/rare_albo_plant.png" alt="Variegated Monstera Albo Foliage">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Exotic Rarities</span>
+          <h2>The Rare & Variegated Aroids</h2>
+          <p>A collection featuring genetic chlorophyll mutations that yield spectacular white, cream, and pink variegation. Because variegated leaves have less photosynthetic area, these specimens require calibrated lighting and careful hydration to maintain their striking patterns without browning.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Monstera Deliciosa 'Albo'</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-hard">Advanced Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">2500 Lux (Filtered)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">65% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Statement Foliage -->
+      <section id="statement-foliage" class="collection-section" data-categories="statement">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/fiddle_leaf_fig.png" alt="Large Fiddle Leaf Fig Statement Tree">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Interior Architecture</span>
+          <h2>Architectural Statement Trees</h2>
+          <p>Grown to make an impact. These large-scale specimen plants feature dramatic heights and broad architectural leaf structures, making them perfect focal elements for modern living areas, entryways, and lobbies. They help partition open rooms with soft, organic boundaries.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Ficus Lyrata (Standard Tree)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-medium">Moderate Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">3000 Lux (Near Window)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">50% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Low-Light Survivors -->
+      <section id="low-light" class="collection-section" data-categories="low-light">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/snake_plant.png" alt="Hardy Snake Plant in Pot">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Resilient Greenery</span>
+          <h2>Low-Light Tolerant Cohort</h2>
+          <p>Specifically compiled for hallways, bedrooms, and office corners. These specimens possess highly efficient cellular structures that perform respiration at lower photon thresholds. They have evolved to retain water over extended periods, requiring very sparse watering schedules.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Sansevieria Laurentii</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-easy">Easy Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">500 Lux (Low Ambient)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">25% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Miniature & Desk Companions -->
+      <section id="desktop-flora" class="collection-section" data-categories="desk">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/plant_workshop.png" alt="Petite plants and propagating tools">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Micro Botany</span>
+          <h2>Miniature & Desk Companions</h2>
+          <p>Curated for desks, window ledges, and terrariums. These slow-growing, compact varieties are ideal for small spaces. They respond beautifully to pinching, pruning, and stem propagation, making them highly rewarding for hands-on plant collectors who enjoy watching small details unfold.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Pilea Peperomioides</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-easy">Easy Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">1500 Lux (Medium Indirect)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">40% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Vertical Gardens & Trailing Vines -->
+      <section id="vertical-gardens" class="collection-section" data-categories="vertical">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/vertical_green_wall.png" alt="Vertical Green Wall foliage detail">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Vertical Landscaping</span>
+          <h2>Modular Green Walls & Climbers</h2>
+          <p>Bring your walls to life. This collection includes climbing vines and trailing foliage engineered for vertical hydroponic wall pockets, hanging baskets, and moss poles. They grow rapidly, forming dense leafy curtains that improve indoor air quality and acoustics.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Epipremnum Aureum (Pothos)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-easy">Easy Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">1200 Lux (Broad Range)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">40% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Smart Hydroponics & Passive Hydropots -->
+      <section id="smart-hydropot" class="collection-section" data-categories="hydro">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/self_watering_pot.png" alt="Inorganic substrate self-watering concrete pot">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Soil-Free Tech</span>
+          <h2>Passive Hydroponics & Pon Media</h2>
+          <p>Eliminate watering guesswork and pests. These specimens are cultivated entirely in inorganic volcanic mineral substrate (Pon / Clay pebbles) and housed inside self-watering planters. Capillary action draws water as needed, ensuring root structures receive optimal moisture and oxygen.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Philodendron Birkin (In Pon)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-easy">Easy Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">2000 Lux (Bright Ambient)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">45% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 8: The Monthly Collector's Curation -->
+      <section id="curated-box" class="collection-section" data-categories="rare desk hydro">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/subscription_box.png" alt="Subscription box showing delivery plants">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Collector Club</span>
+          <h2>The Monthly Curation Box</h2>
+          <p>For the ultimate plant collector. Receive a hand-picked, seasonal selection of rare node cuttings, baby specimen pots, premium organic substrates, and custom-molded ceramic planters delivered safely to your door. Includes detailed laboratory guides for propagation.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Surprise Cuttings (Monthly)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-medium">Intermediate Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">Species Specific</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">55% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 9: The Oasis Makeover Curation -->
+      <section id="oasis-makeover" class="collection-section" data-categories="statement low-light">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/jungle_before_after.png" alt="Before and after transformation of a room with lush plants">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Living Spaces</span>
+          <h2>The Urban Jungle Oasis Curation</h2>
+          <p>Instantly transform blank walls and empty room corners into breathing architectural sanctuaries. This curation bundles large-scale statement trees with cascading trailing vines and low-light resilient floor specimens to create a balanced, layered indoor forest design.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Oasis Makeover Bundle</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-easy">Easy Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">Varies (500 - 3000 Lux)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">40% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 10: Flagship Glasshouse Cultivars -->
+      <section id="glasshouse-cultivars" class="collection-section" data-categories="rare">
+        <div class="collection-img-column">
+          <div class="collection-img-wrapper">
+            <img class="collection-img" src="./images/about_plants.png" alt="Greenhouse plant nursery potting table">
+          </div>
+        </div>
+        <div class="collection-info-column">
+          <span class="collection-category-tag">Premium Cultivars</span>
+          <h2>Flagship Glasshouse Cultivars</h2>
+          <p>Hand-reared and laboratory-inspected specimens acclimatized directly in our boutique flagship greenhouse. These cultivars are selected for their robust root-hair structures, complex variegation stability, and exceptional resistance to common household climate shocks.</p>
+          <div class="registry-card">
+            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Specimen Registry</div>
+            <div class="registry-grid">
+              <div class="registry-item">
+                <span class="registry-label">Highlighted Specimen:</span>
+                <span class="registry-value">Rare Hybrid Selections</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Difficulty Class:</span>
+                <span class="registry-value badge complexity-hard">Advanced Care</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Photosynthesis Lux:</span>
+                <span class="registry-value">2200 Lux (Bright Indirect)</span>
+              </div>
+              <div class="registry-item">
+                <span class="registry-label">Humidity Minimum:</span>
+                <span class="registry-value">60% Relative Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <!-- Footer Info Column -->
+      <div class="footer-info">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenery
+        </a>
+        <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <!-- Footer Menu Columns -->
+      <div class="footer-menu-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="plants.html" class="footer-link">Plants</a></li>
+          <li><a href="collections.html" class="footer-link">Collections</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="guides.html" class="footer-link">Guides</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+          <li><a href="delivery.html" class="footer-link">Delivery Info</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer-menu-col newsletter-col">
+        <h3>Newsletter</h3>
+        <p>Subscribe to get special offers, plant care tips, and design inspiration.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Area -->
+    <div class="footer-bottom">
+      <p>&copy; 2026 Greenery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Badge Sync & Active Nav Link Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>
+
+

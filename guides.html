@@ -1,0 +1,1963 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Botanical Care Manuals - Greenery</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow-x: clip;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Wrapper */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .app-header.scrolled .navbar {
+      padding-block: 0.6rem;
+    }
+
+    /* Main Navigation Bar (Clean 3-Column Grid) */
+    .navbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      transition: padding var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    /* Logo Design - Left Column */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--primary);
+      justify-self: start;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo:hover svg {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    /* Nav Menu Desktop - Centered Column */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .nav-menu > ul {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.7rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Dropdown Menu styling (Home) */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--card-bg);
+      min-width: 160px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .dropdown-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding-inline-start: 1.25rem;
+    }
+
+    /* Wishlist Badge */
+    .wishlist-link {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .badge {
+      background: var(--badge-bg);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Utilities - Right Column */
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-self: end;
+    }
+
+    /* Clean circular icon buttons */
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--primary);
+      color: white;
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn i {
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn:hover svg,
+    .icon-btn:hover i {
+      transform: rotate(15deg);
+    }
+
+    /* Active state indicator styles */
+    .icon-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Login pill-shaped button */
+    .login-btn {
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      padding: 0.45rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    html[data-theme="dark"] .login-btn:hover {
+      box-shadow: 0 4px 12px rgba(142, 60, 45, 0.3);
+    }
+
+    /* Hamburger Toggle */
+    .hamburger-toggle {
+      display: none;
+      font-size: 1.6rem;
+      color: var(--text-color);
+      z-index: 105;
+      padding: 0.2rem;
+    }
+
+    /* Side Drawer (Mobile Nav) */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 30px var(--shadow-color);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .mobile-drawer.open {
+      right: 0;
+    }
+
+    html[dir="rtl"] .mobile-drawer {
+      right: auto;
+      left: -320px;
+      box-shadow: 10px 0 30px var(--shadow-color);
+    }
+
+    html[dir="rtl"] .mobile-drawer.open {
+      left: 0;
+      right: auto;
+    }
+
+    /* Overlay for Mobile Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 999;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* --- RTL LAYOUT SYSTEM --- */
+    html[dir="rtl"] .dropdown-menu {
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    html[dir="rtl"] .mobile-drawer {
+      right: auto;
+      left: -320px;
+      box-shadow: 10px 0 30px var(--shadow-color);
+    }
+
+    html[dir="rtl"] .mobile-drawer.open {
+      left: 0;
+      right: auto;
+    }
+
+    html[dir="rtl"] .dropdown-link:hover {
+      padding-inline-start: 1rem;
+      padding-inline-end: 1.25rem;
+    }
+
+    html[dir="rtl"] .arrow-icon {
+      transform: scaleX(-1);
+    }
+
+    /* Responsive Breakpoint for Mobile layout */
+    @media (max-width: 1200px) {
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        padding-inline: 1.5rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .nav-utilities .icon-btn,
+      .nav-utilities .login-btn {
+        display: none;
+      }
+      .hamburger-toggle {
+        display: flex;
+      }
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--navbar-border);
+      padding-bottom: 1.2rem;
+    }
+
+    .drawer-close {
+      font-size: 2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-close:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-nav-link {
+      padding: 0.8rem 1rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mobile-dropdown-btn {
+      font-size: 0.75rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link.active .mobile-dropdown-btn {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-inline-start: 1.5rem;
+      padding-block: 0.5rem;
+      border-left: 2px solid var(--primary-light);
+      margin-left: 1.2rem;
+    }
+
+    html[dir="rtl"] .mobile-dropdown-menu {
+      border-left: none;
+      border-right: 2px solid var(--primary-light);
+      margin-left: 0;
+      margin-right: 1.2rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      display: flex;
+    }
+
+    .drawer-utilities {
+      border-top: 1px solid var(--navbar-border);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .mobile-toggles {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .drawer-utilities .login-btn {
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* Common Section Styles */
+    section {
+      padding: 4rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    /* ==========================================
+       Guides Page Specific Styles
+       ========================================== */
+
+    /* Stunning Hero Section with Glassmorphic Overlay */
+    .guides-hero-section {
+      position: relative;
+      width: 100%;
+      height: 460px;
+      background: url('./images/plant_care_guide.png') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      border-bottom: 1px solid var(--navbar-border);
+    }
+
+    .hero-bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.45);
+      z-index: 1;
+    }
+
+    .hero-glass-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 24px;
+      padding: 2.5rem 3.5rem;
+      max-width: 800px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      color: white;
+    }
+
+    html[data-theme="dark"] .hero-glass-card {
+      background: rgba(15, 23, 42, 0.45);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15rem;
+      color: #4ade80;
+    }
+
+    .hero-glass-card h1 {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .hero-glass-card p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 650px;
+    }
+
+    /* Search Box styling */
+    .search-box {
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      margin-top: 0.5rem;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 1rem 1.5rem 1rem 3.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: all var(--transition-speed) ease;
+    }
+
+    .search-box input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-box input:focus {
+      background: rgba(255, 255, 255, 0.95);
+      color: hsl(210, 24%, 12%);
+      border-color: var(--primary);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .search-box input:focus + .search-icon {
+      color: var(--primary);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.15rem;
+      transition: color var(--transition-speed) ease;
+    }
+
+    html[dir="rtl"] .search-box input {
+      padding: 1rem 3.2rem 1rem 1.5rem;
+    }
+    html[dir="rtl"] .search-icon {
+      left: auto;
+      right: 1.4rem;
+    }
+
+    /* Sticky Table of Contents Sub-menu */
+    .toc-bar {
+      position: sticky;
+      top: 72px;
+      z-index: 99;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      padding: 0.8rem 2rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      scrollbar-width: none;
+      transition: top var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toc-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .toc-link {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .toc-link:hover {
+      color: var(--primary);
+    }
+
+    .toc-link.active {
+      color: var(--primary);
+      background: var(--primary-light);
+      border-color: var(--navbar-border);
+    }
+
+    /* Section Container Layout */
+    .guides-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .guide-section {
+      width: 100%;
+      padding: 6rem 2rem;
+      border-bottom: 1px solid var(--navbar-border);
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                  max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                  padding 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                  border-color 0.5s ease;
+      max-height: 2000px;
+      opacity: 1;
+      overflow: visible;
+    }
+
+    .guide-section.collapsed {
+      opacity: 0;
+      max-height: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      border-bottom-color: transparent;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      align-items: center;
+      gap: 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .guide-img-col {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Visual Glassmorphic Frame */
+    .guide-img-wrapper {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px var(--shadow-color);
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 4/5;
+      border: 1px solid var(--navbar-border);
+      background: var(--card-bg);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .guide-img-wrapper:hover {
+      transform: translateY(-5px) scale(1.01);
+    }
+
+    .guide-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .guide-img-wrapper:hover .guide-img {
+      transform: scale(1.06);
+    }
+
+    /* Tech lens crosshair overlays */
+    .lens-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      border: 1px solid rgba(74, 222, 128, 0.15);
+      border-radius: 24px;
+      box-sizing: border-box;
+    }
+
+    .lens-crosshair {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(74, 222, 128, 0.4);
+    }
+    .lens-crosshair-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .lens-crosshair-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .lens-crosshair-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .lens-crosshair-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+    .lens-reticle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 80px;
+      border: 1px dashed rgba(74, 222, 128, 0.25);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin-reticle 25s linear infinite;
+    }
+
+    @keyframes spin-reticle {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .guide-img-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      letter-spacing: 0.05rem;
+    }
+
+    html[dir="rtl"] .guide-img-badge {
+      left: auto;
+      right: 20px;
+    }
+
+    /* Content styling */
+    .guide-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .guide-num {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .guide-title {
+      font-family: var(--font-serif);
+      font-size: 2.3rem;
+      line-height: 1.2;
+      color: var(--text-color);
+    }
+
+    .guide-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    /* Telemetry Metrics */
+    .guide-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px var(--shadow-color);
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .metric-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .metric-name {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .metric-val {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .metric-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--primary-light);
+      border-radius: 30px;
+      overflow: hidden;
+    }
+
+    html[data-theme="dark"] .metric-bar {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .metric-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 30px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Checklist */
+    .guide-checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .guide-checklist h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .checklist-item i {
+      color: var(--primary);
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+    }
+
+    /* Floating utilities */
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 10px 25px rgba(20, 83, 45, 0.3);
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .scroll-top-btn.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-top-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-3px);
+    }
+
+    html[dir="rtl"] .scroll-top-btn {
+      right: auto;
+      left: 30px;
+    }
+
+    .no-results-msg {
+      display: none;
+      text-align: center;
+      padding: 6rem 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .no-results-msg i {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      opacity: 0.5;
+    }
+
+    .no-results-msg h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .no-results-msg p {
+      color: var(--text-muted);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .toc-bar {
+        top: 60px;
+        justify-content: flex-start;
+        padding-inline: 1rem;
+      }
+      .guide-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .guide-section {
+        padding: 4rem 1.5rem;
+      }
+      /* On mobile, force the image to always sit above text */
+      .guide-grid .guide-img-col {
+        order: 1 !important;
+      }
+      .guide-grid .guide-text-col {
+        order: 2 !important;
+      }
+      .hero-glass-card {
+        padding: 2rem;
+      }
+      .hero-glass-card h1 {
+        font-size: 2.2rem;
+      }
+    }
+
+    /* Footer Styling */
+    .app-footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--navbar-border);
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+      font-size: 1rem;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-menu-col h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .footer-menu-col h3::after {
+      left: auto;
+      right: 0;
+    }
+
+    .footer-menu-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .footer-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--navbar-border);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Footer */
+    @media (max-width: 992px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .footer-info {
+        align-items: center;
+        text-align: center;
+      }
+      .footer-description {
+        max-width: 100%;
+      }
+      .footer-menu-col {
+        text-align: center;
+      }
+      .footer-menu-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Newsletter Column Styling */
+    .newsletter-col p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border: 1px solid var(--navbar-border);
+      border-radius: 30px;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .newsletter-form:focus-within {
+      border-color: var(--primary);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .newsletter-form button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Single-Line App Header -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Logo (Column 1 - Left) -->
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Greenery
+      </a>
+
+      <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <ul>
+          <!-- Home Dropdown Link -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              Home <span class="arrow-icon">&#9660;</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html" class="dropdown-link active">Home 1</a></li>
+              <li><a href="home2.html" class="dropdown-link">Home 2</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="plants.html" class="nav-link">Plants</a></li>
+          <li class="nav-item"><a href="collections.html" class="nav-link"> Collections</a></li>
+          <li class="nav-item"><a href="guides.html" class="nav-link"> Guides</a></li>
+          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="subscription.html" class="nav-link"> Subscription</a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-link"> Wishlist </a></li>
+          <li class="nav-item"><a href="delivery.html" class="nav-link">Delivery</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utilities (Column 3 - Right) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login-btn" id="loginBtn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Login
+        </a>
+        <!-- Hamburger Menu button (Mobile) -->
+        <button id="hamburgerToggle" class="hamburger-toggle" aria-label="Open Navigation Drawer">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
+        </svg>
+        Greenery
+      </a>
+      <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mobile Navigation List -->
+    <nav class="mobile-nav-list">
+      <div class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link active" id="mobileDropdownBtn">
+          Home <span class="mobile-dropdown-btn">&#9660;</span>
+        </a>
+        <ul class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <li><a href="index.html" class="mobile-nav-link active">Home 1</a></li>
+          <li><a href="home2.html" class="mobile-nav-link">Home 2</a></li>
+        </ul>
+      </div>
+      <div class="mobile-nav-item"><a href="about.html" class="mobile-nav-link">About Us</a></div>
+      <div class="mobile-nav-item"><a href="plants.html" class="mobile-nav-link">Plants</a></div>
+      <div class="mobile-nav-item"><a href="collections.html" class="mobile-nav-link"> Collections</a></div>
+      <div class="mobile-nav-item"><a href="guides.html" class="mobile-nav-link"> Guides</a></div>
+      <div class="mobile-nav-item"><a href="gallery.html" class="mobile-nav-link">Gallery</a></div>
+      <div class="mobile-nav-item"><a href="subscription.html" class="mobile-nav-link">Subscription </a></div>
+      <div class="mobile-nav-item"><a href="wishlist.html" class="mobile-nav-link"> Wishlist ></a></div>
+      <div class="mobile-nav-item"><a href="delivery.html" class="mobile-nav-link">Delivery</a></div>
+      <div class="mobile-nav-item"><a href="contact.html" class="mobile-nav-link">Contact</a></div>
+    </nav>
+
+    <!-- Mobile Drawer Utilities -->
+    <div class="drawer-utilities">
+      <div class="mobile-toggles">
+        <button class="icon-btn" id="mobileRtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <button id="mobileThemeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="mobileThemeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="login.html" class="login-btn" id="mobileLoginBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- Stunning Hero Section with Glassmorphic Overlay -->
+    <section class="guides-hero-section">
+      <div class="hero-bg-overlay"></div>
+      <div class="hero-glass-card">
+        <span class="hero-badge">Horticultural Core</span>
+        <h1>Botanical Care Manuals</h1>
+        <p>Scientific diagnostics, substrate chemistry recipes, photon-calibration protocols, and IoT smart soil telemetry parameters. Explore our guidebooks vertically below.</p>
+        
+        <!-- Integrated Search Input -->
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="guideSearch" placeholder="Search species, substrates, parameters (e.g. soil, sensor)...">
+        </div>
+      </div>
+    </section>
+
+    <!-- Guides stacked vertically -->
+    <div class="guides-container" id="guidesContainer">
+      
+      <!-- Section 1: Core Husbandry -->
+      <section id="care-intro" class="guide-section" data-keywords="core husbandry biome microclimate oxygenation transpiration diagnostics fundamentals substrate">
+        <div class="guide-grid">
+          <!-- Col 1: Specimen Lens -->
+          <div class="guide-img-col" style="order: 1;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/plant_care_guide.png" alt="Core Botanical Husbandry Guide">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+          <!-- Col 2: Text & Content -->
+          <div class="guide-text-col" style="order: 2;">
+            <span class="guide-num"><i class="fa-solid fa-circle-nodes"></i> Manual Index 01</span>
+            <h2 class="guide-title">Scientific Care Fundamentals</h2>
+            <p class="guide-desc">Successful indoor plant keeping relies on recreating natural biome characteristics in your domestic spaces. We measure air temperature, relative humidity, light quality, and capillary aeration levels to predict and prevent early leaf stress.</p>
+            
+            <!-- Central Telemetry Dashboard -->
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-heart-pulse"></i> Transpiration Stress Index</span>
+                  <span class="metric-val" data-target-width="25%">25% (Optimized)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-wind"></i> Capillary Aeration Level</span>
+                  <span class="metric-val" data-target-width="92%">92%</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <!-- Action checklist -->
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Recreate Natural Biomes:</strong> Arrange plant groupings together to trap local moisture and stabilize local air temperature axes.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Ensure Soil Airflow:</strong> Regularly aerate topsoil layers to break up surface crusts and promote oxygen exchange.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Perform Visual Scans:</strong> Check stem node joints and new leaves weekly for early warning signs of stress.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Watering Science -->
+      <section id="watering-science" class="guide-section" data-keywords="watering hydration humidity misting moisture VPD transpiration humidifier sensor">
+        <div class="guide-grid">
+          <!-- Col 1: Text & Content -->
+          <div class="guide-text-col" style="order: 1;">
+            <span class="guide-num"><i class="fa-solid fa-droplet"></i> Manual Index 02</span>
+            <h2 class="guide-title">Watering & Vapor Pressure Deficit</h2>
+            <p class="guide-desc">Plants absorb water through capillary root pressure and release it as vapor via leaf stomata. Managing vapor pressure deficit (VPD) ensures stomata remain active without drying out root cell walls.</p>
+            
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-droplet-slash"></i> Transpiration Index</span>
+                  <span class="metric-val" data-target-width="68%">68% (Standard)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-water"></i> Soil Moisture Target</span>
+                  <span class="metric-val" data-target-width="42%">42% (Optimal)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Perform Deep Soaks:</strong> Water thoroughly until excess moisture exits the drainage holes, ensuring salts are flushed out.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Position Humidifiers:</strong> Sit cool-mist humidifier units relative to dry airflow paths to shield delicate foliage.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Maintain Ambient Moisture:</strong> Hold room humidity above 55% RH to avoid brown, crisp leaf margins on tropical species.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Col 2: Specimen Lens -->
+          <div class="guide-img-col" style="order: 2;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/botanical_humidifier.png" alt="Atmospheric humidity mister">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Light Calibration -->
+      <section id="light-calibration" class="guide-section" data-keywords="light calibration photon grow led lux measurement photosynthetic radiation growlights window">
+        <div class="guide-grid">
+          <!-- Col 1: Specimen Lens -->
+          <div class="guide-img-col" style="order: 1;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/about_plants.png" alt="Light calibration potting bench">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+          <!-- Col 2: Text & Content -->
+          <div class="guide-text-col" style="order: 2;">
+            <span class="guide-num"><i class="fa-solid fa-sun"></i> Manual Index 03</span>
+            <h2 class="guide-title">Light & Grow LED Calibration</h2>
+            <p class="guide-desc">Human eyes automatically adjust to shade, making rooms look brighter than they are for plants. Generating consistent growth requires calculating active lux levels and photon density at the leaf surface.</p>
+            
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-bolt"></i> Photon Flux Index</span>
+                  <span class="metric-val" data-target-width="78%">78% (Optimized)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-lightbulb"></i> GROW LED Output</span>
+                  <span class="metric-val" data-target-width="85%">85%</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Map Lux Intensity:</strong> Measure active light levels near window panes compared to deep room corners using a lux meter.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Rotate Regularly:</strong> Turn containers 90 degrees every two weeks to prevent severe leaning (phototropism).</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Supplement Light:</strong> Integrate 6500K full-spectrum LED fixtures to bridge light gaps in dark north-facing rooms.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Substrate Chemistry -->
+      <section id="substrate-chemistry" class="guide-section" data-keywords="substrate soil coco coir perlite orchid bark repotting aeration potting potting mixes drainage">
+        <div class="guide-grid">
+          <!-- Col 1: Text & Content -->
+          <div class="guide-text-col" style="order: 1;">
+            <span class="guide-num"><i class="fa-solid fa-flask"></i> Manual Index 04</span>
+            <h2 class="guide-title">Substrate Aeration & Chemistry</h2>
+            <p class="guide-desc">Traditional dense potting soil packs tightly when wet, cutting off oxygen to roots. A chunky, inorganic substrate mix provides rapid drainage and preserves oxygen pockets around capillary root cells.</p>
+            
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-seedling"></i> Organic Coco Coir Ratio</span>
+                  <span class="metric-val" data-target-width="40%">40%</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-filter"></i> Drainage Performance</span>
+                  <span class="metric-val" data-target-width="95%">95% (Excellent)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Layer for Aeration:</strong> Blend chunky coconut coir, coarse perlite, and orchid bark to maximize oxygen paths.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Match Pot Dimensions:</strong> Increase pot diameter by no more than 2 inches during repotting to prevent waterlogged edges.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Sanitize Equipment:</strong> Wipe blades, shears, and pots with 70% rubbing alcohol to eliminate root fungal spores.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Col 2: Specimen Lens -->
+          <div class="guide-img-col" style="order: 2;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/self_watering_pot.png" alt="Inorganic potting concrete pots">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Smart Telemetry -->
+      <section id="iot-telemetry" class="guide-section" data-keywords="iot sensor telemetry soil moisture smart botany digital monitoring app calibration">
+        <div class="guide-grid">
+          <!-- Col 1: Specimen Lens -->
+          <div class="guide-img-col" style="order: 1;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/smart_plant_sensor.png" alt="Smart soil telemetry sensor">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+          <!-- Col 2: Text & Content -->
+          <div class="guide-text-col" style="order: 2;">
+            <span class="guide-num"><i class="fa-solid fa-microchip"></i> Manual Index 05</span>
+            <h2 class="guide-title">IoT Soil Telemetry & Sensors</h2>
+            <p class="guide-desc">Soil moisture probes eliminate guesswork from your watering routine. By tracking substrate electrical conductivity and volumetric water content, they send precise care conditions straight to your dashboard.</p>
+            
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-compass-drafting"></i> Calibration Precision</span>
+                  <span class="metric-val" data-target-width="98%">98% (High)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-signal"></i> Network Connection</span>
+                  <span class="metric-val" data-target-width="100%">100% (Online)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Insert at Roots:</strong> Insert the metal probes deep into the active root structure rather than loose surface soil layers.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Track Nutrients (EC):</strong> Monitor electrical conductivity levels to track fertilizer salts and prevent toxic root burn.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Set Alert Triggers:</strong> Set up custom rules to get notifications before volumetric water levels drop below 15%.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Mobile App Sync -->
+      <section id="app-integration" class="guide-section" data-keywords="mobile app sync application dashboard notifications alerts smart care digital database">
+        <div class="guide-grid">
+          <!-- Col 1: Text & Content -->
+          <div class="guide-text-col" style="order: 1;">
+            <span class="guide-num"><i class="fa-solid fa-mobile-screen-button"></i> Manual Index 06</span>
+            <h2 class="guide-title">Mobile Dashboard Configuration</h2>
+            <p class="guide-desc">Syncing your care data to the cloud lets you keep an eye on your plants from anywhere. Group species by watering needs and set custom notifications based on live sensor data.</p>
+            
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-clock"></i> DB Refresh Interval</span>
+                  <span class="metric-val" data-target-width="90%">90% (15s Realtime)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-bell"></i> Push Notification rate</span>
+                  <span class="metric-val" data-target-width="99%">99% (Active)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Categorize Species:</strong> Group indoor plants in the app by genus to coordinate feeding cycles.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Enable Real-Time Alerts:</strong> Allow high-priority push alerts for extreme temperature and moisture readings.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Log Fertilizer Cycles:</strong> Input fertilizer dosages to build historical feeding graphs over the seasons.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Col 2: Specimen Lens -->
+          <div class="guide-img-col" style="order: 2;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/plant_care_app.png" alt="Mobile plant monitoring app">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Node Propagation -->
+      <section id="node-propagation" class="guide-section" data-keywords="propagation cutting node rooting water moss stem division workshop greenhouse">
+        <div class="guide-grid">
+          <!-- Col 1: Specimen Lens -->
+          <div class="guide-img-col" style="order: 1;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/plant_workshop.png" alt="Propagation node cuttings">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+          <!-- Col 2: Text & Content -->
+          <div class="guide-text-col" style="order: 2;">
+            <span class="guide-num"><i class="fa-solid fa-scissors"></i> Manual Index 07</span>
+            <h2 class="guide-title">Stem Node Propagation</h2>
+            <p class="guide-desc">Many tropical species propagate easily from stem cuttings. Finding the node&mdash;the small swelling where leaves and roots emerge&mdash;is crucial, as this is where actively dividing cells are concentrated.</p>
+            
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-circle-nodes"></i> Node Viability Index</span>
+                  <span class="metric-val" data-target-width="90%">90% (Excellent)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-gauge-high"></i> Success Rate</span>
+                  <span class="metric-val" data-target-width="85%">85%</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Slice Below Nodes:</strong> Make clean diagonal cuts 1cm below nodes using a sterilized razor blade.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Dry Cut Ends (Callus):</strong> Let stem cuttings dry for several hours to seal the open cells before placing them in moisture.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Choose Propagation Media:</strong> Propagate in clean water or damp sphagnum moss until roots grow to about 2 inches.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 8: Space Styling -->
+      <section id="space-styling" class="guide-section" data-keywords="styling interior design architectural penthouse space styling placement aesthetics studio loft">
+        <div class="guide-grid">
+          <!-- Col 1: Text & Content -->
+          <div class="guide-text-col" style="order: 1;">
+            <span class="guide-num"><i class="fa-solid fa-couch"></i> Manual Index 08</span>
+            <h2 class="guide-title">Architectural Space Styling</h2>
+            <p class="guide-desc">Styling with plants balances interior design with horticultural needs. Position structural specimens relative to windows, air vents, and overall room flow to support long-term plant health.</p>
+            
+            <div class="guide-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-eye"></i> Visual Balance Index</span>
+                  <span class="metric-val" data-target-width="90%">90%</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span class="metric-name"><i class="fa-solid fa-compass"></i> Lighting Compatibility</span>
+                  <span class="metric-val" data-target-width="95%">95% (Highly compatible)</span>
+                </div>
+                <div class="metric-bar"><div class="metric-bar-fill" style="width: 0%;"></div></div>
+              </div>
+            </div>
+
+            <div class="guide-checklist">
+              <h4><i class="fa-solid fa-list-check"></i> Action Checklist</h4>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Position Focal Pieces:</strong> Put large plants (like Fiddle Leaf Figs) in corners near windows to establish visual anchors.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Group in Odd Clusters:</strong> Display plants in clusters of 3 or 5, varying heights and leaf textures for natural appeal.</p>
+              </div>
+              <div class="checklist-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <p><strong>Shield from Air Drafts:</strong> Position tropical foliage away from heating radiators and air conditioner vents.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Col 2: Specimen Lens -->
+          <div class="guide-img-col" style="order: 2;">
+            <div class="guide-img-wrapper">
+              <div class="lens-overlay">
+                <div class="lens-crosshair lens-crosshair-tl"></div>
+                <div class="lens-crosshair lens-crosshair-tr"></div>
+                <div class="lens-crosshair lens-crosshair-bl"></div>
+                <div class="lens-crosshair lens-crosshair-br"></div>
+                <div class="lens-reticle"></div>
+              </div>
+              <img class="guide-img" src="./images/hero_design_studio.png" alt="Styling penthouse loft styled with plants">
+              <div class="guide-img-badge"><i class="fa-solid fa-microscope"></i> Lens Focus Active</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Live Search Fallback -->
+    <div class="no-results-msg" id="noResultsMsg">
+      <i class="fa-solid fa-magnifying-glass-minus"></i>
+      <h3>No Care Manuals Found</h3>
+      <p>Try searching for other keywords like "VPD", "soil", "EC", or "nodes".</p>
+    </div>
+  </main>
+
+  <!-- Floating Scroll to Top button -->
+  <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to Top" title="Scroll to Top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <!-- Footer Info Column -->
+      <div class="footer-info">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenery
+        </a>
+        <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <!-- Footer Menu Columns -->
+      <div class="footer-menu-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="plants.html" class="footer-link">Plants</a></li>
+          <li><a href="collections.html" class="footer-link">Collections</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="guides.html" class="footer-link">Guides</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+          <li><a href="delivery.html" class="footer-link">Delivery Info</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer-menu-col newsletter-col">
+        <h3>Newsletter</h3>
+        <p>Subscribe to get special offers, plant care tips, and design inspiration.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Area -->
+    <div class="footer-bottom">
+      <p>&copy; 2026 Greenery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Badge Sync & Active Nav Link Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>
+
+

@@ -1,0 +1,2263 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Get in touch with Greenery Plant Nursery. Visit our greenhouses, book a plant care consultation, ask questions, or contact our support team.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Contact Us - Greenery Plant Nursery</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+      --input-bg: hsl(0, 0%, 100%);
+      --input-border: hsl(210, 10%, 85%);
+      --hero-overlay: rgba(15, 23, 42, 0.55);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+      --input-bg: hsl(220, 20%, 11%);
+      --input-border: hsl(220, 20%, 20%);
+      --hero-overlay: rgba(15, 23, 42, 0.75);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow-x: clip;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Wrapper */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Scrolled state for Header */
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .app-header.scrolled .navbar {
+      padding-block: 0.6rem;
+    }
+
+    /* Main Navigation Bar (Clean 3-Column Grid) */
+    .navbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      transition: padding var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    /* Logo Design - Left Column */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--primary);
+      justify-self: start;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo:hover svg {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    /* Nav Menu Desktop - Centered Column */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .nav-menu > ul {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.7rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Dropdown Menu styling (Home) */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--card-bg);
+      min-width: 160px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .dropdown-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding-inline-start: 1.25rem;
+    }
+
+    /* Wishlist Badge */
+    .wishlist-link {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .badge {
+      background: var(--badge-bg);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Utilities - Right Column */
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-self: end;
+    }
+
+    /* Clean circular icon buttons */
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--primary);
+      color: white;
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn i {
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn:hover svg,
+    .icon-btn:hover i {
+      transform: rotate(15deg);
+    }
+
+    /* Active state indicator styles */
+    .icon-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Login pill-shaped button */
+    .login-btn {
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      padding: 0.45rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    html[data-theme="dark"] .login-btn:hover {
+      box-shadow: 0 4px 12px rgba(142, 60, 45, 0.3);
+    }
+
+    /* Hamburger Toggle */
+    .hamburger-toggle {
+      display: none;
+      font-size: 1.6rem;
+      color: var(--text-color);
+      z-index: 105;
+      padding: 0.2rem;
+    }
+
+    /* Side Drawer (Mobile Nav) */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 30px var(--shadow-color);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .mobile-drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--navbar-border);
+    }
+
+    .drawer-close {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .mobile-nav-item {
+      width: 100%;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link:hover, .mobile-nav-link.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mobile-dropdown-btn {
+      background: none;
+      border: none;
+      font-size: 0.75rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .mobile-dropdown-btn.active {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      max-height: 0;
+      overflow: hidden;
+      padding-inline-start: 1rem;
+      transition: max-height 0.3s ease-out;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      max-height: 200px;
+    }
+
+    /* Mobile Utilities inside drawer */
+    .drawer-utilities {
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .drawer-utilities .mobile-toggles {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .drawer-utilities .login-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Overlay for Mobile Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 999;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* --- RTL LAYOUT SYSTEM --- */
+    html[dir="rtl"] .dropdown-menu {
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    html[dir="rtl"] .mobile-drawer {
+      right: auto;
+      left: -320px;
+      box-shadow: 10px 0 30px var(--shadow-color);
+    }
+
+    html[dir="rtl"] .mobile-drawer.open {
+      left: 0;
+      right: auto;
+    }
+
+    html[dir="rtl"] .dropdown-link:hover {
+      padding-inline-start: 1rem;
+      padding-inline-end: 1.25rem;
+    }
+
+    html[dir="rtl"] .arrow-icon {
+      transform: scaleX(-1);
+    }
+
+    /* Responsive Breakpoint for Mobile layout */
+    @media (max-width: 1200px) {
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        padding-inline: 1.5rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .nav-utilities .icon-btn,
+      .nav-utilities .login-btn {
+        display: none;
+      }
+      .hamburger-toggle {
+        display: flex;
+      }
+    }
+
+    /* General Section Styling */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 4rem auto;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------
+       SECTION 1: HERO SECTION (FULL SCREEN BACKGROUND IMAGE)
+       ------------------------------------------- */
+    .hero-section {
+      height: 100vh;
+      min-height: 600px;
+      max-width: 100%;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url('images/contact_hero.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: scroll; /* Keep default scroll for standard cross-browser compatibility */
+      color: white;
+      text-align: center;
+    }
+
+    /* Smooth fade in effect */
+    .hero-container {
+      max-width: 800px;
+      padding-inline: 2rem;
+      animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-tagline {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .hero-container h1 {
+      font-family: var(--font-serif);
+      font-size: 4rem;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-container p {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2.5rem;
+      max-width: 650px;
+      margin-inline: auto;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 0.9rem 2.2rem;
+      font-weight: 600;
+      border-radius: 30px;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(20, 83, 45, 0.35);
+    }
+
+    .btn-outline {
+      border: 2px solid white;
+      color: white;
+    }
+
+    .btn-outline:hover {
+      background: white;
+      color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.5rem;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-10px) translateX(-50%); }
+      60% { transform: translateY(-5px) translateX(-50%); }
+    }
+
+    @media (max-width: 768px) {
+      .hero-container h1 { font-size: 2.8rem; }
+      .hero-container p { font-size: 1.05rem; }
+      .hero-ctas { flex-direction: column; gap: 0.8rem; }
+    }
+
+    /* -------------------------------------------
+       SECTION 2: KEY CONTACT INFO & GARDENER EXPERT
+       ------------------------------------------- */
+    .contact-info-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .info-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 25px var(--shadow-color);
+    }
+
+    .info-card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    }
+
+    .info-card:hover .info-card-icon {
+      background: var(--primary);
+      color: white;
+    }
+
+    .info-card h3 {
+      font-family: var(--font-sans);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      font-weight: 600;
+    }
+
+    .info-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .gardener-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      aspect-ratio: 4 / 5;
+    }
+
+    .gardener-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .gardener-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .gardener-card-overlay {
+      position: absolute;
+      bottom: 0;
+      inset-inline: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+      padding: 2.5rem 2rem 2rem 2rem;
+      color: white;
+    }
+
+    .gardener-card-overlay h4 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .gardener-card-overlay p {
+      font-size: 0.9rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+    }
+
+    .gardener-card-overlay span {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.4;
+      display: block;
+    }
+
+    @media (max-width: 992px) {
+      .contact-info-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    /* -------------------------------------------
+       SECTION 3: INQUIRY FORM & HOUSEPLANTS DISPLAY
+       ------------------------------------------- */
+    .form-section-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      padding: 3rem;
+      box-shadow: 0 10px 30px var(--shadow-color);
+    }
+
+    .form-card h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-card > p {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .form-control {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--border-radius);
+      padding: 0.85rem 1.2rem;
+      font-family: var(--font-sans);
+      color: var(--text-color);
+      font-size: 0.95rem;
+      transition: all var(--transition-speed) ease;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      font-size: 1rem;
+      justify-content: center;
+      padding: 0.95rem;
+      border-radius: 30px;
+      margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .display-image-card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      aspect-ratio: 1 / 1;
+    }
+
+    .display-image-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .display-image-card:hover img {
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 992px) {
+      .form-section-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .form-card { padding: 2rem; }
+    }
+
+    /* -------------------------------------------
+       SECTION 4: GREENHOUSE ZONES (3 CARDS GRID)
+       ------------------------------------------- */
+    .zones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .zone-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 5px 15px var(--shadow-color);
+    }
+
+    .zone-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px var(--shadow-color);
+      border-color: var(--primary);
+    }
+
+    .zone-image-wrapper {
+      height: 240px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .zone-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .zone-card:hover .zone-image-wrapper img {
+      transform: scale(1.07);
+    }
+
+    .zone-badge {
+      position: absolute;
+      top: 1rem;
+      inset-inline-start: 1rem;
+      background: var(--primary);
+      color: white;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .zone-content {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      flex: 1;
+    }
+
+    .zone-content h3 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--text-color);
+    }
+
+    .zone-content p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .zone-meta {
+      border-top: 1px solid var(--navbar-border);
+      padding-top: 1.2rem;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .zone-meta span i {
+      color: var(--primary);
+      margin-inline-end: 0.3rem;
+    }
+
+    /* -------------------------------------------
+       SECTION 5: MAP & DIRECTIONS
+       ------------------------------------------- */
+    .map-directions-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .directions-content h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .direction-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .direction-step {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .direction-step-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .direction-step-text h4 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 0.2rem;
+    }
+
+    .direction-step-text p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .map-card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+    }
+
+    .map-toggle-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      padding: 0.35rem;
+      border-radius: 30px;
+      border: 1px solid var(--navbar-border);
+      align-self: flex-start;
+      box-shadow: 0 4px 15px var(--shadow-color);
+    }
+
+    .map-tab {
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .map-tab:hover {
+      color: var(--primary);
+    }
+
+    .map-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .map-card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      aspect-ratio: 1.5 / 1;
+      border: 1px solid var(--navbar-border);
+      background: var(--card-bg);
+    }
+
+    .map-card img,
+    .map-card iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: 0;
+    }
+
+    .map-card iframe {
+      display: none;
+    }
+
+    @media (max-width: 992px) {
+      .map-directions-layout { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    /* -------------------------------------------
+       SECTION 6: BOOK A CARE CONSULTATION
+       ------------------------------------------- */
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .booking-container {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px var(--shadow-color);
+    }
+
+    .booking-container h3 {
+      font-family: var(--font-sans);
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-color);
+    }
+
+    /* Calendar Grid Mockup */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .calendar-day-header {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding-bottom: 0.5rem;
+    }
+
+    .calendar-day {
+      padding: 0.7rem 0.2rem;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .calendar-day:hover:not(.empty):not(.disabled) {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .calendar-day.active {
+      background: var(--primary) !important;
+      color: white !important;
+    }
+
+    .calendar-day.disabled {
+      color: var(--text-muted);
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .calendar-day.empty {
+      cursor: default;
+    }
+
+    /* Time Slots Mockup */
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .time-slot {
+      padding: 0.6rem;
+      font-size: 0.85rem;
+      text-align: center;
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .time-slot:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .time-slot.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .doctor-profile-card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+    }
+
+    .doctor-img-box {
+      height: 350px;
+      overflow: hidden;
+    }
+
+    .doctor-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .doctor-details {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .doctor-details h4 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--text-color);
+    }
+
+    .doctor-role {
+      font-size: 0.9rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .doctor-details p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 992px) {
+      .booking-layout { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    /* -------------------------------------------
+       SECTION 7: FAQS & GARDENING TOOLS BANNER
+       ------------------------------------------- */
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .faq-header {
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .faq-header h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-color);
+      transition: color var(--transition-speed) ease;
+    }
+
+    .faq-icon-box {
+      font-size: 0.8rem;
+      transition: transform var(--transition-speed) ease;
+      color: var(--text-muted);
+    }
+
+    .faq-item.active {
+      border-color: var(--primary);
+    }
+
+    .faq-item.active .faq-header h3 {
+      color: var(--primary);
+    }
+
+    .faq-item.active .faq-icon-box {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      padding-inline: 1.5rem;
+    }
+
+    .faq-body p {
+      padding-bottom: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .faq-banner-card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      aspect-ratio: 1 / 1.1;
+      border: 1px solid var(--navbar-border);
+    }
+
+    .faq-banner-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 992px) {
+      .faq-layout { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    /* -------------------------------------------
+       SECTION 8: GREEN COMMUNITY NEWSLETTER
+       ------------------------------------------- */
+    .community-newsletter-card {
+      background: linear-gradient(135deg, hsl(142, 70%, 15%), hsl(142, 60%, 8%));
+      border-radius: 24px;
+      padding: 4.5rem;
+      color: white;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .community-newsletter-card::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .newsletter-content h3 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .newsletter-content p {
+      color: rgba(255,255,255,0.8);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 2.2rem;
+    }
+
+    .newsletter-input-box {
+      display: flex;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      padding: 0.35rem 0.35rem 0.35rem 1.5rem;
+      max-width: 500px;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .newsletter-input-box:focus-within {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .newsletter-input-box input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: white;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+    }
+
+    .newsletter-input-box input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .newsletter-input-box button {
+      background: var(--accent);
+      color: hsl(210, 24%, 12%);
+      font-weight: 700;
+      border-radius: 25px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .newsletter-input-box button:hover {
+      transform: scale(1.03);
+    }
+
+    .workshop-photo-card {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .workshop-photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 992px) {
+      .community-newsletter-card { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 2rem; }
+      .newsletter-content h3 { font-size: 2rem; }
+    }
+
+    /* Footer Styling */
+    .app-footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--navbar-border);
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+      font-size: 1rem;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-menu-col h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .footer-menu-col h3::after {
+      left: auto;
+      right: 0;
+    }
+
+    .footer-menu-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .footer-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .footer-bottom {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Footer */
+    @media (max-width: 992px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .footer-info {
+        align-items: center;
+        text-align: center;
+      }
+      .footer-description {
+        max-width: 100%;
+      }
+      .footer-menu-col {
+        text-align: center;
+      }
+      .footer-menu-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Newsletter Column Styling */
+    .newsletter-col p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border: 1px solid var(--navbar-border);
+      border-radius: 30px;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .newsletter-form:focus-within {
+      border-color: var(--primary);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .newsletter-form button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Single-Line App Header -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Logo (Column 1 - Left) -->
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Greenery
+      </a>
+
+      <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <ul>
+          <!-- Home Dropdown Link -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              Home <span class="arrow-icon">&#9660;</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html" class="dropdown-link active">Home 1</a></li>
+              <li><a href="home2.html" class="dropdown-link">Home 2</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="plants.html" class="nav-link">Plants</a></li>
+          <li class="nav-item"><a href="collections.html" class="nav-link"> Collections</a></li>
+          <li class="nav-item"><a href="guides.html" class="nav-link"> Guides</a></li>
+          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="subscription.html" class="nav-link"> Subscription</a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-link"> Wishlist </a></li>
+          <li class="nav-item"><a href="delivery.html" class="nav-link">Delivery</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utilities (Column 3 - Right) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login-btn" id="loginBtn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Login
+        </a>
+        <!-- Hamburger Menu button (Mobile) -->
+        <button id="hamburgerToggle" class="hamburger-toggle" aria-label="Open Navigation Drawer">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
+        </svg>
+        Greenery
+      </a>
+      <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mobile Navigation List -->
+    <nav class="mobile-nav-list">
+      <div class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link active" id="mobileDropdownBtn">
+          Home <span class="mobile-dropdown-btn">&#9660;</span>
+        </a>
+        <ul class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <li><a href="index.html" class="mobile-nav-link active">Home 1</a></li>
+          <li><a href="home2.html" class="mobile-nav-link">Home 2</a></li>
+        </ul>
+      </div>
+      <div class="mobile-nav-item"><a href="about.html" class="mobile-nav-link">About Us</a></div>
+      <div class="mobile-nav-item"><a href="plants.html" class="mobile-nav-link">Plants</a></div>
+      <div class="mobile-nav-item"><a href="collections.html" class="mobile-nav-link"> Collections</a></div>
+      <div class="mobile-nav-item"><a href="guides.html" class="mobile-nav-link"> Guides</a></div>
+      <div class="mobile-nav-item"><a href="gallery.html" class="mobile-nav-link">Gallery</a></div>
+      <div class="mobile-nav-item"><a href="subscription.html" class="mobile-nav-link">Subscription </a></div>
+      <div class="mobile-nav-item"><a href="wishlist.html" class="mobile-nav-link"> Wishlist </a></div>
+      <div class="mobile-nav-item"><a href="delivery.html" class="mobile-nav-link">Delivery</a></div>
+      <div class="mobile-nav-item"><a href="contact.html" class="mobile-nav-link">Contact</a></div>
+    </nav>
+
+    <!-- Mobile Drawer Utilities -->
+    <div class="drawer-utilities">
+      <div class="mobile-toggles">
+        <button class="icon-btn" id="mobileRtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <button id="mobileThemeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="mobileThemeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="login.html" class="login-btn" id="mobileLoginBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- SECTION 1: HERO SECTION (FULL SCREEN BACKGROUND IMAGE) -->
+    <section id="hero" class="hero-section">
+      <div class="hero-container">
+        <span class="hero-tagline">Welcome to Greenery Support</span>
+        <h1>Let's Connect & Grow Together</h1>
+        <p>Whether you are starting your indoor plant collection, seeking advice on landscape design, or tracking your plant subscription box, we are here to guide you.</p>
+        <div class="hero-ctas">
+          <a href="#formSection" class="btn btn-primary">Send Message <i class="fa-solid fa-paper-plane"></i></a>
+          <a href="#zonesSection" class="btn btn-outline">Explore Greenhouses <i class="fa-solid fa-chevron-down"></i></a>
+        </div>
+      </div>
+      <div class="scroll-down" onclick="document.getElementById('infoGridSection').scrollIntoView({behavior: 'smooth'})">
+        <i class="fa-solid fa-angle-down"></i>
+      </div>
+    </section>
+
+    <!-- SECTION 2: KEY CONTACT INFO & GARDENER EXPERT -->
+    <section id="infoGridSection">
+      <div class="contact-info-grid">
+        <div class="info-content-side">
+          <div class="section-header" style="text-align: left; margin-bottom: 2.5rem; margin-inline: 0;">
+            <h2>Reach Out in Any Way</h2>
+            <p>Our dedicated horticulturists, sales reps, and customer support staff are ready to help you during our standard greenhouse operating hours.</p>
+          </div>
+          
+          <div class="info-cards-container">
+            <!-- Card 1: Phone -->
+            <div class="info-card">
+              <div class="info-card-icon"><i class="fa-solid fa-phone"></i></div>
+              <h3>Call Us Directly</h3>
+              <p>+1 (555) 752-6800<br><span style="font-size: 0.85rem; color: var(--text-muted);">Toll free: +1 (800) GROW-NOW</span></p>
+            </div>
+            
+            <!-- Card 2: Email -->
+            <div class="info-card">
+              <div class="info-card-icon"><i class="fa-solid fa-envelope"></i></div>
+              <h3>Send An Email</h3>
+              <p>hello@greenerynursery.com<br><span style="font-size: 0.85rem; color: var(--text-muted);">Support: care@greenerynursery.com</span></p>
+            </div>
+            
+            <!-- Card 3: Address -->
+            <div class="info-card">
+              <div class="info-card-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <h3>Flagship Nursery</h3>
+              <p>482 Plant Avenue, Botanic Hills, NY 10024</p>
+            </div>
+            
+            <!-- Card 4: Hours -->
+            <div class="info-card">
+              <div class="info-card-icon"><i class="fa-solid fa-clock"></i></div>
+              <h3>Visitor Hours</h3>
+              <p>Mon - Sat: 9 AM - 7 PM<br>Sunday: 10 AM - 5 PM</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gardener-card">
+          <img src="images/contact_expert_gardener.png" alt="A friendly horticultural specialist at Greenery nursery holding a digital tablet">
+          <div class="gardener-card-overlay">
+            <h4>Elena Vance</h4>
+            <p>Chief Plant Specialist</p>
+            <span>"I love helping visitors select their ideal green companions and giving them advice on soil mixtures and lighting conditions!"</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INQUIRY FORM & HOUSEPLANTS DISPLAY -->
+    <section id="formSection" style="background-color: var(--primary-light); transition: background-color var(--transition-speed) ease;">
+      <div class="form-section-layout">
+        <div class="form-card">
+          <h3>Drop Us a Message</h3>
+          <p>Fill out this form and our plant advisors will respond within 24 hours.</p>
+          <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for reaching out! We will contact you soon.'); this.reset();">
+            <div class="form-group">
+              <label for="fullName">Your Name</label>
+              <input type="text" id="fullName" class="form-control" placeholder="Jane Doe" required>
+            </div>
+            <div class="form-group">
+              <label for="emailAddr">Email Address</label>
+              <input type="email" id="emailAddr" class="form-control" placeholder="jane@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="inquiryType">Reason for Contact</label>
+              <select id="inquiryType" class="form-control" required style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22currentColor%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.2em;">
+                <option value="" disabled selected>Select an option</option>
+                <option value="general">General Nursery Inquiry</option>
+                <option value="subscription">Subscription Box Support</option>
+                <option value="care">Plant Doctor Consultation</option>
+                <option value="corporate">Corporate Office Landscaping</option>
+                <option value="wholesale">Wholesale & Bulk Orders</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="messageText">Your Message</label>
+              <textarea id="messageText" class="form-control" rows="5" placeholder="Tell us how we can help you grow..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-submit">Send Inquiry Message</button>
+          </form>
+        </div>
+
+        <div class="display-image-card">
+          <img src="images/contact_plants_display.png" alt="Clean minimalist design displaying variegated Monstera Albo and Pink Princess Philodendron plants on warm wood shelves">
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: GREENHOUSE ZONES (VIRTUAL TOUR) -->
+    <section id="zonesSection">
+      <div class="section-header">
+        <h2>Explore Our Greenhouse Zones</h2>
+        <p>Our flagship location is split into three main ecological zones, each carefully curated with unique humidity levels, temperatures, and microclimates.</p>
+      </div>
+
+      <div class="zones-grid">
+        <!-- Zone 1 -->
+        <div class="zone-card">
+          <div class="zone-image-wrapper">
+            <span class="zone-badge">Zone A</span>
+            <img src="images/contact_tropical_canopy.png" alt="Lush tropical canopy greenhouse filled with massive palms and split-leaf monsteras">
+          </div>
+          <div class="zone-content">
+            <h3>Tropical Canopy</h3>
+            <p>Step into an environment of 80% humidity and constant warmth, home to massive foliage plants, trailing vines, bird's nest ferns, and giant monsteras.</p>
+            <div class="zone-meta">
+              <span><i class="fa-solid fa-temperature-half"></i> 78Â°F - 85Â°F</span>
+              <span><i class="fa-solid fa-droplet"></i> 80% Humidity</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone 2 -->
+        <div class="zone-card">
+          <div class="zone-image-wrapper">
+            <span class="zone-badge">Zone B</span>
+            <img src="images/contact_desert_sanctuary.png" alt="Desert sanctuary greenhouse containing rows of rare cacti and massive succulents">
+          </div>
+          <div class="zone-content">
+            <h3>Desert Sanctuary</h3>
+            <p>A bright, sun-drenched pavilion holding high-altitude cacti, large agaves, barrel succulents, and architectural euphorbias from arid regions.</p>
+            <div class="zone-meta">
+              <span><i class="fa-solid fa-temperature-half"></i> 70Â°F - 95Â°F</span>
+              <span><i class="fa-solid fa-droplet"></i> 20% Humidity</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone 3 -->
+        <div class="zone-card">
+          <div class="zone-image-wrapper">
+            <span class="zone-badge">Zone C</span>
+            <img src="images/contact_orchid_pavilion.png" alt="Exotic orchid pavilion blooming with rare colorful blossoms and misty air">
+          </div>
+          <div class="zone-content">
+            <h3>Orchid Pavilion</h3>
+            <p>Our misted sanctuary featuring exotic flowering orchids, bromeliads, nepenthes pitcher plants, and tropical mosses in a vibrant tapestry.</p>
+            <div class="zone-meta">
+              <span><i class="fa-solid fa-temperature-half"></i> 65Â°F - 75Â°F</span>
+              <span><i class="fa-solid fa-droplet"></i> 70% Humidity</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: MAP & DIRECTIONS -->
+    <section id="mapSection" style="background-color: var(--primary-light); transition: background-color var(--transition-speed) ease;">
+      <div class="map-directions-layout">
+        <div class="directions-content">
+          <h3>Visit Our Flagship Store</h3>
+          <p style="color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6;">Located in the serene heart of Botanic Hills, our flagship greenhouse spans over two acres. Here is how you can find us:</p>
+          
+          <div class="direction-steps">
+            <div class="direction-step">
+              <div class="direction-step-icon"><i class="fa-solid fa-car"></i></div>
+              <div class="direction-step-text">
+                <h4>By Car (From Downtown)</h4>
+                <p>Take I-87 North to Exit 14. Turn right onto Avenue of the Americas, then follow the signs toward Botanic Hills. Parking is free for all nursery visitors.</p>
+              </div>
+            </div>
+            
+            <div class="direction-step">
+              <div class="direction-step-icon"><i class="fa-solid fa-train"></i></div>
+              <div class="direction-step-text">
+                <h4>By Public Transit</h4>
+                <p>Take the Green Line Subway straight to the Botanic Gardens Station. From the station exit, it is a pleasant 5-minute walk north along the leafy pathway.</p>
+              </div>
+            </div>
+
+            <div class="direction-step">
+              <div class="direction-step-icon"><i class="fa-solid fa-bicycle"></i></div>
+              <div class="direction-step-text">
+                <h4>Cycling</h4>
+                <p>A scenic bike path runs directly along the nursery perimeter. Secure, shaded bike racks are available right outside our main entry gates.</p>
+              </div>
+            </div>
+          </div>
+
+          <a href="https://maps.google.com" target="_blank" class="btn btn-primary">Open in Google Maps <i class="fa-solid fa-map-location-dot"></i></a>
+        </div>
+
+        <div class="map-card-container">
+          <div class="map-toggle-tabs">
+            <button class="map-tab active" onclick="switchMap('grounds')">
+              <i class="fa-solid fa-compass"></i> Grounds Map
+            </button>
+            <button class="map-tab" onclick="switchMap('google')">
+              <i class="fa-solid fa-map-location-dot"></i> Google Maps
+            </button>
+          </div>
+          <div class="map-card">
+            <img id="groundsMap" src="images/contact_nursery_map.png" alt="Watercolor illustrated garden map of the Greenery plant nursery grounds and facilities">
+            <iframe id="googleMap" src="https://maps.google.com/maps?q=New%20York%20Botanical%20Garden&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: BOOK A PLANT CARE CONSULTATION -->
+    <section id="bookingSection">
+      <div class="booking-layout">
+        <div class="booking-container">
+          <h3>Book a 1-on-1 Advice Session</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5;">Schedule a 30-minute virtual appointment with one of our master botanists to diagnose sick houseplants or plan your home conservatory design.</p>
+          
+          <!-- Calendar Days Mockup -->
+          <div class="calendar-grid">
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+            <div class="calendar-day-header">Sun</div>
+
+            <div class="calendar-day disabled">22</div>
+            <div class="calendar-day disabled">23</div>
+            <div class="calendar-day disabled">24</div>
+            <div class="calendar-day active" onclick="selectDate(this)">25</div>
+            <div class="calendar-day" onclick="selectDate(this)">26</div>
+            <div class="calendar-day" onclick="selectDate(this)">27</div>
+            <div class="calendar-day" onclick="selectDate(this)">28</div>
+            <div class="calendar-day" onclick="selectDate(this)">29</div>
+            <div class="calendar-day" onclick="selectDate(this)">30</div>
+            <div class="calendar-day" onclick="selectDate(this)">1</div>
+            <div class="calendar-day" onclick="selectDate(this)">2</div>
+            <div class="calendar-day" onclick="selectDate(this)">3</div>
+            <div class="calendar-day" onclick="selectDate(this)">4</div>
+            <div class="calendar-day" onclick="selectDate(this)">5</div>
+          </div>
+
+          <!-- Time Slots Mockup -->
+          <div class="time-slots">
+            <div class="time-slot active" onclick="selectTime(this)">09:30 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">11:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">02:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">04:30 PM</div>
+          </div>
+
+          <button onclick="bookConsultation()" class="btn btn-primary" style="width: 100%; justify-content: center;">Confirm Session Booking</button>
+        </div>
+
+        <div class="doctor-profile-card">
+          <div class="doctor-img-box">
+            <img src="images/contact_plant_doctor.png" alt="A friendly expert botanist and plant doctor smiling in a bright plant lab setting">
+          </div>
+          <div class="doctor-details">
+            <span class="doctor-role">Consulting Botanist</span>
+            <h4>Dr. Oliver Green</h4>
+            <p>Armed with a PhD in Horticultural Science and 15 years of nursery experience, Dr. Oliver specializes in pest control, nutrition schedules, and exotic plant propagation techniques.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: FAQS & GARDENING TOOLS BANNER -->
+    <section id="faqSection" style="background-color: var(--primary-light); transition: background-color var(--transition-speed) ease;">
+      <div class="faq-layout">
+        <div class="faq-accordion-side">
+          <div class="section-header" style="text-align: left; margin-bottom: 2.5rem; margin-inline: 0;">
+            <h2>Common Inquiries</h2>
+            <p>Find quick answers to common questions about visiting our greenhouses and purchasing custom arrangements.</p>
+          </div>
+
+          <div class="faq-accordion">
+            <!-- FAQ 1 -->
+            <div class="faq-item">
+              <div class="faq-header" onclick="toggleFaq(this)">
+                <h3>Do I need to schedule an appointment to visit?</h3>
+                <div class="faq-icon-box"><i class="fa-solid fa-chevron-down"></i></div>
+              </div>
+              <div class="faq-body">
+                <p>No, you do not need an appointment to tour our greenhouses! Feel free to drop in anytime during our normal visitor hours. Appointments are only required if you would like a private consultation with Dr. Oliver or to organize a group field trip.</p>
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item">
+              <div class="faq-header" onclick="toggleFaq(this)">
+                <h3>Do you offer custom potting and shipping options?</h3>
+                <div class="faq-icon-box"><i class="fa-solid fa-chevron-down"></i></div>
+              </div>
+              <div class="faq-body">
+                <p>Yes, we do! If you buy a plant and a pot at our store, our specialists will repot it for you for free with the ideal premium soil mix. We also offer secure shipping in temperature-controlled packaging directly to your doorstep across the state.</p>
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item">
+              <div class="faq-header" onclick="toggleFaq(this)">
+                <h3>Can I host private workshops or botanical events here?</h3>
+                <div class="faq-icon-box"><i class="fa-solid fa-chevron-down"></i></div>
+              </div>
+              <div class="faq-body">
+                <p>Absolutely! The Orchid Pavilion can be booked for private workshops, corporate events, and wedding photography. Please send an inquiry using the contact form above, selecting "Wholesale & Bulk Orders" or "General Inquiry" so our events planner can contact you.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-banner-card">
+          <img src="images/contact_gardening_tools.png" alt="A flatlay composition of high-quality garden hand tools, terracotta pots, organic soil, and workspace">
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: GREEN COMMUNITY NEWSLETTER -->
+    <section id="newsletterSection">
+      <div class="community-newsletter-card">
+        <div class="newsletter-content">
+          <h3>Join Our Green Community</h3>
+          <p>Subscribe to our newsletter to receive bi-weekly plant care tips, invitations to our potting workshops, and early notifications about rare plant restocks.</p>
+          <div class="newsletter-input-box">
+            <input type="email" placeholder="Your email address" aria-label="Email address for workshop newsletter sign up">
+            <button onclick="subscribeNewsletter(this)">Subscribe</button>
+          </div>
+        </div>
+        <div class="workshop-photo-card">
+          <img src="images/contact_workshop_community.png" alt="A happy group of diverse plant lovers working around a greenhouse table and repotting baby plants together">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <!-- Footer Info Column -->
+      <div class="footer-info">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenery
+        </a>
+        <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <!-- Footer Menu Columns -->
+      <div class="footer-menu-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="plants.html" class="footer-link">Plants</a></li>
+          <li><a href="collections.html" class="footer-link">Collections</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="guides.html" class="footer-link">Guides</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+          <li><a href="delivery.html" class="footer-link">Delivery Info</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer-menu-col newsletter-col">
+        <h3>Newsletter</h3>
+        <p>Subscribe to get special offers, plant care tips, and design inspiration.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Area -->
+    <div class="footer-bottom">
+      <p>&copy; 2026 Greenery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // --- map view switcher ---
+    function switchMap(type) {
+      const groundsMap = document.getElementById('groundsMap');
+      const googleMap = document.getElementById('googleMap');
+      const tabs = document.querySelectorAll('.map-tab');
+      
+      if (type === 'grounds') {
+        groundsMap.style.display = 'block';
+        googleMap.style.display = 'none';
+        tabs[0].classList.add('active');
+        tabs[1].classList.remove('active');
+      } else {
+        groundsMap.style.display = 'none';
+        googleMap.style.display = 'block';
+        tabs[0].classList.remove('active');
+        tabs[1].classList.add('active');
+      }
+    }
+
+    // --- consultation booking helper ---
+    function selectDate(el) {
+      document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function selectTime(el) {
+      document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function bookConsultation() {
+      const activeDay = document.querySelector('.calendar-day.active');
+      const activeTime = document.querySelector('.time-slot.active');
+      
+      if (!activeDay || !activeTime) {
+        alert('Please choose a date and time slot first!');
+        return;
+      }
+      
+      alert(`Booking Confirmed! You scheduled a virtual plant care session with Dr. Oliver Green on June ${activeDay.textContent} at ${activeTime.textContent}. A calendar invite has been sent to your email.`);
+    }
+
+    // --- newsletter sub helper ---
+    function subscribeNewsletter(button) {
+      const input = button.previousElementSibling;
+      if (input.value && input.checkValidity()) {
+        alert(`Thank you for subscribing! We will send gardening updates to ${input.value}.`);
+        input.value = '';
+      } else {
+        alert('Please enter a valid email address!');
+      }
+    }
+
+    // --- FAQ Accordion toggle ---
+    function toggleFaq(header) {
+      const item = header.parentElement;
+      const body = header.nextElementSibling;
+      
+      const isActive = item.classList.contains('active');
+      
+      // Close all FAQs first for clean accordion behavior
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('active');
+        i.querySelector('.faq-body').style.maxHeight = null;
+      });
+      
+      if (!isActive) {
+        item.classList.add('active');
+        body.style.maxHeight = body.scrollHeight + "px";
+      }
+    }
+  </script>
+
+  <!-- Badge Sync & Active Nav Link Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>
+
+

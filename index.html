@@ -1,0 +1,2087 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>One-Line Sticky Navbar</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow-x: clip;
+      min-height: 150vh; /* Allow scroll to test sticky behavior */
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Wrapper */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Scrolled state for Header */
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .app-header.scrolled .navbar {
+      padding-block: 0.6rem;
+    }
+
+    /* Main Navigation Bar (Clean 3-Column Grid) */
+    .navbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      transition: padding var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    /* Logo Design - Left Column */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--primary);
+      justify-self: start;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo:hover svg {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    /* Nav Menu Desktop - Centered Column */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .nav-menu > ul {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.7rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Dropdown Menu styling (Home) */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--card-bg);
+      min-width: 160px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .dropdown-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding-inline-start: 1.25rem;
+    }
+
+    /* Wishlist Badge */
+    .wishlist-link {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .badge {
+      background: var(--badge-bg);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Utilities - Right Column */
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-self: end;
+    }
+
+    /* Clean circular icon buttons */
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--primary);
+      color: white;
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn i {
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn:hover svg,
+    .icon-btn:hover i {
+      transform: rotate(15deg);
+    }
+
+    /* Active state indicator styles */
+    .icon-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Login pill-shaped button */
+    .login-btn {
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      padding: 0.45rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    html[data-theme="dark"] .login-btn:hover {
+      box-shadow: 0 4px 12px rgba(142, 60, 45, 0.3);
+    }
+
+    /* Hamburger Toggle */
+    .hamburger-toggle {
+      display: none;
+      font-size: 1.6rem;
+      color: var(--text-color);
+      z-index: 105;
+      padding: 0.2rem;
+    }
+
+    /* Side Drawer (Mobile Nav) */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 30px var(--shadow-color);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .mobile-drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--navbar-border);
+    }
+
+    .drawer-close {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .mobile-nav-item {
+      width: 100%;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mobile-dropdown-btn {
+      background: none;
+      border: none;
+      font-size: 0.75rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .mobile-dropdown-btn.active {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      max-height: 0;
+      overflow: hidden;
+      padding-inline-start: 1rem;
+      transition: max-height 0.3s ease-out;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      max-height: 200px;
+    }
+
+    /* Mobile Utilities inside drawer */
+    .drawer-utilities {
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .drawer-utilities .mobile-toggles {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .drawer-utilities .login-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Overlay for Mobile Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 999;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* --- RTL LAYOUT SYSTEM --- */
+    html[dir="rtl"] .dropdown-menu {
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    html[dir="rtl"] .mobile-drawer {
+      right: auto;
+      left: -320px;
+      box-shadow: 10px 0 30px var(--shadow-color);
+    }
+
+    html[dir="rtl"] .mobile-drawer.open {
+      left: 0;
+      right: auto;
+    }
+
+    html[dir="rtl"] .dropdown-link:hover {
+      padding-inline-start: 1rem;
+      padding-inline-end: 1.25rem;
+    }
+
+    html[dir="rtl"] .arrow-icon {
+      transform: scaleX(-1);
+    }
+
+    /* Responsive Breakpoint for Mobile layout */
+    @media (max-width: 1200px) {
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        padding-inline: 1.5rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .nav-utilities .icon-btn,
+      .nav-utilities .login-btn {
+        display: none;
+      }
+      .hamburger-toggle {
+        display: flex;
+      }
+    }
+
+    /* Common Section Styles */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* 1. Hero Section */
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      min-height: calc(85vh - 70px);
+      padding-block: 2rem;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-content h1 {
+      font-family: var(--font-serif);
+      font-size: 4rem;
+      line-height: 1.1;
+      color: var(--text-color);
+    }
+
+    .hero-content h1 span {
+      color: var(--primary);
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      font-weight: 600;
+      border-radius: 30px;
+      transition: all var(--transition-speed) ease;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    .hero-image-wrapper {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      height: 480px;
+    }
+
+    .hero-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .hero-image-wrapper:hover img {
+      transform: scale(1.03);
+    }
+
+    /* 2. About Us Section */
+    .about-section {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      align-items: center;
+      gap: 4rem;
+      background: var(--primary-light);
+      border-radius: 24px;
+      padding: 4rem;
+      margin-block: 2rem;
+    }
+
+    .about-image-wrapper {
+      border-radius: 16px;
+      overflow: hidden;
+      height: 400px;
+      box-shadow: 0 15px 30px var(--shadow-color);
+    }
+
+    .about-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .about-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--text-color);
+    }
+
+    .about-content p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .about-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .about-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .about-feature-item i {
+      font-size: 1.2rem;
+      color: var(--primary);
+      background: var(--card-bg);
+      padding: 0.6rem;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    .about-feature-item div h4 {
+      font-size: 1.05rem;
+      color: var(--text-color);
+      margin-bottom: 0.2rem;
+    }
+
+    .about-feature-item div p {
+      font-size: 0.9rem;
+    }
+
+    /* 3. Featured Plants Catalog */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--navbar-border);
+      overflow: hidden;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px var(--shadow-color);
+      border-color: var(--primary);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: var(--badge-bg);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      z-index: 2;
+    }
+
+    .product-image-wrapper {
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .product-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image-wrapper img {
+      transform: scale(1.05);
+    }
+
+    .product-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      flex: 1;
+    }
+
+    .product-category {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+    }
+
+    .product-title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: var(--text-color);
+    }
+
+    .product-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .product-price {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .product-price span {
+      font-size: 0.9rem;
+      text-decoration: line-through;
+      color: var(--text-muted);
+      margin-inline-start: 0.4rem;
+    }
+
+    .add-to-cart-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 1.1rem;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .product-card:hover .add-to-cart-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .add-to-cart-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* 4. Rare Collections Section */
+    .rare-section {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-color) 100%);
+      border-radius: 24px;
+      padding: 5rem 4rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      margin-block: 2rem;
+    }
+
+    .rare-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .rare-badge {
+      align-self: flex-start;
+      background: var(--accent);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 1.2rem;
+      border-radius: 30px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .rare-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      color: var(--text-color);
+      line-height: 1.2;
+    }
+
+    .rare-content p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .rare-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-block: 1rem;
+    }
+
+    .rare-spec-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1rem;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .rare-spec-item i {
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .rare-image-wrapper {
+      height: 450px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+    }
+
+    .rare-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 5. Care Guides Section */
+    .guides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .guide-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--navbar-border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .guide-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px var(--shadow-color);
+      border-color: var(--primary);
+    }
+
+    .guide-image-wrapper {
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .guide-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .guide-card:hover .guide-image-wrapper img {
+      transform: scale(1.04);
+    }
+
+    .guide-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .guide-info h3 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--text-color);
+    }
+
+    .guide-info p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .guide-link {
+      font-weight: 600;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: auto;
+      align-self: flex-start;
+      transition: color var(--transition-speed) ease;
+    }
+
+    .guide-link:hover {
+      color: var(--primary-hover);
+    }
+
+    /* 6. Subscription Club Section */
+    .club-section {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 24px;
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      margin-block: 2rem;
+    }
+
+    .club-image-wrapper {
+      height: 400px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px var(--shadow-color);
+    }
+
+    .club-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .club-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .club-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--text-color);
+    }
+
+    .club-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-block: 1rem;
+    }
+
+    .club-step-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .club-step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .club-step-details h4 {
+      font-size: 1.05rem;
+      color: var(--text-color);
+      margin-bottom: 0.2rem;
+    }
+
+    .club-step-details p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 7. Testimonials Section */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .testimonial-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .testimonial-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 10px 20px var(--shadow-color);
+    }
+
+    .stars {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      color: var(--text-color);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: auto;
+    }
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .user-info h4 {
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+
+    .user-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* 8. Contact & Visit Section */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .contact-form-side {
+      padding: 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .contact-form-side h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      color: var(--text-color);
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--navbar-border);
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .contact-image-side {
+      position: relative;
+      height: 100%;
+      min-height: 480px;
+    }
+
+    .contact-image-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .store-overlay {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      right: 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: hsl(210, 24%, 12%);
+    }
+
+    html[data-theme="dark"] .store-overlay {
+      background: rgba(15, 23, 42, 0.85);
+      color: hsl(210, 20%, 98%);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .store-overlay h4 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .store-overlay p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Responsive Grid Layout Rules */
+    @media (max-width: 992px) {
+      section {
+        padding: 4rem 1.5rem;
+      }
+      .hero-section,
+      .about-section,
+      .rare-section,
+      .club-section,
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .about-section,
+      .rare-section,
+      .club-section,
+      .contact-form-side {
+        padding: 2rem;
+      }
+      .hero-content h1 {
+        font-size: 3rem;
+      }
+      .hero-image-wrapper,
+      .rare-image-wrapper {
+        height: 360px;
+      }
+    }
+
+    /* RTL specific offsets and overrides */
+    html[dir="rtl"] .product-badge {
+      left: auto;
+      right: 1rem;
+    }
+
+    html[dir="rtl"] .about-feature-item {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .rare-spec-item {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
+    /* Footer Styling */
+    .app-footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--navbar-border);
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+      font-size: 1rem;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-menu-col h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .footer-menu-col h3::after {
+      left: auto;
+      right: 0;
+    }
+
+    .footer-menu-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .footer-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .footer-bottom {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Footer */
+    @media (max-width: 992px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .footer-info {
+        align-items: center;
+        text-align: center;
+      }
+      .footer-description {
+        max-width: 100%;
+      }
+      .footer-menu-col {
+        text-align: center;
+      }
+      .footer-menu-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Newsletter Column Styling */
+    .newsletter-col p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border: 1px solid var(--navbar-border);
+      border-radius: 30px;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .newsletter-form:focus-within {
+      border-color: var(--primary);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .newsletter-form button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+
+    /* Gallery, Wishlist, and Delivery Section Styling */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery-item {
+      border-radius: 12px;
+      overflow: hidden;
+      height: 250px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .wishlist-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 12px;
+      display: flex;
+      padding: 1rem;
+      gap: 1.5rem;
+      align-items: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .wishlist-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    .wishlist-img-wrapper {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .wishlist-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .wishlist-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      flex: 1;
+    }
+
+    .wishlist-details h4 {
+      font-size: 1.1rem;
+      color: var(--text-color);
+    }
+
+    .wishlist-price {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .btn-sm {
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      border-radius: 20px;
+      align-self: flex-start;
+    }
+
+    .delivery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .delivery-box {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .delivery-box:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px var(--shadow-color);
+    }
+
+    .delivery-box i {
+      font-size: 2.5rem;
+      color: var(--primary);
+    }
+
+    .delivery-box h3 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--text-color);
+    }
+
+    .delivery-box p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Single-Line App Header -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Logo (Column 1 - Left) -->
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Greenery
+      </a>
+
+      <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <ul>
+          <!-- Home Dropdown Link -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              Home <span class="arrow-icon">&#9660;</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html" class="dropdown-link active">Home 1</a></li>
+              <li><a href="home2.html" class="dropdown-link">Home 2</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="plants.html" class="nav-link">Plants</a></li>
+          <li class="nav-item"><a href="collections.html" class="nav-link"> Collections</a></li>
+          <li class="nav-item"><a href="guides.html" class="nav-link"> Guides</a></li>
+          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="subscription.html" class="nav-link"> Subscription</a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-link"> Wishlist</a></li>
+          <li class="nav-item"><a href="delivery.html" class="nav-link">Delivery</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utilities (Column 3 - Right) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login-btn" id="loginBtn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Login
+        </a>
+        <!-- Hamburger Menu button (Mobile) -->
+        <button id="hamburgerToggle" class="hamburger-toggle" aria-label="Open Navigation Drawer">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
+        </svg>
+        Greenery
+      </a>
+      <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mobile Navigation List -->
+    <nav class="mobile-nav-list">
+      <div class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link active" id="mobileDropdownBtn">
+          Home <span class="mobile-dropdown-btn">&#9660;</span>
+        </a>
+        <ul class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <li><a href="index.html" class="mobile-nav-link active">Home 1</a></li>
+          <li><a href="home2.html" class="mobile-nav-link">Home 2</a></li>
+        </ul>
+      </div>
+      <div class="mobile-nav-item"><a href="about.html" class="mobile-nav-link">About Us</a></div>
+      <div class="mobile-nav-item"><a href="plants.html" class="mobile-nav-link">Plants</a></div>
+      <div class="mobile-nav-item"><a href="collections.html" class="mobile-nav-link"> Collections</a></div>
+      <div class="mobile-nav-item"><a href="guides.html" class="mobile-nav-link"> Guides</a></div>
+      <div class="mobile-nav-item"><a href="gallery.html" class="mobile-nav-link">Gallery</a></div>
+      <div class="mobile-nav-item"><a href="subscription.html" class="mobile-nav-link">Subscription </a></div>
+      <div class="mobile-nav-item"><a href="wishlist.html" class="mobile-nav-link"> Wishlist </a></div>
+      <div class="mobile-nav-item"><a href="delivery.html" class="mobile-nav-link">Delivery</a></div>
+      <div class="mobile-nav-item"><a href="contact.html" class="mobile-nav-link">Contact</a></div>
+    </nav>
+
+    <!-- Mobile Drawer Utilities -->
+    <div class="drawer-utilities">
+      <div class="mobile-toggles">
+        <button class="icon-btn" id="mobileRtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <button id="mobileThemeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="mobileThemeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="login.html" class="login-btn" id="mobileLoginBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll Testing Area (Minimal Page Height Helper Only) -->
+  <main>
+    <!-- 1. Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <h1>Bring <span>Nature</span> Into Your Modern Home</h1>
+        <p>Discover a handpicked selection of indoor plants, exotic rarities, and care tools. Elevate your living space with organic green aesthetics.</p>
+        <div class="hero-buttons">
+          <a href="#plants" class="btn btn-primary">Shop Collection <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="subscription.html" class="btn btn-secondary">Subscription Club</a>
+        </div>
+      </div>
+      <div class="hero-image-wrapper">
+        <img src="./images/hero_plants.png" alt="Modern green living room layout">
+      </div>
+    </section>
+
+    <!-- 2. About Us Section -->
+    <section id="about" class="about-section">
+      <div class="about-image-wrapper">
+        <img src="./images/about_plants.png" alt="Serene greenhouse plant nursery potting table">
+      </div>
+      <div class="about-content">
+        <h2>We Nurture Green Life</h2>
+        <p>Since 2018, Greenery has grown from a humble glasshouse project to a premier boutique source for plant lovers. We believe that caring for plants rejuvenates the soul and transforms indoor living into therapeutic spaces.</p>
+        <div class="about-features">
+          <div class="about-feature-item">
+            <i class="fa-solid fa-truck-fast"></i>
+            <div>
+              <h4>Safe Delivery</h4>
+              <p>Specially insulated packaging to secure every leaf.</p>
+            </div>
+          </div>
+          <div class="about-feature-item">
+            <i class="fa-solid fa-leaf"></i>
+            <div>
+              <h4>Hand-Selected</h4>
+              <p>Our botanists inspect every plant before dispatch.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Featured Plants Section -->
+    <section id="plants" class="plants-section">
+      <div class="section-header">
+        <h2>Our Botanical Sellers</h2>
+        <p>Curated popular picks ready to flourish in your space</p>
+      </div>
+      <div class="product-grid">
+        <!-- Card 1 -->
+        <div class="product-card">
+          <span class="product-badge">Best Seller</span>
+          <div class="product-image-wrapper">
+            <img src="./images/monstera_plant.png" alt="Monstera Deliciosa Indoor Plant">
+          </div>
+          <div class="product-info">
+            <span class="product-category">Lush Tropicals</span>
+            <h3 class="product-title">Monstera Deliciosa</h3>
+            <div class="product-meta">
+              <div class="product-price">$45.00 <span>$52.00</span></div>
+              <button class="add-to-cart-btn" aria-label="Add to cart"><i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="product-card">
+          <div class="product-image-wrapper">
+            <img src="./images/fiddle_leaf_fig.png" alt="Fiddle Leaf Fig Tree">
+          </div>
+          <div class="product-info">
+            <span class="product-category">Indoor Trees</span>
+            <h3 class="product-title">Fiddle Leaf Fig</h3>
+            <div class="product-meta">
+              <div class="product-price">$68.00</div>
+              <button class="add-to-cart-btn" aria-label="Add to cart"><i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="product-card">
+          <span class="product-badge">Easy Care</span>
+          <div class="product-image-wrapper">
+            <img src="./images/snake_plant.png" alt="Snake Plant Laurentii">
+          </div>
+          <div class="product-info">
+            <span class="product-category">Hardy Air-Purifier</span>
+            <h3 class="product-title">Snake Plant Laurentii</h3>
+            <div class="product-meta">
+              <div class="product-price">$29.00</div>
+              <button class="add-to-cart-btn" aria-label="Add to cart"><i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Rare Collections Section -->
+    <section id="rare" class="rare-section">
+      <div class="rare-content">
+        <span class="rare-badge">Exotic Selection</span>
+        <h2>Monstera Albo Borsigiana</h2>
+        <p>The crown jewel of any indoor jungle. Highly sought-after for its premium white variegation. Each plant possesses unique, natural marbling patterns on large, split leaves.</p>
+        <div class="rare-specs">
+          <div class="rare-spec-item"><i class="fa-solid fa-sun"></i> Indirect Bright Light</div>
+          <div class="rare-spec-item"><i class="fa-solid fa-droplet"></i> Water when top 2" dry</div>
+          <div class="rare-spec-item"><i class="fa-solid fa-temperature-half"></i> 65Â°F - 80Â°F</div>
+          <div class="rare-spec-item"><i class="fa-solid fa-certificate"></i> Certified Variegated</div>
+        </div>
+        <a href="contact.html" class="btn btn-primary">Enquire Stock <i class="fa-solid fa-envelope"></i></a>
+      </div>
+      <div class="rare-image-wrapper">
+        <img src="./images/rare_albo_plant.png" alt="Rare Variegated Monstera Albo Plant close up">
+      </div>
+    </section>
+
+    <!-- 5. Care Guides Section -->
+    <section id="guides" class="guides-section">
+      <div class="section-header">
+        <h2>Botanical Care Guides</h2>
+        <p>Essential tips from our experts to keep your plants thriving</p>
+      </div>
+      <div class="guides-grid">
+        <div class="guide-card">
+          <div class="guide-image-wrapper">
+            <img src="./images/plant_care_guide.png" alt="Plant care flat lay tools">
+          </div>
+          <div class="guide-info">
+            <h3>Watering Essentials</h3>
+            <p>Avoid root rot. Learn the ultimate 'finger test' to know exactly when your leafy friends need.</p>
+            <a href="#" class="guide-link">Read Full Guide <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </div>
+        <div class="guide-card">
+          <div class="guide-image-wrapper">
+            <img src="./images/self_watering_pot.png" alt="Potting soil and tools">
+          </div>
+          <div class="guide-info">
+            <h3>Repotting Checklist</h3>
+            <p>Spring is repotting season! Step-by-step checklist on choosing the right soil mix and pot size.</p>
+            <a href="#" class="guide-link">Read Full Guide <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+      <div class="section-header">
+        <h2>Greenery in Homes</h2>
+        <p>Real photos shared by our plant parent community</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="./images/hero_plants.png" alt="Monstera in modern living room">
+        </div>
+        <div class="gallery-item">
+          <img src="./images/about_plants.png" alt="Greenhouse potting station">
+        </div>
+        <div class="gallery-item">
+          <img src="./images/rare_albo_plant.png" alt="Variegated albo leaf detail">
+        </div>
+        <div class="gallery-item">
+          <img src="./images/fiddle_leaf_fig.png" alt="Fiddle leaf fig in cozy corner">
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Subscription Club Section -->
+    <section id="club" class="club-section">
+      <div class="club-image-wrapper">
+        <img src="./images/subscription_box.png" alt="Greenery plant subscription package box">
+      </div>
+      <div class="club-content">
+        <h2>Greenery Club Subscription</h2>
+        <p>Love surprises? Let our master grower pick perfect nursery-fresh plants and bring them straight to your doorstep every single month.</p>
+        <div class="club-steps">
+          <div class="club-step-item">
+            <div class="club-step-num">1</div>
+            <div class="club-step-details">
+              <h4>Select Your Tier</h4>
+              <p>Choose between Beginner-friendly or Rare collector boxes.</p>
+            </div>
+          </div>
+          <div class="club-step-item">
+            <div class="club-step-num">2</div>
+            <div class="club-step-details">
+              <h4>Curated & Inspected</h4>
+              <p>Plants are handpicked and packed with organic plant nutrients.</p>
+            </div>
+          </div>
+          <div class="club-step-item">
+            <div class="club-step-num">3</div>
+            <div class="club-step-details">
+              <h4>Delivered To Your Door</h4>
+              <p>Free, carbon-neutral delivery every month.</p>
+            </div>
+          </div>
+        </div>
+        <a href="subscription.html" class="btn btn-primary" style="align-self: flex-start;">Join The Club</a>
+      </div>
+    </section>
+
+    <!-- 7. Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+      <div class="section-header">
+        <h2>Loved By Plant Parents</h2>
+        <p>Hear from our growing green community</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"My Monstera Albo arrived in absolute mint condition. The thermal insulating packaging is outstanding!"</p>
+          <div class="user-profile">
+            <div class="user-avatar">SL</div>
+            <div class="user-info">
+              <h4>Sarah Lee</h4>
+              <p>Monstera Collector</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"The care guides are so helpful! My fiddle leaf tree has sprouted three new leaves since following their light suggestions."</p>
+          <div class="user-profile">
+            <div class="user-avatar">MD</div>
+            <div class="user-info">
+              <h4>Marcus Davis</h4>
+              <p>Verified Buyer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wishlist Section -->
+    <section id="wishlist" class="wishlist-section">
+      <div class="section-header">
+        <h2>Your Wishlist</h2>
+        <p>Plants you've saved to buy later</p>
+      </div>
+      <div class="wishlist-grid">
+        <div class="wishlist-card">
+          <div class="wishlist-img-wrapper">
+            <img src="./images/snake_plant.png" alt="Snake Plant">
+          </div>
+          <div class="wishlist-details">
+            <h4>Snake Plant Laurentii</h4>
+            <p class="wishlist-price">$29.00</p>
+            <button class="btn btn-primary btn-sm">Add to Cart</button>
+          </div>
+        </div>
+        <div class="wishlist-card">
+          <div class="wishlist-img-wrapper">
+            <img src="./images/fiddle_leaf_fig.png" alt="Fiddle Leaf Fig">
+          </div>
+          <div class="wishlist-details">
+            <h4>Fiddle Leaf Fig</h4>
+            <p class="wishlist-price">$68.00</p>
+            <button class="btn btn-primary btn-sm">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delivery Section -->
+    <section id="delivery" class="delivery-section">
+      <div class="section-header">
+        <h2>Delivery Information</h2>
+        <p>How we safely ship greenery straight to your home</p>
+      </div>
+      <div class="delivery-grid">
+        <div class="delivery-box">
+          <i class="fa-solid fa-box-open"></i>
+          <h3>Careful Packing</h3>
+          <p>We pack plants in custom-designed cardboard wraps with thermal insulation layers to keep them secure and at.</p>
+        </div>
+        <div class="delivery-box">
+          <i class="fa-solid fa-truck-ramp-box"></i>
+          <h3>Carbon-Neutral Shipping</h3>
+          <p>All shipping orders are offset to remain carbon-neutral, partnering with logistics brands dedicated to sustainable shipping.</p>
+        </div>
+        <div class="delivery-box">
+          <i class="fa-solid fa-house-circle-check"></i>
+          <h3>Arrive Alive Guarantee</h3>
+          <p>If a plant arrives damaged or unhealthy, we will gladly replace it or issue a full refund within 30 days of arrival.</p>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 3.5rem;">
+        <a href="delivery.html" class="btn btn-primary">Detailed Shipping Guide & Rates</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <!-- Footer Info Column -->
+      <div class="footer-info">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenery
+        </a>
+        <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <!-- Footer Menu Columns -->
+      <div class="footer-menu-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="plants.html" class="footer-link">Plants</a></li>
+          <li><a href="collections.html" class="footer-link">Collections</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="guides.html" class="footer-link">Guides</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+          <li><a href="delivery.html" class="footer-link">Delivery Info</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer-menu-col newsletter-col">
+        <h3>Newsletter</h3>
+        <p>Subscribe to get special offers, plant care tips, and design inspiration.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Area -->
+    <div class="footer-bottom">
+      <p>&copy; 2026 Greenery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Badge Sync & Active Nav Link Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>
+
+

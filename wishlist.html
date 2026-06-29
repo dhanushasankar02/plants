@@ -1,0 +1,3681 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Botanical Wishlist - Greenery</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow-x: clip;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Wrapper */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Scrolled state for Header */
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .app-header.scrolled .navbar {
+      padding-block: 0.6rem;
+    }
+
+    /* Main Navigation Bar (Clean 3-Column Grid) */
+    .navbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      transition: padding var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    /* Logo Design - Left Column */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--primary);
+      justify-self: start;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo:hover svg {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    /* Nav Menu Desktop - Centered Column */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .nav-menu > ul {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.7rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Dropdown Menu styling (Home) */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--card-bg);
+      min-width: 160px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .dropdown-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding-inline-start: 1.25rem;
+    }
+
+    /* Wishlist Badge */
+    .wishlist-link {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .badge {
+      background: var(--badge-bg);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Utilities - Right Column */
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-self: end;
+    }
+
+    /* Clean circular icon buttons */
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--primary);
+      color: white;
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn i {
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn:hover svg,
+    .icon-btn:hover i {
+      transform: rotate(15deg);
+    }
+
+    /* Active state indicator styles */
+    .icon-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Login pill-shaped button */
+    .login-btn {
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      padding: 0.45rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    html[data-theme="dark"] .login-btn:hover {
+      box-shadow: 0 4px 12px rgba(142, 60, 45, 0.3);
+    }
+
+    /* Hamburger Toggle */
+    .hamburger-toggle {
+      display: none;
+      font-size: 1.6rem;
+      color: var(--text-color);
+      z-index: 105;
+      padding: 0.2rem;
+    }
+
+    /* Side Drawer (Mobile Nav) */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 30px var(--shadow-color);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .mobile-drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--navbar-border);
+    }
+
+    .drawer-close {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .mobile-nav-item {
+      width: 100%;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mobile-dropdown-btn {
+      background: none;
+      border: none;
+      font-size: 0.75rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .mobile-dropdown-btn.active {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      max-height: 0;
+      overflow: hidden;
+      padding-inline-start: 1rem;
+      transition: max-height 0.3s ease-out;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      max-height: 200px;
+    }
+
+    /* Mobile Utilities inside drawer */
+    .drawer-utilities {
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .drawer-utilities .mobile-toggles {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .drawer-utilities .login-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Overlay for Mobile Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 999;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Common Section Styles */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4.0rem;
+      margin-top: 1rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      line-height: 1.6;
+    }
+
+    .wish-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+    }
+
+    /* 1. Wishlist Hero Section */
+    .wish-hero-section {
+      position: relative;
+      height: 70vh;
+      min-height: 580px;
+      width: 100%;
+      background-image: url('images/wish_hero_bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -73px; /* Pull content up behind transparent header */
+      padding-top: 130px; /* Increased to prevent content overlapping header */
+    }
+
+    /* Dark overlay over full screen image for readability */
+    .wish-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.65) 100%);
+      z-index: 1;
+    }
+
+    .wish-hero-container {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      text-align: center;
+      color: white;
+      padding-inline: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wish-hero-container h1 {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .wish-hero-container h1 span {
+      color: var(--accent);
+    }
+
+    .wish-hero-container p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 650px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      opacity: 0.95;
+    }
+
+    .wish-hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all var(--transition-speed) ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .wish-hero-buttons .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
+    }
+
+    .wish-hero-buttons .btn-secondary:hover {
+      background: white;
+      color: var(--primary);
+      border-color: white;
+    }
+
+    /* 2. Custom Folder Collections */
+    .wish-folders-section {
+      background: var(--card-bg);
+      padding: 5rem 2rem;
+    }
+
+    .wish-folders-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      align-items: center;
+      gap: 4.5rem;
+      padding-inline: 2rem;
+    }
+
+    .wish-folders-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 540px;
+    }
+
+    .wish-folders-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .wish-folders-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .wish-folders-content > p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    .folders-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .folders-features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+    }
+
+    .folder-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    .folder-text h3 {
+      font-size: 1.15rem;
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+
+    .folder-text p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 3. Smart Alert Switches Perks */
+    .wish-alerts-section {
+      background: var(--primary-light);
+    }
+
+    .wish-alerts-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding-inline: 2rem;
+    }
+
+    .wish-alerts-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .wish-alerts-content > p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+
+    .alerts-perks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .alert-perk-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--navbar-border);
+      box-shadow: 0 5px 15px var(--shadow-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: transform var(--transition-speed) ease;
+      position: relative;
+    }
+
+    .alert-perk-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .alert-perk-card i {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .alert-perk-card h4 {
+      font-size: 1.15rem;
+      color: var(--text-color);
+    }
+
+    .alert-perk-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Switch toggles inside alert cards */
+    .alert-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px dashed var(--navbar-border);
+    }
+
+    .alert-toggle-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    /* Styled Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: hsl(0, 0%, 80%);
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider::before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(22px);
+    }
+
+    .wish-alerts-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 700px;
+    }
+
+    .wish-alerts-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 4. Share with Friends visibility dashboard */
+    .wish-share-section {
+      background: var(--card-bg);
+    }
+
+    .wish-share-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      align-items: center;
+      gap: 4.5rem;
+      padding-inline: 2rem;
+    }
+
+    .wish-share-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 540px;
+    }
+
+    .wish-share-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .wish-share-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .wish-share-content > p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    .share-dashboard-box {
+      background: var(--bg-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .visibility-toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .visibility-btn {
+      flex: 1;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid var(--navbar-border);
+      background: var(--card-bg);
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+    }
+
+    .visibility-btn.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .share-link-input-wrapper {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .share-link-input-wrapper input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--navbar-border);
+      background: var(--card-bg);
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .share-link-input-wrapper .btn {
+      padding-inline: 1.25rem;
+      border-radius: 8px;
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+
+    .share-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .share-step-item {
+      padding: 1rem 1.25rem;
+      border-left: 3px solid var(--primary);
+      background: var(--bg-color);
+      border-radius: 0 8px 8px 0;
+    }
+
+    html[dir="rtl"] .share-step-item {
+      border-left: none;
+      border-right: 3px solid var(--primary);
+      border-radius: 8px 0 0 8px;
+    }
+
+    .share-step-num {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .share-step-item strong {
+      display: block;
+      font-size: 1.05rem;
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+
+    .share-step-item p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 5. Trending Saved Items Section */
+    .wish-trending-section {
+      background: var(--bg-color);
+    }
+
+    .wish-trending-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      gap: 4.5rem;
+      padding-inline: 2rem;
+    }
+
+    .wish-trending-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .wish-trending-content p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .trending-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .trending-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      padding: 1rem 1.5rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--navbar-border);
+      box-shadow: 0 3px 8px var(--shadow-color);
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .trending-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .trending-plant-name {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .trending-plant-name i {
+      color: var(--primary);
+    }
+
+    .trending-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .trending-saves {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .trending-add-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.85rem;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .trending-add-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .wish-trending-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 540px;
+    }
+
+    .wish-trending-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 6. Quick Add-to-Cart Options */
+    .wish-quick-section {
+      background: var(--primary-light);
+    }
+
+    .wish-quick-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      align-items: center;
+      gap: 4rem;
+      padding-inline: 2rem;
+    }
+
+    .wish-quick-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 540px;
+    }
+
+    .wish-quick-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .wish-quick-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .wish-quick-content > p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 620px;
+    }
+
+    .quick-checkout-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .quick-option-card {
+      background: var(--card-bg);
+      padding: 1.8rem 1.25rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--navbar-border);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .quick-option-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px var(--shadow-color);
+    }
+
+    .quick-option-card i {
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .quick-option-card h4 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--text-color);
+    }
+
+    .quick-option-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .quick-option-card .btn {
+      width: 100%;
+      justify-content: center;
+      padding-block: 0.6rem;
+      font-size: 0.85rem;
+      border-radius: 20px;
+    }
+
+    .quick-footer-notice {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      background: var(--card-bg);
+      padding: 1.25rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    html[dir="rtl"] .quick-footer-notice {
+      border-left: none;
+      border-right: 4px solid var(--primary);
+    }
+
+    .quick-footer-notice i {
+      color: var(--primary);
+      margin-right: 0.35rem;
+    }
+
+    html[dir="rtl"] .quick-footer-notice i {
+      margin-right: 0;
+      margin-left: 0.35rem;
+    }
+
+    /* 7. Frequently Asked Questions */
+    .wish-faq-section {
+      background: var(--bg-color);
+    }
+
+    .wish-faq-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: flex-start;
+      gap: 4.5rem;
+      padding-inline: 2rem;
+    }
+
+    .wish-faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--navbar-border);
+      padding-bottom: 1rem;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      font-family: var(--font-sans);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-color);
+      padding: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color var(--transition-speed) ease;
+    }
+
+    html[dir="rtl"] .faq-question {
+      text-align: right;
+    }
+
+    .faq-question:hover {
+      color: var(--primary);
+    }
+
+    .faq-icon {
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--primary);
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+      padding-inline-end: 2rem;
+    }
+
+    .faq-answer p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding-bottom: 1rem;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      transition: max-height 0.3s cubic-bezier(1, 0, 1, 0), padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .wish-faq-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 540px;
+    }
+
+    .wish-faq-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Toast Notification System Styles */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      pointer-events: none;
+    }
+
+    html[dir="rtl"] .toast-container {
+      right: auto;
+      left: 2rem;
+    }
+
+    .toast {
+      background: var(--card-bg);
+      color: var(--text-color);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 0.9rem 1.25rem;
+      box-shadow: 0 10px 25px var(--shadow-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      min-width: 300px;
+      max-width: 400px;
+      pointer-events: auto;
+      animation: slideIn 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+      transition: all var(--transition-speed) ease;
+      border-top: 1px solid var(--navbar-border);
+      border-bottom: 1px solid var(--navbar-border);
+      border-right: 1px solid var(--navbar-border);
+    }
+
+    html[dir="rtl"] .toast {
+      border-left: none;
+      border-right: 4px solid var(--primary);
+      border-left: 1px solid var(--navbar-border);
+    }
+
+    .toast-content {
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .toast-action-btn {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      transition: background var(--transition-speed) ease;
+    }
+
+    .toast-action-btn:hover {
+      background: rgba(212, 163, 89, 0.15);
+    }
+
+    .toast-close-btn {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+
+    .toast-close-btn:hover {
+      color: var(--text-color);
+    }
+
+    /* Footer Styling */
+    .app-footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--navbar-border);
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+      font-size: 1rem;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-menu-col h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .footer-menu-col h3::after {
+      left: auto;
+      right: 0;
+    }
+
+    .footer-menu-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .footer-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .footer-bottom {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+
+
+    /* Newsletter Column Styling */
+    .newsletter-col p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border: 1px solid var(--navbar-border);
+      border-radius: 30px;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .newsletter-form:focus-within {
+      border-color: var(--primary);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .newsletter-form button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+
+    /* ==========================================================================
+       Wishlist Dashboard & Items Grid Styling (Unique Glassmorphic Theme)
+       ========================================================================== */
+    .wish-dashboard-section {
+      background: var(--bg-color);
+      position: relative;
+      overflow: hidden;
+      padding-block: 5rem;
+    }
+
+    /* Ambient Glowing Blobs */
+    .wish-dashboard-section::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0) 70%);
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(50px);
+    }
+
+    .wish-dashboard-section::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(38, 185, 129, 0.06) 0%, rgba(245, 158, 11, 0.05) 100%);
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(60px);
+    }
+
+    .wish-dashboard-container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-inline: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Glassmorphic Sidebar */
+    .wish-sidebar {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.2rem;
+      align-self: start;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      transition: all var(--transition-speed) ease;
+    }
+
+    html[data-theme="light"] .wish-sidebar {
+      background: rgba(255, 255, 255, 0.65);
+      border-color: rgba(0, 0, 0, 0.06);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .wish-sidebar:hover {
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-header h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-color);
+      font-family: var(--font-sans);
+    }
+
+    .add-folder-btn {
+      background: var(--primary);
+      color: white;
+      padding: 0.4rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all var(--transition-speed) ease;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+    }
+
+    .add-folder-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(16, 185, 129, 0.3);
+    }
+
+    .folder-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .folder-item {
+      padding: 0.8rem 1.1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--transition-speed) ease;
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .folder-item:hover {
+      background: rgba(16, 185, 129, 0.06);
+      color: var(--primary);
+      border-color: rgba(16, 185, 129, 0.1);
+      transform: translateX(4px);
+    }
+
+    .folder-item.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+      color: white !important;
+      border-color: transparent;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+    }
+
+    .folder-title-text {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .folder-count {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      color: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    html[data-theme="light"] .folder-count {
+      background: rgba(0, 0, 0, 0.05);
+      border-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .folder-item.active .folder-count {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .folder-actions-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .delete-folder-btn {
+      color: var(--text-muted);
+      opacity: 0;
+      transition: all var(--transition-speed) ease;
+      font-size: 0.9rem;
+      padding: 0.25rem;
+    }
+
+    .folder-item:hover .delete-folder-btn {
+      opacity: 1;
+    }
+
+    .folder-item.active .delete-folder-btn {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .delete-folder-btn:hover {
+      color: hsl(355, 84%, 60%) !important;
+      transform: scale(1.1);
+    }
+
+    /* Stats Panel */
+    .stats-panel {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    html[data-theme="light"] .stats-panel {
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .stats-panel h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .stat-row strong {
+      color: var(--text-color);
+      font-weight: 600;
+    }
+
+    /* Main Panel & Controls */
+    .wish-main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Unique Glass Controls Bar */
+    .wish-controls-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.5rem;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 1.2rem 1.8rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    html[data-theme="light"] .wish-controls-bar {
+      background: rgba(255, 255, 255, 0.65);
+      border-color: rgba(0, 0, 0, 0.06);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-box-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 0.7rem 1.2rem;
+      flex: 1;
+      max-width: 450px;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+    }
+
+    html[data-theme="light"] .search-box-wrapper {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .search-box-wrapper:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    html[data-theme="light"] .search-box-wrapper:focus-within {
+      background: white;
+    }
+
+    .search-box-wrapper input {
+      border: none;
+      background: none;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.92rem;
+      color: var(--text-color);
+    }
+
+    .sort-box-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .sort-box-wrapper select {
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(0, 0, 0, 0.15);
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+    }
+
+    html[data-theme="light"] .sort-box-wrapper select {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .sort-box-wrapper select:focus {
+      border-color: var(--primary);
+    }
+
+    .category-pills-wrapper {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.4rem;
+    }
+
+    .category-pills-wrapper .pill {
+      padding: 0.6rem 1.4rem;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      cursor: pointer;
+    }
+
+    html[data-theme="light"] .category-pills-wrapper .pill {
+      background: rgba(255, 255, 255, 0.5);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .category-pills-wrapper .pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .category-pills-wrapper .pill.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Wishlist Items Grid & SPECIMEN CARDS */
+    .wish-items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 2.2rem;
+    }
+
+    .wish-card {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    html[data-theme="light"] .wish-card {
+      background: white;
+      border-color: rgba(0, 0, 0, 0.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    }
+
+    .wish-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      border-color: var(--primary);
+    }
+
+    html[data-theme="light"] .wish-card:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .wish-card.removing {
+      transform: scale(0.9);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .wish-remove-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.15rem;
+      z-index: 5;
+      transition: all var(--transition-speed) ease;
+    }
+
+    html[data-theme="light"] .wish-remove-btn {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.05);
+      color: var(--text-muted);
+    }
+
+    .wish-remove-btn:hover {
+      background: hsl(355, 84%, 55%);
+      color: white;
+      border-color: transparent;
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    .wish-stock-badge {
+      position: absolute;
+      top: 1.2rem;
+      left: 1.2rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.35rem 0.8rem;
+      border-radius: 30px;
+      z-index: 5;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid transparent;
+    }
+
+    .wish-stock-badge.instock {
+      background: rgba(16, 185, 129, 0.15);
+      color: rgb(52, 211, 153);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    html[data-theme="light"] .wish-stock-badge.instock {
+      background: rgba(16, 185, 129, 0.1);
+      color: rgb(4, 120, 87);
+    }
+
+    .wish-stock-badge.lowstock {
+      background: rgba(245, 158, 11, 0.15);
+      color: rgb(251, 191, 36);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+
+    html[data-theme="light"] .wish-stock-badge.lowstock {
+      background: rgba(245, 158, 11, 0.1);
+      color: rgb(180, 83, 9);
+    }
+
+    .wish-stock-badge.outofstock {
+      background: rgba(239, 68, 68, 0.15);
+      color: rgb(248, 113, 113);
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    html[data-theme="light"] .wish-stock-badge.outofstock {
+      background: rgba(239, 68, 68, 0.1);
+      color: rgb(185, 28, 28);
+    }
+
+    /* Card Image Wrapper */
+    .wish-img-wrapper {
+      height: 310px; /* Highly optimized card image height */
+      overflow: hidden;
+      position: relative;
+      background: var(--primary-light);
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    html[data-theme="light"] .wish-img-wrapper {
+      border-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .wish-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .wish-card:hover .wish-img-wrapper img {
+      transform: scale(1.08);
+    }
+
+    /* Card Information Panel */
+    .wish-card-info {
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      flex: 1 0 auto;
+    }
+
+    .wish-category {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+    }
+
+    .wish-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--text-color);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .wish-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    /* Unique Care Metrics summary inside card */
+    .wish-care-profile {
+      display: flex;
+      gap: 0.75rem;
+      margin-block: 0.2rem;
+      background: rgba(255, 255, 255, 0.01);
+      border-radius: 12px;
+      padding: 0.5rem 0.8rem;
+      border: 1px dashed rgba(255, 255, 255, 0.06);
+    }
+
+    html[data-theme="light"] .wish-care-profile {
+      background: rgba(0, 0, 0, 0.01);
+      border-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .care-metric {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .care-metric i {
+      font-size: 0.85rem;
+    }
+
+    .care-metric .text-blue { color: #60a5fa; }
+    .care-metric .text-yellow { color: #fbbf24; }
+    .care-metric .text-green { color: #34d399; }
+    .care-metric .text-orange { color: #f97316; }
+
+    /* Move Folder Dropdown selector */
+    .move-folder-select {
+      border-top: 1px dashed rgba(255, 255, 255, 0.06);
+      padding-top: 0.9rem;
+      margin-top: 0.2rem;
+    }
+
+    html[data-theme="light"] .move-folder-select {
+      border-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .folder-move-select {
+      width: 100%;
+      padding: 0.55rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.15);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.82rem;
+      outline: none;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+    }
+
+    html[data-theme="light"] .folder-move-select {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .folder-move-select:focus {
+      border-color: var(--primary);
+      color: var(--text-color);
+    }
+
+    /* Price & Buy footer */
+    .wish-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 0.6rem;
+    }
+
+    .wish-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-color);
+      letter-spacing: -0.01em;
+    }
+
+    .wish-add-cart-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);
+    }
+
+    .wish-add-cart-btn.disabled {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    html[data-theme="light"] .wish-add-cart-btn.disabled {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .wish-add-cart-btn.added {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
+    }
+
+    /* Unique Glassmorphic Modal */
+    .folder-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .folder-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 28px;
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    html[data-theme="light"] .modal-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(0, 0, 0, 0.06);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    .folder-modal.active .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      color: var(--text-color);
+      font-weight: 600;
+    }
+
+    .modal-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .modal-card input {
+      width: 100%;
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all var(--transition-speed) ease;
+    }
+
+    html[data-theme="light"] .modal-card input {
+      background: white;
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .modal-card input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 0.6rem;
+    }
+
+    .modal-actions .btn {
+      padding: 0.6rem 1.4rem;
+      font-size: 0.9rem;
+      border-radius: 30px;
+    }
+
+    /* Responsive Navigation for Tablets & Mobile */
+    @media (max-width: 1100px) {
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .hamburger-toggle {
+        display: flex;
+      }
+      .nav-utilities .icon-btn,
+      .nav-utilities .login-btn {
+        display: none;
+      }
+    }
+
+    /* Responsive Adaptations */
+    @media (max-width: 1200px) {
+      .wish-folders-container,
+      .wish-alerts-container,
+      .wish-share-container,
+      .wish-trending-container,
+      .wish-quick-container,
+      .wish-faq-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .wish-folders-image,
+      .wish-alerts-image,
+      .wish-share-image,
+      .wish-trending-image,
+      .wish-quick-image,
+      .wish-faq-image {
+        height: 460px;
+        order: 2;
+      }
+
+      .wish-dashboard-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .wish-sidebar {
+        width: 100%;
+        order: 2; /* Move sidebar below main panel on mobile/tablet */
+      }
+
+      .wish-main-panel {
+        order: 1; /* Move main panel above sidebar on mobile/tablet */
+      }
+
+      .wish-folders-content,
+      .wish-alerts-content,
+      .wish-share-content,
+      .wish-trending-content,
+      .wish-quick-content,
+      .wish-faq-accordion {
+        order: 1;
+      }
+
+      .quick-checkout-options {
+        grid-template-columns: 1fr;
+      }
+
+      .wish-hero-section {
+        height: 85vh;
+      }
+
+      .wish-hero-container h1 {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .wish-hero-container h1 {
+        font-size: 2.5rem;
+      }
+      .alerts-perks-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Responsive Footer */
+    @media (max-width: 992px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .footer-info {
+        align-items: center;
+        text-align: center;
+      }
+      .footer-description {
+        max-width: 100%;
+      }
+      .footer-menu-col {
+        text-align: center;
+      }
+      .footer-menu-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Single-Line App Header -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Logo (Column 1 - Left) -->
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Greenery
+      </a>
+
+      <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <ul>
+          <!-- Home Dropdown Link -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              Home <span class="arrow-icon">&#9660;</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html" class="dropdown-link active">Home 1</a></li>
+              <li><a href="home2.html" class="dropdown-link">Home 2</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="plants.html" class="nav-link">Plants</a></li>
+          <li class="nav-item"><a href="collections.html" class="nav-link"> Collections</a></li>
+          <li class="nav-item"><a href="guides.html" class="nav-link"> Guides</a></li>
+          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="subscription.html" class="nav-link"> Subscription</a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-link"> Wishlist </a></li>
+          <li class="nav-item"><a href="delivery.html" class="nav-link">Delivery</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utilities (Column 3 - Right) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login-btn" id="loginBtn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Login
+        </a>
+        <!-- Hamburger Menu button (Mobile) -->
+        <button id="hamburgerToggle" class="hamburger-toggle" aria-label="Open Navigation Drawer">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
+        </svg>
+        Greenery
+      </a>
+      <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mobile Navigation List -->
+    <nav class="mobile-nav-list">
+      <div class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link active" id="mobileDropdownBtn">
+          Home <span class="mobile-dropdown-btn">&#9660;</span>
+        </a>
+        <ul class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <li><a href="index.html" class="mobile-nav-link active">Home 1</a></li>
+          <li><a href="home2.html" class="mobile-nav-link">Home 2</a></li>
+        </ul>
+      </div>
+      <div class="mobile-nav-item"><a href="about.html" class="mobile-nav-link">About Us</a></div>
+      <div class="mobile-nav-item"><a href="plants.html" class="mobile-nav-link">Plants</a></div>
+      <div class="mobile-nav-item"><a href="collections.html" class="mobile-nav-link"> Collections</a></div>
+      <div class="mobile-nav-item"><a href="guides.html" class="mobile-nav-link"> Guides</a></div>
+      <div class="mobile-nav-item"><a href="gallery.html" class="mobile-nav-link">Gallery</a></div>
+      <div class="mobile-nav-item"><a href="subscription.html" class="mobile-nav-link">Subscription </a></div>
+      <div class="mobile-nav-item"><a href="wishlist.html" class="mobile-nav-link"> Wishlist</a></div>
+      <div class="mobile-nav-item"><a href="delivery.html" class="mobile-nav-link">Delivery</a></div>
+      <div class="mobile-nav-item"><a href="contact.html" class="mobile-nav-link">Contact</a></div>
+    </nav>
+
+    <!-- Mobile Drawer Utilities -->
+    <div class="drawer-utilities">
+      <div class="mobile-toggles">
+        <button class="icon-btn" id="mobileRtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <button id="mobileThemeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="mobileThemeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="login.html" class="login-btn" id="mobileLoginBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <!-- App Header -->
+
+  <!-- Main Content Area -->
+  <main>
+    <!-- Section 1: Hero (Full-Screen Background Image) -->
+    <section id="wish-hero" class="wish-hero-section">
+      <div class="wish-hero-overlay"></div>
+      <div class="wish-hero-container">
+        <span class="wish-badge">My Collection</span>
+        <h1>Your Dream <span>Botanical Wishlist</span></h1>
+        <p>Curate, organize, and grow your personal home jungle sanctuary. Monitor prices, receive alerts, and share your favorite green companions.</p>
+        <div class="wish-hero-buttons">
+          <a href="plants.html" class="btn btn-primary">Browse Specimen Explorer</a>
+          <a href="#wish-share" class="btn btn-secondary">Share Wishlist</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wishlist Dashboard Section -->
+    <section id="wish-dashboard" class="wish-dashboard-section">
+      <div class="wish-dashboard-container">
+        
+        <!-- Sidebar controls (Folders & Stats) -->
+        <aside class="wish-sidebar">
+          <div class="sidebar-header">
+            <h3>My Collections</h3>
+            <button id="addFolderBtn" class="add-folder-btn" title="Create Collection">
+              <i class="fa-solid fa-plus"></i> New
+            </button>
+          </div>
+          <ul id="folderList" class="folder-list">
+            <!-- Dynamically populated -->
+          </ul>
+          
+          <!-- Stats Panel -->
+          <div class="stats-panel">
+            <h4>Wishlist Stats</h4>
+            <div class="stat-row">
+              <span>Total Items:</span>
+              <strong id="statTotalItems">0</strong>
+            </div>
+            <div class="stat-row">
+              <span>Collections:</span>
+              <strong id="statTotalFolders">0</strong>
+            </div>
+            <div class="stat-row">
+              <span>Total Value:</span>
+              <strong id="statTotalValue">$0.00</strong>
+            </div>
+            <div class="stat-row">
+              <span>Active Alerts:</span>
+              <strong id="statActiveAlerts">0</strong>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main wishlist panel (search, sort, pills, cards grid) -->
+        <div class="wish-main-panel">
+          
+          <!-- Search, Sort and Filter Bar -->
+          <div class="wish-controls-bar">
+            <div class="search-box-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="searchInput" placeholder="Search saved plants...">
+            </div>
+            
+            <div class="sort-box-wrapper">
+              <label for="sortSelect">Sort By:</label>
+              <select id="sortSelect">
+                <option value="name">Name</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="stock">Availability</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Category filter pills -->
+          <div class="category-pills-wrapper" id="categoryPills">
+            <button class="pill active" data-category="all">All Items</button>
+            <button class="pill" data-category="Easy Care">Easy Care</button>
+            <button class="pill" data-category="Rare Foliage">Rare Foliage</button>
+            <button class="pill" data-category="Trailing Succulent">Trailing Succulent</button>
+          </div>
+
+          <!-- Wishlist Items Grid -->
+          <div id="wishItemsGrid" class="wish-items-grid">
+            <!-- Dynamically populated cards -->
+          </div>
+
+          <!-- Empty State -->
+          <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fa-solid fa-seedling"></i>
+            <h3>Your Wishlist is Empty</h3>
+            <p>You haven't saved any plants to this collection yet. Explore our specimen collection to add plants.</p>
+            <a href="plants.html" class="btn btn-primary">Explore Specimen Explorer</a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 2: Custom Folder Collections -->
+    <section id="wish-folders" class="wish-folders-section">
+      <div class="wish-folders-container">
+        <div class="wish-folders-image">
+          <img src="images/wish_folders.png" alt="Multiple potted plants representing customized wishlist folders">
+        </div>
+        <div class="wish-folders-content">
+          <h2>Organize Into Custom Collections</h2>
+          <p>Don't just save your plants&mdash;curate them. Group your dream greenery by room design, care level requirements, or gift seasons.</p>
+          <ul class="folders-features-list">
+            <li>
+              <div class="folder-icon"><i class="fa-solid fa-bed"></i></div>
+              <div class="folder-text">
+                <h3>Bedroom Sanctuary</h3>
+                <p>Create folders for low-light, high air-purification plants like Sansevieria or Pothos.</p>
+              </div>
+            </li>
+            <li>
+              <div class="folder-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+              <div class="folder-text">
+                <h3>Patio & High-Light Folder</h3>
+                <p>Keep track of sun-loving succulents, cacti, and tropical fiddle trees in one folder.</p>
+              </div>
+            </li>
+            <li>
+              <div class="folder-icon"><i class="fa-solid fa-gift"></i></div>
+              <div class="folder-text">
+                <h3>Gift Registry Folders</h3>
+                <p>Save items you'd love to receive for housewarmings, anniversaries, or birthdays.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Smart Alert Perks -->
+    <section id="wish-alerts" class="wish-alerts-section">
+      <div class="wish-alerts-container">
+        <div class="wish-alerts-content">
+          <h2>Wishlist Smart Alerts</h2>
+          <p>Saving a plant to your wishlist means we monitor it for you. You'll get instant notifications on availability and deals.</p>
+          <div class="alerts-perks-grid">
+            <div class="alert-perk-card">
+              <i class="fa-solid fa-bell"></i>
+              <h4>Price Drop Alerts</h4>
+              <p>Receive an email if any of your saved plants go on seasonal sale or temporary discount.</p>
+              <div class="alert-toggle-wrapper">
+                <span class="alert-toggle-label">Enable Price Alerts</span>
+                <label class="switch">
+                  <input type="checkbox" id="alertPriceToggle" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="alert-perk-card">
+              <i class="fa-solid fa-rotate"></i>
+              <h4>Back in Stock Alerts</h4>
+              <p>If a rare plant sells out, save it. We'll text you first when the next batch is potted.</p>
+              <div class="alert-toggle-wrapper">
+                <span class="alert-toggle-label">Enable Restock Alerts</span>
+                <label class="switch">
+                  <input type="checkbox" id="alertStockToggle" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="alert-perk-card">
+              <i class="fa-solid fa-tags"></i>
+              <h4>Exclusive Coupons</h4>
+              <p>Get member-only coupons tailored to complete folders in your wishlist collections.</p>
+              <div class="alert-toggle-wrapper">
+                <span class="alert-toggle-label">Enable Coupons</span>
+                <label class="switch">
+                  <input type="checkbox" id="alertCouponToggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="alert-perk-card">
+              <i class="fa-solid fa-chart-line"></i>
+              <h4>Low Stock Warnings</h4>
+              <p>Receive warnings when items in your folder drop below 5 units remaining in our nurseries.</p>
+              <div class="alert-toggle-wrapper">
+                <span class="alert-toggle-label">Low Stock Warning</span>
+                <label class="switch">
+                  <input type="checkbox" id="alertLowToggle" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wish-alerts-image">
+          <img src="images/wish_alerts.png" alt="Price tags and bell notification graphics with leaves">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Share with Friends -->
+    <section id="wish-share" class="wish-share-section">
+      <div class="wish-share-container">
+        <div class="wish-share-image">
+          <img src="images/wish_share.png" alt="A phone interface showing wishlist share button options">
+        </div>
+        <div class="wish-share-content">
+          <h2>Share Your Dream List</h2>
+          <p>Let friends and family know exactly what green companions you are looking for. Share folder links via SMS, email, or social media for easy gifting ideas.</p>
+          
+          <!-- Share Visibility Dashboard Box -->
+          <div class="share-dashboard-box">
+            <div class="visibility-toggle-group">
+              <button class="visibility-btn active" id="visibilityPrivateBtn"><i class="fa-solid fa-lock"></i> Private</button>
+              <button class="visibility-btn" id="visibilityPublicBtn"><i class="fa-solid fa-earth-americas"></i> Public Visibility</button>
+            </div>
+            <div class="share-link-input-wrapper">
+              <input type="text" id="shareLinkInput" value="https://greenery.club/wishlist/share/usr_98124b" readonly>
+              <button class="btn btn-primary" id="copyShareBtn"><i class="fa-solid fa-copy"></i> Copy Link</button>
+            </div>
+          </div>
+
+          <div class="share-steps">
+            <div class="share-step-item">
+              <span class="share-step-num">Step 1</span>
+              <strong>Create & Set to Public</strong>
+              <p>Toggle the visibility switch on any custom folder to 'Public' to enable link sharing.</p>
+            </div>
+            <div class="share-step-item">
+              <span class="share-step-num">Step 2</span>
+              <strong>Copy & Share Link</strong>
+              <p>Click 'Share' to copy a direct page URL. Send it to family or post on your social handles.</p>
+            </div>
+            <div class="share-step-item">
+              <span class="share-step-num">Step 3</span>
+              <strong>Seamless Friend Gifting</strong>
+              <p>Your friends can buy items off your wishlist directly; purchased items mark as 'redeemed'.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Trending Saved Items -->
+    <section id="wish-trending" class="wish-trending-section">
+      <div class="wish-trending-container">
+        <div class="wish-trending-content">
+          <h2>Trending in the Community</h2>
+          <p>These rare houseplants and minimalist gardening accessories are being added to wishlists most frequently this week by other plant club members.</p>
+          <div class="trending-list" id="trendingList">
+            <!-- Trending Plant item 1 -->
+            <div class="trending-item">
+              <div class="trending-plant-name">
+                <i class="fa-solid fa-fire"></i>
+                <span>Monstera Deliciosa Albo</span>
+              </div>
+              <div class="trending-item-actions">
+                <span class="trending-saves">2.4k saves</span>
+                <button class="trending-add-btn" title="Add to my wishlist" data-name="Monstera Deliciosa Albo" data-category="Rare Foliage" data-price="120.00" data-desc="Stunning variegated leaves with broad patches of snow-white contrast." data-image="images/rare_albo_plant.png" data-stock="outofstock" data-stocktext="Out of Stock"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+            <!-- Trending Plant item 2 -->
+            <div class="trending-item">
+              <div class="trending-plant-name">
+                <i class="fa-solid fa-fire"></i>
+                <span>Fiddle Leaf Fig Tree</span>
+              </div>
+              <div class="trending-item-actions">
+                <span class="trending-saves">1.8k saves</span>
+                <button class="trending-add-btn" title="Add to my wishlist" data-name="Fiddle Leaf Fig Tree" data-category="Easy Care" data-price="68.00" data-desc="Tall, sculptural indoor tree featuring large, leathery violin-shaped leaves." data-image="images/fiddle_leaf_fig.png" data-stock="instock" data-stocktext="In Stock"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+            <!-- Trending Plant item 3 -->
+            <div class="trending-item">
+              <div class="trending-plant-name">
+                <i class="fa-solid fa-fire"></i>
+                <span>Botanical Plant Humidifier</span>
+              </div>
+              <div class="trending-item-actions">
+                <span class="trending-saves">1.5k saves</span>
+                <button class="trending-add-btn" title="Add to my wishlist" data-name="Botanical Plant Humidifier" data-category="Easy Care" data-price="32.00" data-desc="Whisper-quiet ultrasonic mist generator designed specifically to sustain tropical leaf humidity." data-image="images/botanical_humidifier.png" data-stock="instock" data-stocktext="In Stock"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+            <!-- Trending Plant item 4 -->
+            <div class="trending-item">
+              <div class="trending-plant-name">
+                <i class="fa-solid fa-fire"></i>
+                <span>Self Watering Terracotta Pot</span>
+              </div>
+              <div class="trending-item-actions">
+                <span class="trending-saves">920 saves</span>
+                <button class="trending-add-btn" title="Add to my wishlist" data-name="Self Watering Terracotta Pot" data-category="Easy Care" data-price="14.00" data-desc="Minimalist porous porous clay design that naturally releases water to soil roots." data-image="images/self_watering_pot.png" data-stock="lowstock" data-stocktext="Only 5 Left"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wish-trending-image">
+          <img src="images/wish_trending.png" alt="Fiddle leaf fig tree in bright modern room">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Quick Add-to-Cart -->
+    <section id="wish-quick-buy" class="wish-quick-section">
+      <div class="wish-quick-container">
+        <div class="wish-quick-image">
+          <img src="images/wish_checkout.png" alt="Metal shopping cart filled with potted plants">
+        </div>
+        <div class="wish-quick-content">
+          <h2>Move from Wishlist to Cart Instantly</h2>
+          <p>Ready to bring your green dreams to life? We make checking out your saved items incredibly fast and customizable.</p>
+          <div class="quick-checkout-options">
+            <div class="quick-option-card">
+              <i class="fa-solid fa-check-double"></i>
+              <h4>Bulk Checkout</h4>
+              <p>Move all items from a custom folder into your active cart with a single click.</p>
+              <button class="btn btn-secondary" id="bulkCheckoutBtn">Add All</button>
+            </div>
+            <div class="quick-option-card">
+              <i class="fa-solid fa-calendar-days"></i>
+              <h4>Schedule Order</h4>
+              <p>Save items and schedule them to be shipped during specific warm weather seasons.</p>
+              <button class="btn btn-secondary" id="scheduleOrderBtn">Schedule</button>
+            </div>
+            <div class="quick-option-card">
+              <i class="fa-solid fa-gift"></i>
+              <h4>Gift Wrapped</h4>
+              <p>Select items in your list, mark them as gifts, and add custom messages at checkout.</p>
+              <button class="btn btn-secondary" id="giftItemsBtn">Gift Items</button>
+            </div>
+          </div>
+          <div class="quick-footer-notice">
+            <p><i class="fa-solid fa-truck-fast"></i> <strong>Club Member Notice:</strong> Moving three or more items from your wishlist to your checkout cart triggers automatically free greenhouse-safe express delivery!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Frequently Asked Questions -->
+    <section id="wish-faq" class="wish-faq-section">
+      <div class="section-header">
+        <h2>Wishlist FAQ</h2>
+        <p>Common questions about managing and sharing your saved collections</p>
+      </div>
+      <div class="wish-faq-container">
+        <div class="wish-faq-accordion">
+          <div class="faq-item">
+            <button class="faq-question">Are items in my wishlist reserved for me? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>No, adding a plant to your wishlist does not reserve stock. Rare plants can still sell out from our inventory. We recommend buying items on low-stock warnings to secure your plant.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Can I make some folders private and others public? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Yes, visibility settings are configured individually per folder. You can have a private "My Living Room Decor" folder and a public "Birthday Wishlist" shared folder at the same time.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How do I share a folder link? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Open the specific folder in your dashboard, click the 'Share' icon in the top right, copy the link, and paste it anywhere. Anyone with the link can view your list even if they don't have a Greenery account.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How long do items remain saved in my list? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Saved items will remain in your wishlist indefinitely as long as your account is active, even if the plant is temporarily out of season. If a plant is discontinued, it will mark as 'Unavailable' but remain visible.</p>
+            </div>
+          </div>
+          
+          <div class="quick-footer-notice" style="margin-top: 2rem;">
+            <p style="line-height: 1.6; margin: 0;"><i class="fa-solid fa-circle-info"></i> <strong>Still need help?</strong> Can't find the answers you're looking for? Our dedicated support team is always ready to assist you. Visit our <a href="contact.html" style="color: var(--primary); font-weight: 600; text-decoration: none;">Help & Support Center</a> to send us a direct message, or email us at <strong style="color: var(--text-color);">support@greenery.club</strong> for assistance.</p>
+          </div>
+        </div>
+        <div class="wish-faq-image">
+          <img src="images/wish_faq.png" alt="A styled work desk with a succulent plant">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <!-- Footer Info Column -->
+      <div class="footer-info">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenery
+        </a>
+        <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <!-- Footer Menu Columns -->
+      <div class="footer-menu-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="plants.html" class="footer-link">Plants</a></li>
+          <li><a href="collections.html" class="footer-link">Collections</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="guides.html" class="footer-link">Guides</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+          <li><a href="delivery.html" class="footer-link">Delivery Info</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer-menu-col newsletter-col">
+        <h3>Newsletter</h3>
+        <p>Subscribe to get special offers, plant care tips, and design inspiration.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Area -->
+    <div class="footer-bottom">
+      <p>&copy; 2026 Greenery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Add Folder Modal -->
+  <div id="folderModal" class="folder-modal">
+    <div class="modal-card">
+      <h3>Create New Collection</h3>
+      <p>Organize your saved botanical specimens by room or category.</p>
+      <input type="text" id="newFolderNameInput" placeholder="Collection Name (e.g. Living Room Sanctuary)" maxlength="30">
+      <div class="modal-actions">
+        <button id="modalCancelBtn" class="btn btn-secondary">Cancel</button>
+        <button id="modalConfirmBtn" class="btn btn-primary">Create Collection</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast system wrapper -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Core Navigation & Layout Elements ---
+
+      // --- FAQ Accordion Handler ---
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+          const item = question.parentElement;
+          const isActive = item.classList.contains('active');
+          
+          document.querySelectorAll('.faq-item').forEach(faqItem => {
+            faqItem.classList.remove('active');
+          });
+          
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+
+      // ==========================================================================
+      // WISHLIST INTERACTIVE APPLICATION STATE & CONTROLLER
+      // ==========================================================================
+
+      // Predefined default plants to show if local storage is empty
+      const defaultWishlist = [
+        {
+          id: 'snake-plant',
+          name: 'Laurentii Snake Plant',
+          category: 'Easy Care',
+          desc: 'Sturdy, air-purifying, and extremely low-maintenance. Thrives in almost any light level.',
+          price: 24.00,
+          image: 'images/wish_snake.png',
+          stock: 'instock',
+          stockText: 'In Stock',
+          folder: 'Bedroom Sanctuary',
+          alertActive: true
+        },
+        {
+          id: 'pink-princess',
+          name: 'Pink Princess Philodendron',
+          category: 'Rare Foliage',
+          desc: 'Breathtaking olive green leaves with high-contrast pastel pink variegation blocks.',
+          price: 45.00,
+          image: 'images/wish_pink_princess.png',
+          stock: 'lowstock',
+          stockText: 'Only 2 Left',
+          folder: 'Rare Collectors',
+          alertActive: true
+        }
+      ];
+
+      const defaultFolders = ['Bedroom Sanctuary', 'Patio & Balcony', 'Rare Collectors'];
+
+      // App state
+      let wishlist = [];
+      let folders = [];
+      let currentFolder = 'All';
+      let cartCount = 0;
+      let deletedItemBackup = null; // Stored for Undo action
+
+      // DOM Elements
+      const wishItemsGrid = document.getElementById('wishItemsGrid');
+      const emptyState = document.getElementById('emptyState');
+      const folderList = document.getElementById('folderList');
+      const searchInput = document.getElementById('searchInput');
+      const sortSelect = document.getElementById('sortSelect');
+      const categoryPills = document.getElementById('categoryPills');
+      const wishlistBadge = document.getElementById('wishlistBadge');
+      const mobileWishlistBadge = document.getElementById('mobileWishlistBadge');
+      const cartBadge = document.getElementById('cartBadge');
+      const toastContainer = document.getElementById('toastContainer');
+      
+      // Stat Counters
+      const statTotalItems = document.getElementById('statTotalItems');
+      const statTotalFolders = document.getElementById('statTotalFolders');
+      const statTotalValue = document.getElementById('statTotalValue');
+      const statActiveAlerts = document.getElementById('statActiveAlerts');
+
+      // Folder Modal Elements
+      const addFolderBtn = document.getElementById('addFolderBtn');
+      const folderModal = document.getElementById('folderModal');
+      const newFolderNameInput = document.getElementById('newFolderNameInput');
+      const modalCancelBtn = document.getElementById('modalCancelBtn');
+      const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+      // Share Elements
+      const visibilityPrivateBtn = document.getElementById('visibilityPrivateBtn');
+      const visibilityPublicBtn = document.getElementById('visibilityPublicBtn');
+      const copyShareBtn = document.getElementById('copyShareBtn');
+      const shareLinkInput = document.getElementById('shareLinkInput');
+
+      // Alerts Toggles
+      const alertPriceToggle = document.getElementById('alertPriceToggle');
+      const alertStockToggle = document.getElementById('alertStockToggle');
+      const alertCouponToggle = document.getElementById('alertCouponToggle');
+      const alertLowToggle = document.getElementById('alertLowToggle');
+
+      // Checkout buttons
+      const bulkCheckoutBtn = document.getElementById('bulkCheckoutBtn');
+      const scheduleOrderBtn = document.getElementById('scheduleOrderBtn');
+      const giftItemsBtn = document.getElementById('giftItemsBtn');
+
+      // --- Toast Manager ---
+      function triggerToast(message, actionText = '', actionCallback = null) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        if (actionText) toast.className = 'toast toast-undo';
+        
+        let actionButtonHTML = '';
+        if (actionText) {
+          actionButtonHTML = `<button class="toast-action-btn">${actionText}</button>`;
+        }
+
+        toast.innerHTML = `
+          <div class="toast-content">${message}</div>
+          ${actionButtonHTML}
+          <button class="toast-close-btn">&times;</button>
+        `;
+
+        // Event listeners
+        const closeBtn = toast.querySelector('.toast-close-btn');
+        closeBtn.addEventListener('click', () => {
+          toast.style.animation = 'fadeOut 0.25s ease forwards';
+          setTimeout(() => toast.remove(), 250);
+        });
+
+        if (actionText && actionCallback) {
+          const actionBtn = toast.querySelector('.toast-action-btn');
+          actionBtn.addEventListener('click', () => {
+            actionCallback();
+            toast.style.animation = 'fadeOut 0.25s ease forwards';
+            setTimeout(() => toast.remove(), 250);
+          });
+        }
+
+        toastContainer.appendChild(toast);
+
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.style.animation = 'fadeOut 0.25s ease forwards';
+            setTimeout(() => toast.remove(), 250);
+          }
+        }, 4000);
+      }
+
+      // --- Initialize App state ---
+      function initApp() {
+        // Load data from Local Storage or load defaults
+        const storedWishlist = localStorage.getItem('greenery_wishlist');
+        const storedFolders = localStorage.getItem('greenery_folders');
+        const storedCartCount = localStorage.getItem('greenery_cart_count');
+
+        if (storedWishlist) {
+          wishlist = JSON.parse(storedWishlist).filter(item => item.id !== 'string-pearls');
+          saveWishlist();
+        } else {
+          wishlist = [...defaultWishlist];
+          saveWishlist();
+        }
+
+        if (storedFolders) {
+          folders = JSON.parse(storedFolders);
+        } else {
+          folders = [...defaultFolders];
+          saveFolders();
+        }
+
+        if (storedCartCount) {
+          cartCount = parseInt(storedCartCount);
+          if (window.updateCartBadge) window.updateCartBadge();
+        }
+
+        // Setup Alert Switch States from Local Storage
+        if (localStorage.getItem('alert_price') === 'false') alertPriceToggle.checked = false;
+        if (localStorage.getItem('alert_stock') === 'false') alertStockToggle.checked = false;
+        if (localStorage.getItem('alert_coupon') === 'true') alertCouponToggle.checked = true;
+        if (localStorage.getItem('alert_low') === 'false') alertLowToggle.checked = false;
+
+        // Add event listeners to alerts checkboxes
+        const alertCheckboxes = [alertPriceToggle, alertStockToggle, alertCouponToggle, alertLowToggle];
+        alertCheckboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            localStorage.setItem(checkbox.id.replace('Toggle', '').replace('alert', 'alert_').toLowerCase(), checkbox.checked);
+            updateStats();
+            triggerToast('Alerts settings updated successfully!');
+          });
+        });
+
+        // Setup visibility button handlers
+        visibilityPrivateBtn.addEventListener('click', () => {
+          visibilityPrivateBtn.classList.add('active');
+          visibilityPublicBtn.classList.remove('active');
+          shareLinkInput.value = 'Private Folder Link';
+          triggerToast('Wishlist visibility set to Private.');
+        });
+
+        visibilityPublicBtn.addEventListener('click', () => {
+          visibilityPublicBtn.classList.add('active');
+          visibilityPrivateBtn.classList.remove('active');
+          shareLinkInput.value = 'https://greenery.club/wishlist/share/usr_98124b';
+          triggerToast('Wishlist set to Public. Share link copied to dashboard.');
+        });
+
+        // Copy button action
+        copyShareBtn.addEventListener('click', () => {
+          if (visibilityPrivateBtn.classList.contains('active')) {
+            triggerToast('Cannot copy link. Switch folder visibility to Public first!', 'Make Public', () => {
+              visibilityPublicBtn.click();
+            });
+            return;
+          }
+          navigator.clipboard.writeText(shareLinkInput.value)
+            .then(() => {
+              copyShareBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+              triggerToast('Shareable wishlist link copied to clipboard!');
+              setTimeout(() => {
+                copyShareBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Link';
+              }, 2000);
+            })
+            .catch(() => {
+              triggerToast('Failed to copy link automatically.');
+            });
+        });
+
+        // Setup main page listeners
+        if (searchInput) searchInput.addEventListener('input', renderWishlist);
+        if (sortSelect) sortSelect.addEventListener('change', renderWishlist);
+        
+        // Category Pills
+        if (categoryPills) {
+          const pills = categoryPills.querySelectorAll('.pill');
+          pills.forEach(pill => {
+            pill.addEventListener('click', () => {
+              pills.forEach(p => p.classList.remove('active'));
+              pill.classList.add('active');
+              renderWishlist();
+            });
+          });
+        }
+
+        // Sidebar Add folder modal
+        if (addFolderBtn) {
+          addFolderBtn.addEventListener('click', () => {
+            if (folderModal) {
+              folderModal.classList.add('active');
+              if (newFolderNameInput) newFolderNameInput.focus();
+            }
+          });
+        }
+
+        if (modalCancelBtn) {
+          modalCancelBtn.addEventListener('click', () => {
+            if (folderModal) folderModal.classList.remove('active');
+            if (newFolderNameInput) newFolderNameInput.value = '';
+          });
+        }
+
+        if (modalConfirmBtn) {
+          modalConfirmBtn.addEventListener('click', () => {
+            const folderName = newFolderNameInput ? newFolderNameInput.value.trim() : '';
+            if (folderName) {
+              if (folders.includes(folderName) || folderName.toLowerCase() === 'all') {
+                triggerToast('A collection with this name already exists!');
+                return;
+              }
+              folders.push(folderName);
+              saveFolders();
+              renderFolders();
+              if (folderModal) folderModal.classList.remove('active');
+              if (newFolderNameInput) newFolderNameInput.value = '';
+              triggerToast(`Collection "${folderName}" created!`);
+            }
+          });
+        }
+
+        // Close modal on clicking outside card
+        if (folderModal) {
+          folderModal.addEventListener('click', (e) => {
+            if (e.target === folderModal) {
+              folderModal.classList.remove('active');
+              if (newFolderNameInput) newFolderNameInput.value = '';
+            }
+          });
+        }
+
+        // Bulk Checkout
+        if (bulkCheckoutBtn) {
+          bulkCheckoutBtn.addEventListener('click', () => {
+            const filteredItems = wishlist.filter(item => item.stock !== 'outofstock');
+            
+            if (filteredItems.length === 0) {
+              triggerToast('No in-stock plants to checkout in your wishlist!');
+              return;
+            }
+
+            cartCount += filteredItems.length;
+            localStorage.setItem('greenery_cart_count', cartCount);
+            if (window.updateCartBadge) window.updateCartBadge();
+            triggerToast(`Moved ${filteredItems.length} plants to your shopping cart!`);
+          });
+        }
+
+        // Schedule Delivery
+        if (scheduleOrderBtn) {
+          scheduleOrderBtn.addEventListener('click', () => {
+            triggerToast('Greenhouse shipping date picker opened. Check scheduled queue!');
+          });
+        }
+
+        // Gift Wrap items
+        if (giftItemsBtn) {
+          giftItemsBtn.addEventListener('click', () => {
+            triggerToast('Gift wrap options applied to your wishlist items.');
+          });
+        }
+
+        // Community Trending items add button
+        const trendingAddBtns = document.querySelectorAll('.trending-add-btn');
+        trendingAddBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const name = btn.getAttribute('data-name');
+            const category = btn.getAttribute('data-category');
+            const price = parseFloat(btn.getAttribute('data-price'));
+            const desc = btn.getAttribute('data-desc');
+            const image = btn.getAttribute('data-image');
+            const stock = btn.getAttribute('data-stock');
+            const stockText = btn.getAttribute('data-stocktext');
+
+            // Check if already in wishlist
+            const exists = wishlist.some(item => item.name === name);
+            if (exists) {
+              triggerToast(`"${name}" is already in your wishlist!`);
+              return;
+            }
+
+            const newItem = {
+              id: 'trending-' + Date.now(),
+              name,
+              category,
+              desc,
+              price,
+              image,
+              stock,
+              stockText,
+              folder: currentFolder !== 'All' ? currentFolder : 'Bedroom Sanctuary',
+              alertActive: false
+            };
+
+            wishlist.push(newItem);
+            saveWishlist();
+            renderWishlist();
+            renderFolders();
+            updateStats();
+            triggerToast(`"${name}" added to your wishlist under "${newItem.folder}"!`);
+          });
+        });
+
+        // Initial Renders
+        renderFolders();
+        renderWishlist();
+        updateStats();
+      }
+
+      // --- Save utilities ---
+      function saveWishlist() {
+        localStorage.setItem('greenery_wishlist', JSON.stringify(wishlist));
+        if (window.updateWishlistBadges) window.updateWishlistBadges();
+      }
+
+      function saveFolders() {
+        localStorage.setItem('greenery_folders', JSON.stringify(folders));
+      }
+
+      // --- Update Stats ---
+      function updateStats() {
+        const sumValue = wishlist.reduce((acc, item) => acc + (item.price || 0), 0);
+        let alertCount = wishlist.filter(item => item.alertActive).length;
+
+        // Add switches counts to active alerts count
+        const switches = [alertPriceToggle, alertStockToggle, alertCouponToggle, alertLowToggle];
+        switches.forEach(sw => {
+          if (sw && sw.checked) alertCount++;
+        });
+
+        if (statTotalItems) statTotalItems.textContent = wishlist.length;
+        if (statTotalFolders) statTotalFolders.textContent = folders.length;
+        if (statTotalValue) statTotalValue.textContent = `$${sumValue.toFixed(2)}`;
+        if (statActiveAlerts) statActiveAlerts.textContent = alertCount;
+      }
+
+      // --- Folders list renderer ---
+      function renderFolders() {
+        if (!folderList) return;
+        folderList.innerHTML = '';
+
+        // Add 'All' folder
+        const allItem = document.createElement('li');
+        allItem.className = `folder-item ${currentFolder === 'All' ? 'active' : ''}`;
+        allItem.innerHTML = `
+          <div class="folder-title-text">
+            <i class="fa-solid fa-layer-group"></i> All Plants
+          </div>
+          <span class="folder-count">${wishlist.length}</span>
+        `;
+        allItem.addEventListener('click', () => {
+          currentFolder = 'All';
+          document.querySelectorAll('.folder-item').forEach(el => el.classList.remove('active'));
+          allItem.classList.add('active');
+          renderWishlist();
+        });
+        folderList.appendChild(allItem);
+
+        // Add Custom Folders
+        folders.forEach(folderName => {
+          const count = wishlist.filter(item => item.folder === folderName).length;
+          
+          let icon = '<i class="fa-solid fa-folder"></i>';
+          if (folderName.toLowerCase().includes('bedroom')) icon = '<i class="fa-solid fa-bed"></i>';
+          if (folderName.toLowerCase().includes('patio') || folderName.toLowerCase().includes('balcony')) icon = '<i class="fa-solid fa-cloud-sun"></i>';
+          if (folderName.toLowerCase().includes('rare')) icon = '<i class="fa-solid fa-gem"></i>';
+          if (folderName.toLowerCase().includes('gift')) icon = '<i class="fa-solid fa-gift"></i>';
+
+          const li = document.createElement('li');
+          li.className = `folder-item ${currentFolder === folderName ? 'active' : ''}`;
+          li.innerHTML = `
+            <div class="folder-actions-wrapper">
+              <div class="folder-title-text" title="${folderName}">
+                ${icon} ${folderName}
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span class="folder-count">${count}</span>
+                <button class="delete-folder-btn" title="Delete Collection"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+            </div>
+          `;
+
+          // Select Folder handler
+          li.addEventListener('click', (e) => {
+            if (e.target.closest('.delete-folder-btn')) return;
+            
+            currentFolder = folderName;
+            document.querySelectorAll('.folder-item').forEach(el => el.classList.remove('active'));
+            li.classList.add('active');
+            renderWishlist();
+          });
+
+          // Delete folder handler
+          const delBtn = li.querySelector('.delete-folder-btn');
+          delBtn.addEventListener('click', () => {
+            if (confirm(`Are you sure you want to delete the collection "${folderName}"? Plants inside will be moved to the default view.`)) {
+              wishlist.forEach(item => {
+                if (item.folder === folderName) item.folder = 'All';
+              });
+              
+              folders = folders.filter(f => f !== folderName);
+              if (currentFolder === folderName) currentFolder = 'All';
+              
+              saveFolders();
+              saveWishlist();
+              renderFolders();
+              renderWishlist();
+              updateStats();
+              triggerToast(`Collection "${folderName}" deleted.`);
+            }
+          });
+
+          folderList.appendChild(li);
+        });
+      }
+
+      // --- Main wishlist grid renderer ---
+      function renderWishlist() {
+        if (!wishItemsGrid) return;
+        wishItemsGrid.innerHTML = '';
+
+        const searchQuery = searchInput.value.toLowerCase();
+        const activeCategory = categoryPills.querySelector('.pill.active').getAttribute('data-category');
+        const activeSort = sortSelect.value;
+
+        // Filtering
+        let filtered = wishlist.filter(item => {
+          if (currentFolder !== 'All' && item.folder !== currentFolder) {
+            return false;
+          }
+          if (searchQuery && !item.name.toLowerCase().includes(searchQuery) && !item.desc.toLowerCase().includes(searchQuery)) {
+            return false;
+          }
+          if (activeCategory !== 'all' && item.category !== activeCategory) {
+            return false;
+          }
+          return true;
+        });
+
+        // Sorting
+        if (activeSort === 'price-asc') {
+          filtered.sort((a, b) => a.price - b.price);
+        } else if (activeSort === 'price-desc') {
+          filtered.sort((a, b) => b.price - a.price);
+        } else if (activeSort === 'stock') {
+          const stockWeight = { 'instock': 0, 'lowstock': 1, 'outofstock': 2 };
+          filtered.sort((a, b) => stockWeight[a.stock] - stockWeight[b.stock]);
+        } else if (activeSort === 'name') {
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        // Grid Rendering
+        if (filtered.length === 0) {
+          emptyState.style.display = 'flex';
+          wishItemsGrid.style.display = 'none';
+          return;
+        }
+
+        emptyState.style.display = 'none';
+        wishItemsGrid.style.display = 'grid';
+
+        filtered.forEach(item => {
+          const card = document.createElement('div');
+          card.className = `wish-card ${item.stock === 'outofstock' ? 'out-of-stock-card' : ''}`;
+          card.setAttribute('data-id', item.id);
+
+          const folderOptionsHTML = folders.map(f => `
+            <option value="${f}" ${item.folder === f ? 'selected' : ''}>${f}</option>
+          `).join('');
+
+          let careProfileHTML = '';
+          if (item.category === 'Easy Care') {
+            careProfileHTML = `
+              <div class="care-metric" title="Watering: Sparse">
+                <i class="fa-solid fa-droplet text-blue"></i> <span>Sparse</span>
+              </div>
+              <div class="care-metric" title="Light: Indirect/Low">
+                <i class="fa-solid fa-sun text-yellow"></i> <span>Partial</span>
+              </div>
+              <div class="care-metric" title="Difficulty: Indestructible">
+                <i class="fa-solid fa-gauge-simple-high text-green"></i> <span>Beginner</span>
+              </div>
+            `;
+          } else if (item.category === 'Rare Foliage') {
+            careProfileHTML = `
+              <div class="care-metric" title="Watering: Regular">
+                <i class="fa-solid fa-droplet text-blue"></i> <span>Regular</span>
+              </div>
+              <div class="care-metric" title="Light: Bright Indirect">
+                <i class="fa-solid fa-sun text-yellow"></i> <span>Bright</span>
+              </div>
+              <div class="care-metric" title="Difficulty: Collector">
+                <i class="fa-solid fa-gauge-simple-high text-orange"></i> <span>Advanced</span>
+              </div>
+            `;
+          } else {
+            careProfileHTML = `
+              <div class="care-metric" title="Watering: Dry/Arid">
+                <i class="fa-solid fa-droplet text-blue"></i> <span>Dry</span>
+              </div>
+              <div class="care-metric" title="Light: Bright Direct">
+                <i class="fa-solid fa-sun text-yellow"></i> <span>Direct</span>
+              </div>
+              <div class="care-metric" title="Difficulty: Moderate">
+                <i class="fa-solid fa-gauge-simple-high text-yellow"></i> <span>Moderate</span>
+              </div>
+            `;
+          }
+
+          card.innerHTML = `
+            <button class="wish-remove-btn" title="Remove from wishlist" aria-label="Remove ${item.name}">
+              <i class="fa-solid fa-heart-crack"></i>
+            </button>
+            <span class="wish-stock-badge ${item.stock}">${item.stockText}</span>
+            <div class="wish-img-wrapper">
+              <img src="${item.image}" alt="${item.name}">
+            </div>
+            <div class="wish-card-info">
+              <span class="wish-category">${item.category}</span>
+              <h3 class="wish-title">${item.name}</h3>
+              <p class="wish-desc">${item.desc}</p>
+              
+              <div class="wish-care-profile">
+                ${careProfileHTML}
+              </div>
+              
+              <div class="move-folder-select">
+                <select class="folder-move-select" aria-label="Move folder">
+                  <option value="All" ${item.folder === 'All' ? 'selected' : ''}>No Collection</option>
+                  ${folderOptionsHTML}
+                </select>
+              </div>
+
+              <div class="wish-card-meta">
+                <span class="wish-price">$${item.price.toFixed(2)}</span>
+                <button class="btn btn-primary wish-add-cart-btn ${item.stock === 'outofstock' ? 'disabled' : ''}" 
+                  ${item.stock === 'outofstock' ? 'disabled' : ''}>
+                  ${item.stock === 'outofstock' ? 'Sold Out' : 'Add to Cart'}
+                </button>
+              </div>
+            </div>
+          `;
+
+          // Item Remove Event
+          const removeBtn = card.querySelector('.wish-remove-btn');
+          removeBtn.addEventListener('click', () => {
+            card.classList.add('removing');
+            setTimeout(() => {
+              deletedItemBackup = { ...item };
+              wishlist = wishlist.filter(el => el.id !== item.id);
+              saveWishlist();
+              renderWishlist();
+              renderFolders();
+              updateStats();
+              
+              triggerToast(`Removed "${item.name}" from wishlist.`, 'Undo', () => {
+                if (deletedItemBackup) {
+                  wishlist.push(deletedItemBackup);
+                  deletedItemBackup = null;
+                  saveWishlist();
+                  renderWishlist();
+                  renderFolders();
+                  updateStats();
+                  triggerToast('Restored removed item to your wishlist!');
+                }
+              });
+            }, 300);
+          });
+
+          // Move folder Selector Event
+          const folderSelect = card.querySelector('.folder-move-select');
+          folderSelect.addEventListener('change', (e) => {
+            const newFolder = e.target.value;
+            item.folder = newFolder;
+            saveWishlist();
+            renderFolders();
+            updateStats();
+            
+            if (currentFolder !== 'All' && currentFolder !== newFolder) {
+              card.classList.add('removing');
+              setTimeout(() => {
+                renderWishlist();
+              }, 250);
+            }
+            
+            triggerToast(`Moved "${item.name}" to "${newFolder === 'All' ? 'No Collection' : newFolder}".`);
+          });
+
+          // Add to Cart Event
+          const addCartBtn = card.querySelector('.wish-add-cart-btn');
+          if (item.stock !== 'outofstock') {
+            addCartBtn.addEventListener('click', () => {
+              cartCount++;
+              localStorage.setItem('greenery_cart_count', cartCount);
+              if (window.updateCartBadge) window.updateCartBadge();
+              
+              addCartBtn.classList.add('added');
+              addCartBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Added';
+              
+              triggerToast(`"${item.name}" added to cart!`);
+              
+              setTimeout(() => {
+                addCartBtn.classList.remove('added');
+                addCartBtn.textContent = 'Add to Cart';
+              }, 2000);
+            });
+          }
+
+          wishItemsGrid.appendChild(card);
+        });
+      }
+
+      // Initialize App
+      initApp();
+
+    });
+  </script>
+
+  <!-- Badge Sync & Active Nav Link Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>
+
+

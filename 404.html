@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Oops! The page you are looking for in the Greenery Plant Nursery has wilted or moved.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Page Not Found - Greenery Plant Nursery</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --card-bg: hsl(0, 0%, 100%);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --card-bg: hsl(220, 20%, 13%);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* General Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Floating Theme Toggle (Top Right) */
+    .theme-toggle-btn {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) ease;
+      z-index: 10;
+    }
+
+    html[data-theme="dark"] .theme-toggle-btn {
+      border-color: rgba(255, 255, 255, 0.08);
+      color: var(--accent);
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px var(--shadow-color);
+    }
+
+    /* RTL Floating Theme Toggle Adjustments */
+    html[dir="rtl"] .theme-toggle-btn {
+      right: auto;
+      left: 2rem;
+    }
+
+    /* Center Content Container */
+    .error-container {
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      background: var(--card-bg);
+      padding: 3rem 2rem;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      transition: background-color var(--transition-speed) ease, border var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    html[data-theme="dark"] .error-container {
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Decorative background shapes */
+    .bg-shape {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+      opacity: 0.6;
+      z-index: -1;
+      filter: blur(40px);
+    }
+
+    .shape-1 {
+      top: -10%;
+      left: -10%;
+    }
+
+    .shape-2 {
+      bottom: -10%;
+      right: -10%;
+    }
+
+    /* SVG Illustration Styling */
+    .illustration-wrapper {
+      margin-bottom: 1.5rem;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .error-illustration {
+      width: 200px;
+      height: 200px;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .error-illustration:hover {
+      transform: scale(1.05);
+    }
+
+    /* SVG Animations */
+    @keyframes leafFall {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(25px, 60px) rotate(110deg);
+        opacity: 0;
+      }
+    }
+
+    .falling-leaf {
+      animation: leafFall 4.5s infinite linear;
+      transform-origin: center;
+    }
+
+    @keyframes droopSway {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(4deg);
+      }
+    }
+
+    .drooping-stem, .leaf-droop {
+      animation: droopSway 4s infinite ease-in-out;
+      transform-origin: 120px 145px;
+    }
+
+    /* Headings and Texts */
+    .error-code {
+      font-size: 5rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      letter-spacing: -2px;
+      transition: color var(--transition-speed) ease;
+    }
+
+    html[data-theme="dark"] .error-code {
+      color: var(--primary);
+    }
+
+    .error-title {
+      font-size: 2rem;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+      transition: color var(--transition-speed) ease;
+    }
+
+    .error-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      padding-inline: 1rem;
+      transition: color var(--transition-speed) ease;
+    }
+
+    /* Action Buttons */
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-speed) ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+      border: 1px solid var(--primary);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text-color);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    html[data-theme="dark"] .btn-secondary {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    /* Responsiveness adjustments */
+    @media (max-width: 480px) {
+      .error-container {
+        padding: 2.5rem 1.5rem;
+      }
+      .error-code {
+        font-size: 4rem;
+      }
+      .error-title {
+        font-size: 1.6rem;
+      }
+      .btn-group {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Decorative Blurs -->
+  <div class="bg-shape shape-1"></div>
+  <div class="bg-shape shape-2"></div>
+
+  <!-- Theme toggle -->
+  <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+    <i id="themeIcon" class="fa-solid fa-moon"></i>
+  </button>
+
+  <div class="error-container">
+    <!-- SVG illustration wrapper -->
+    <div class="illustration-wrapper">
+      <svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="error-illustration">
+        <!-- Soil and Pot -->
+        <path d="M70 160 L170 160 L155 210 L85 210 Z" fill="var(--primary-light)" stroke="var(--primary)" stroke-width="4" stroke-linejoin="round" />
+        <rect x="60" y="145" width="120" height="15" rx="4" fill="var(--primary)" />
+        
+        <!-- Soil -->
+        <ellipse cx="120" cy="148" rx="55" ry="6" fill="#8B5A2B" />
+
+        <!-- Plant Stems -->
+        <!-- Center Stem -->
+        <path d="M120 145 C120 100 120 70 120 50" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" fill="none" />
+        <!-- Left Stem -->
+        <path d="M120 145 C100 120 85 100 80 80" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" fill="none" />
+        <!-- Right Stem (drooping) -->
+        <path d="M120 145 C145 130 165 130 175 145" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" fill="none" class="drooping-stem" />
+
+        <!-- Leaves -->
+        <!-- Top Center Leaf -->
+        <path d="M120 50 C110 35 120 20 120 20 C120 20 130 35 120 50 Z" fill="var(--primary)" class="leaf-top" />
+        <!-- Left Leaf -->
+        <path d="M80 80 C65 75 55 60 55 60 C55 60 70 65 80 80 Z" fill="var(--primary)" class="leaf-left" />
+        <!-- Drooping Right Leaf -->
+        <path d="M175 145 C190 150 200 165 200 165 C200 165 185 160 175 145 Z" fill="var(--primary)" class="leaf-droop" />
+
+        <!-- Falling Leaf -->
+        <path d="M140 100 C150 95 160 85 160 85 C160 85 150 95 140 100 Z" fill="var(--accent)" class="falling-leaf" />
+
+        <!-- Little faces on the pot (Sad initially, happy on hover) -->
+        <circle cx="105" cy="180" r="2.5" fill="var(--text-color)" />
+        <circle cx="135" cy="180" r="2.5" fill="var(--text-color)" />
+        <!-- Sad mouth (curves down) -->
+        <path id="sad-mouth" d="M115 188 C118 191 122 191 125 188" stroke="var(--text-color)" stroke-width="2" stroke-linecap="round" fill="none" style="opacity: 1; transition: opacity 0.2s;" />
+        <!-- Happy mouth (curves up) -->
+        <path id="happy-mouth" d="M115 192 C118 189 122 189 125 192" stroke="var(--text-color)" stroke-width="2" stroke-linecap="round" fill="none" style="opacity: 0; transition: opacity 0.2s;" />
+      </svg>
+    </div>
+
+    <!-- Texts -->
+    <div class="error-code">404</div>
+    <h1 class="error-title">Lost in the Greenery</h1>
+    <p class="error-desc">We couldn't find the leaf or branch you were looking for. The page may have wilted, been pruned, or moved to a different garden plot.</p>
+
+    <!-- CTAs -->
+    <div class="btn-group">
+      <a href="index.html" class="btn btn-primary">
+        <i class="fa-solid fa-house"></i> Back to Home
+      </a>
+      <a href="plants.html" class="btn btn-secondary">
+        <i class="fa-solid fa-seedling"></i> Browse Plants
+      </a>
+    </div>
+  </div>
+
+  <!-- Shared Theme/RTL Sync Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>

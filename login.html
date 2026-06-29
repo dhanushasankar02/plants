@@ -1,0 +1,618 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Access your Greenery account. Sign in to view your wishlists, manage your subscription box, and schedule consulting appointments.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Login - Greenery Plant Nursery</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+      --input-bg: hsl(0, 0%, 100%);
+      --input-border: hsl(210, 10%, 85%);
+      
+      /* Brand Social Colors */
+      --google-brand: hsl(5, 81%, 56%);
+      --facebook-brand: hsl(221, 44%, 41%);
+      --apple-brand: hsl(0, 0%, 10%);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+      --input-bg: hsl(220, 20%, 11%);
+      --input-border: hsl(220, 20%, 20%);
+      
+      --apple-brand: hsl(0, 0%, 90%);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow: hidden; /* Don't scroll */
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Sticky Navbar */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* Navbar Flex Layout - Only contains utilities on the right */
+    .navbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-inline: 2.5rem;
+      padding-block: 0.8rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Utilities - Right Column (Only Dark Mode and RTL buttons) */
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Clean circular icon buttons */
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.15rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--primary);
+      color: white;
+    }
+
+    .icon-btn i {
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn:hover i {
+      transform: rotate(15deg);
+    }
+
+    .icon-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* -------------------------------------------
+       LOGIN CONTENT AREA
+       ------------------------------------------- */
+    .login-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      overflow: hidden;
+      width: 100%;
+      max-width: 950px;
+      max-height: 100%; /* Fit perfectly inside login-main without overflowing */
+      height: 480px; /* Reduced fixed height to guarantee no scrollbar on smaller viewports */
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .login-form-side {
+      padding: 1.5rem 2.5rem; /* Reduced padding to fit smaller screen heights */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* Hide scrollbar completely */
+    }
+
+    /* Center-align wrapper for form contents */
+    .login-form-content {
+      margin-block: auto; /* Vertically centers content wrapper */
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem; /* Reduced gap to fit content */
+    }
+
+    /* Logo Styling inside the card header */
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.3rem; /* Reduced size */
+      color: var(--primary);
+      margin-bottom: 0.1rem;
+      transition: color var(--transition-speed) ease;
+    }
+
+    .login-logo:hover {
+      color: var(--primary-hover);
+    }
+
+    .login-logo svg {
+      width: 26px; /* Reduced size */
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .login-form-header h2 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem; /* Reduced size */
+      color: var(--text-color);
+      margin-bottom: 0.1rem;
+      line-height: 1.2;
+    }
+
+    .login-form-header p {
+      color: var(--text-muted);
+      font-size: 0.85rem; /* Reduced size */
+    }
+
+    .login-form-header p a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .login-form-header p a:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem; /* Compact layout */
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .form-control-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-control-wrapper i {
+      position: absolute;
+      left: 1rem; /* Compact offset */
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    html[dir="rtl"] .form-control-wrapper i {
+      left: auto;
+      right: 1rem;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--border-radius);
+      padding: 0.6rem 1rem 0.6rem 2.2rem; /* Shrunk padding to reduce input height */
+      font-family: var(--font-sans);
+      color: var(--text-color);
+      font-size: 0.85rem; /* Shrunk font size */
+      transition: all var(--transition-speed) ease;
+      outline: none;
+    }
+
+    html[dir="rtl"] .form-control {
+      padding: 0.6rem 2.2rem 0.6rem 1rem;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem; /* Shrunk size */
+      font-weight: 500;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+
+    .remember-me input {
+      accent-color: var(--primary);
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .forgot-password {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .forgot-password:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    .btn-signin {
+      background: var(--primary);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      justify-content: center;
+      padding: 0.7rem; /* Shrunk padding */
+      border-radius: 30px;
+      transition: all var(--transition-speed) ease;
+      margin-top: 0.1rem;
+    }
+
+    .btn-signin:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(20, 83, 45, 0.25);
+    }
+
+    /* Social Logins Section */
+    .social-separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-block: 0.1rem;
+    }
+
+    .social-separator::before,
+    .social-separator::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--navbar-border);
+    }
+
+    .social-separator:not(:empty)::before {
+      margin-inline-end: 0.75rem;
+    }
+
+    .social-separator:not(:empty)::after {
+      margin-inline-start: 0.75rem;
+    }
+
+    .social-btn-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .social-btn {
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      padding: 0.5rem; /* Shrunk padding to make social bar compact */
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--card-bg);
+    }
+
+    .social-btn-google {
+      color: var(--google-brand);
+    }
+
+    .social-btn-facebook {
+      color: var(--facebook-brand);
+    }
+
+    .social-btn-apple {
+      color: var(--apple-brand);
+    }
+
+    .social-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      border-color: var(--primary);
+    }
+
+    /* Right Side Panel (Image) */
+    .login-image-side {
+      background-image: linear-gradient(rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.35)), url('images/login_side_panel.png');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .login-image-content {
+      position: absolute;
+      bottom: 2rem; /* Aligns with compact padding */
+      left: 2.5rem; 
+      right: 2.5rem;
+      color: white;
+    }
+
+    .login-image-content h3 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem; /* Reduced size */
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      line-height: 1.2;
+    }
+
+    .login-image-content p {
+      font-size: 0.85rem; /* Reduced size */
+      line-height: 1.4;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* Responsive Styling for Login Card */
+    @media (max-width: 768px) {
+      .login-card {
+        grid-template-columns: 1fr;
+        max-height: 80vh;
+        height: auto;
+      }
+      .login-image-side {
+        display: none;
+      }
+      .login-form-side {
+        padding: 1.5rem;
+      }
+      .login-form-header h2 {
+        font-size: 1.4rem;
+      }
+    }
+
+    /* Compact Footer Style */
+    .app-footer {
+      background: var(--primary-light);
+      border-top: 1px solid var(--navbar-border);
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: auto;
+      width: 100%;
+      transition: background-color var(--transition-speed) ease;
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+  <!-- Sticky Navbar Header containing only Theme/RTL toggles -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Left side empty, logo moved to form header -->
+      <div></div>
+
+      <!-- Utilities (Right - Dark mode and RTL toggles only) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="login-main">
+    <div class="login-card">
+      <!-- Left Column (Login Form) -->
+      <div class="login-form-side">
+        <!-- Content wrapper centering all items and preventing vertical alignment shifts -->
+        <div class="login-form-content">
+          <!-- Logo placed at the top of Welcome Back -->
+          <a href="index.html" class="login-logo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Greenery</span>
+          </a>
+          <div class="login-form-header">
+            <h2>Welcome Back</h2>
+          </div>
+
+          <form class="login-form" onsubmit="event.preventDefault(); alert('Logged in successfully!'); location.href='index.html';">
+            <div class="form-group">
+              <label for="loginEmail">Email Address</label>
+              <div class="form-control-wrapper">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="loginEmail" class="form-control" placeholder="example@email.com" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <div class="form-control-wrapper">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="loginPassword" class="form-control" placeholder="password" required>
+              </div>
+            </div>
+
+            <div class="form-options">
+              <label class="remember-me">
+                <input type="checkbox">
+                <span>Remember me</span>
+              </label>
+              <a href="#forgot" class="forgot-password" onclick="alert('Password reset link has been simulated!')">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-signin">Sign In</button>
+          </form>
+
+          <div class="social-separator">Or Sign In With</div>
+
+          <div class="social-btn-group">
+            <!-- Google social button -->
+            <button class="social-btn social-btn-google" aria-label="Sign in with Google" onclick="socialLogin('Google')">
+              <i class="fa-brands fa-google"></i>
+            </button>
+            
+            <!-- Facebook social button -->
+            <button class="social-btn social-btn-facebook" aria-label="Sign in with Facebook" onclick="socialLogin('Facebook')">
+              <i class="fa-brands fa-facebook-f"></i>
+            </button>
+            
+            <!-- Apple social button -->
+            <button class="social-btn social-btn-apple" aria-label="Sign in with Apple" onclick="socialLogin('Apple')">
+              <i class="fa-brands fa-apple"></i>
+            </button>
+          </div>
+
+          <p class="register-prompt" style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Don't have an account? <a href="register.html" style="color: var(--primary); font-weight: 600;">Create one now</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column (Illustrative Background) -->
+      <div class="login-image-side">
+        <div class="login-image-content">
+          <h3>Cultivate Your Space</h3>
+          <p>Access your botanical portal. Manage subscription plant boxes, trace shipment status, and check your wishlisted plants.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Compact Footer -->
+  <footer class="app-footer">
+    <p>&copy; 2026 Greenery. All rights reserved.</p>
+  </footer>
+  <script src="navigation.js" defer></script>
+  <script>
+    // Social login click simulator
+    function socialLogin(platform) {
+      alert(`Connecting with ${platform}... Simulated social sign-in successful!`);
+      location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
+

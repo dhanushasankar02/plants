@@ -1,0 +1,1733 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>About Us - Greenery</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow-x: clip;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Wrapper */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Scrolled state for Header */
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .app-header.scrolled .navbar {
+      padding-block: 0.6rem;
+    }
+
+    /* Main Navigation Bar (Clean 3-Column Grid) */
+    .navbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      transition: padding var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    /* Logo Design - Left Column */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--primary);
+      justify-self: start;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo:hover svg {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    /* Nav Menu Desktop - Centered Column */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .nav-menu > ul {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.7rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Dropdown Menu styling (Home) */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--card-bg);
+      min-width: 160px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .dropdown-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding-inline-start: 1.25rem;
+    }
+
+    /* Utilities - Right Column */
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-self: end;
+    }
+
+    /* Clean circular icon buttons */
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Login Button Styling */
+    .login-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.15);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .login-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(20, 83, 45, 0.25);
+    }
+
+    /* Mobile Drawer Hamburger Icon */
+    .hamburger-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      transition: all var(--transition-speed) ease;
+    }
+
+    .hamburger-toggle:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Responsive Navigation for Tablets & Mobile */
+    @media (max-width: 1100px) {
+      .nav-menu {
+        display: none; /* Hide desktop menu */
+      }
+      .hamburger-toggle {
+        display: flex; /* Show menu toggle */
+      }
+      .navbar {
+        grid-template-columns: 1fr auto;
+      }
+      .nav-utilities .login-btn,
+      .nav-utilities #themeToggle,
+      .nav-utilities #rtlToggleBtn {
+        display: none; /* Hide desktop utilities, moved inside drawer */
+      }
+    }
+
+    /* Mobile Navigation Drawer & Drawer Overlay */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px; /* Hidden offscreen by default */
+      width: 320px;
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+      z-index: 201;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      transition: right var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-drawer.open {
+      right: 0;
+    }
+
+    /* Support RTL transition direction */
+    html[dir="rtl"] .mobile-drawer {
+      right: auto;
+      left: -320px;
+      box-shadow: 10px 0 40px rgba(0, 0, 0, 0.15);
+      transition: left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html[dir="rtl"] .mobile-drawer.open {
+      left: 0;
+      right: auto;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--navbar-border);
+      padding-bottom: 1.2rem;
+    }
+
+    .drawer-close {
+      font-size: 2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-close:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-nav-link {
+      padding: 0.8rem 1rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mobile-dropdown-btn {
+      font-size: 0.75rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link.active .mobile-dropdown-btn {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-inline-start: 1.5rem;
+      padding-block: 0.5rem;
+      border-left: 2px solid var(--primary-light);
+      margin-left: 1.2rem;
+    }
+
+    html[dir="rtl"] .mobile-dropdown-menu {
+      border-left: none;
+      border-right: 2px solid var(--primary-light);
+      margin-left: 0;
+      margin-right: 1.2rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      display: flex;
+    }
+
+    .drawer-utilities {
+      border-top: 1px solid var(--navbar-border);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .mobile-toggles {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .drawer-utilities .login-btn {
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* Common Section Styles */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      font-weight: 600;
+      border-radius: 30px;
+      transition: all var(--transition-speed) ease;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    /* ==========================================
+       Custom about.html page styles
+       ========================================== */
+
+    /* 1. About Hero Section */
+    .about-hero {
+      background: linear-gradient(rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.55)), url('./images/about_plants.png') no-repeat center center/cover;
+      background-attachment: fixed;
+      min-height: calc(100vh - 70px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem;
+      max-width: none;
+      width: 100%;
+    }
+
+    .about-hero-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    html[data-theme="dark"] .about-hero-card {
+      background: rgba(15, 23, 42, 0.4);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .about-hero-card h1 {
+      font-family: var(--font-serif);
+      font-size: 3.8rem;
+      line-height: 1.1;
+      color: white;
+    }
+
+    .about-hero-card h1 span {
+      color: #4ade80;
+    }
+
+    .about-hero-card p {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.6;
+      max-width: 680px;
+    }
+
+    /* 2. Timeline Section */
+    .journey-section {
+      background-color: var(--bg-color);
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-block: 2rem;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      background-color: var(--primary-light);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -2px;
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .timeline::after {
+      left: 50%;
+      right: auto;
+    }
+
+    .timeline-container {
+      padding: 10px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+
+    .timeline-container::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      right: -10px;
+      background-color: var(--card-bg);
+      border: 4px solid var(--primary);
+      top: 25px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .left-container {
+      left: 0;
+    }
+
+    .right-container {
+      left: 50%;
+    }
+
+    .right-container::after {
+      left: -10px;
+      right: auto;
+    }
+
+    html[dir="rtl"] .left-container {
+      right: 0;
+      left: auto;
+    }
+
+    html[dir="rtl"] .right-container {
+      right: 50%;
+      left: auto;
+    }
+
+    html[dir="rtl"] .left-container::after {
+      left: -10px;
+      right: auto;
+    }
+
+    html[dir="rtl"] .right-container::after {
+      right: -10px;
+      left: auto;
+    }
+
+    .timeline-card {
+      padding: 2rem;
+      background-color: var(--card-bg);
+      position: relative;
+      border-radius: 16px;
+      border: 1px solid var(--navbar-border);
+      box-shadow: 0 4px 15px var(--shadow-color);
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .timeline-card h3 {
+      font-family: var(--font-serif);
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-card h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 0.8rem;
+    }
+
+    .timeline-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 3. Team Section */
+    .team-section {
+      background-color: var(--bg-color);
+    }
+
+    .team-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .team-image-wrapper {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      height: 480px;
+    }
+
+    .team-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .team-profiles {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .team-member-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .team-member-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px var(--shadow-color);
+      border-color: var(--primary);
+    }
+
+    .member-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .member-details h3 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: var(--text-color);
+      margin-bottom: 0.2rem;
+    }
+
+    .member-details span {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .member-details p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* 4. Pathology Lab & 5. Sustainability Section (Alternating split) */
+    .split-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .split-image-wrapper {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      height: 420px;
+    }
+
+    .split-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .split-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .split-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.3rem;
+      color: var(--text-color);
+    }
+
+    .split-content p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .split-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .split-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+
+    .split-list li i {
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    /* 6. Community Section */
+    .community-section {
+      background-color: var(--primary-light);
+      border-radius: 24px;
+      padding: 5rem 4rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .community-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .community-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--text-color);
+    }
+
+    .community-content p {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .community-image-wrapper {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px var(--shadow-color);
+      height: 380px;
+    }
+
+    .community-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 7. Flagship Location Section */
+    .location-section {
+      background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), url('./images/vertical_green_wall.png') no-repeat center center/cover;
+      background-attachment: fixed;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem;
+      max-width: none;
+      width: 100%;
+    }
+
+    .location-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
+      padding: 3.5rem;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    html[data-theme="dark"] .location-card {
+      background: rgba(15, 23, 42, 0.4);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .location-card h2 {
+      font-family: var(--font-serif);
+      font-size: 2.3rem;
+      color: white;
+    }
+
+    .location-card p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.6;
+    }
+
+    .location-meta {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    .location-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .location-meta-item i {
+      color: #4ade80;
+    }
+
+    /* 8. Core Philosophy Section */
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .philosophy-card {
+      background: var(--card-bg);
+      border: 1px solid var(--navbar-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      text-align: center;
+      align-items: center;
+    }
+
+    .philosophy-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px var(--shadow-color);
+      border-color: var(--primary);
+    }
+
+    .philosophy-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .philosophy-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--text-color);
+    }
+
+    .philosophy-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .philosophy-featured-wrapper {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      height: 480px;
+      margin-top: 3rem;
+    }
+
+    .philosophy-featured-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .philosophy-featured-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(15, 23, 42, 0.9));
+      padding: 3rem;
+      color: white;
+      text-align: start;
+    }
+
+    .philosophy-featured-overlay h2 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .philosophy-featured-overlay p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.1rem;
+      max-width: 700px;
+    }
+
+    /* Responsive Grid Layout Rules */
+    @media (max-width: 992px) {
+      section {
+        padding: 4rem 1.5rem;
+      }
+      .team-showcase,
+      .split-section,
+      .community-section {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .philosophy-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .team-image-wrapper,
+      .split-image-wrapper,
+      .community-image-wrapper,
+      .philosophy-featured-wrapper {
+        height: 340px;
+      }
+      .about-hero-card h1 {
+        font-size: 2.8rem;
+      }
+      /* Timeline Responsive */
+      .timeline::after {
+        left: 29px;
+      }
+      .timeline-container {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      .timeline-container::after,
+      .right-container::after {
+        left: 21px;
+        right: auto;
+      }
+      .right-container {
+        left: 0%;
+      }
+      html[dir="rtl"] .timeline::after {
+        right: 29px;
+        left: auto;
+      }
+      html[dir="rtl"] .timeline-container {
+        padding-right: 70px;
+        padding-left: 25px;
+      }
+      html[dir="rtl"] .timeline-container::after,
+      html[dir="rtl"] .right-container::after {
+        right: 21px;
+        left: auto;
+      }
+      html[dir="rtl"] .right-container {
+        right: 0%;
+        left: auto;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .about-hero-card {
+        padding: 2.5rem 1.5rem;
+      }
+      .about-hero-card h1 {
+        font-size: 2.2rem;
+      }
+      .about-hero-card p {
+        font-size: 1.05rem;
+      }
+      .location-card {
+        padding: 2rem 1.5rem;
+      }
+      .location-card h2 {
+        font-size: 1.8rem;
+      }
+      .location-meta {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      .community-section {
+        padding: 2.5rem 1.5rem;
+      }
+    }
+
+    /* RTL specific overrides */
+    html[dir="rtl"] .timeline-card {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .team-member-card {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .split-content {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .split-list li {
+      flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .community-content {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .philosophy-card {
+      text-align: center;
+    }
+
+    html[dir="rtl"] .philosophy-featured-overlay {
+      text-align: right;
+    }
+
+    /* Footer Styling */
+    .app-footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--navbar-border);
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+      font-size: 1rem;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-menu-col h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .footer-menu-col h3::after {
+      left: auto;
+      right: 0;
+    }
+
+    .footer-menu-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .footer-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .footer-bottom {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Footer */
+    @media (max-width: 992px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .footer-info {
+        align-items: center;
+        text-align: center;
+      }
+      .footer-description {
+        max-width: 100%;
+      }
+      .footer-menu-col {
+        text-align: center;
+      }
+      .footer-menu-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Newsletter Column Styling */
+    .newsletter-col p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border: 1px solid var(--navbar-border);
+      border-radius: 30px;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .newsletter-form:focus-within {
+      border-color: var(--primary);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .newsletter-form button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Single-Line App Header -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Logo (Column 1 - Left) -->
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Greenery
+      </a>
+
+      <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <ul>
+          <!-- Home Dropdown Link -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              Home <span class="arrow-icon">&#9660;</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html" class="dropdown-link active">Home 1</a></li>
+              <li><a href="home2.html" class="dropdown-link">Home 2</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="plants.html" class="nav-link">Plants</a></li>
+          <li class="nav-item"><a href="collections.html" class="nav-link"> Collections</a></li>
+          <li class="nav-item"><a href="guides.html" class="nav-link"> Guides</a></li>
+          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="subscription.html" class="nav-link"> Subscription</a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-link"> Wishlist </a></li>
+          <li class="nav-item"><a href="delivery.html" class="nav-link">Delivery</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utilities (Column 3 - Right) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login-btn" id="loginBtn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Login
+        </a>
+        <!-- Hamburger Menu button (Mobile) -->
+        <button id="hamburgerToggle" class="hamburger-toggle" aria-label="Open Navigation Drawer">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
+        </svg>
+        Greenery
+      </a>
+      <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mobile Navigation List -->
+    <nav class="mobile-nav-list">
+      <div class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link active" id="mobileDropdownBtn">
+          Home <span class="mobile-dropdown-btn">&#9660;</span>
+        </a>
+        <ul class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <li><a href="index.html" class="mobile-nav-link active">Home 1</a></li>
+          <li><a href="home2.html" class="mobile-nav-link">Home 2</a></li>
+        </ul>
+      </div>
+      <div class="mobile-nav-item"><a href="about.html" class="mobile-nav-link">About Us</a></div>
+      <div class="mobile-nav-item"><a href="plants.html" class="mobile-nav-link">Plants</a></div>
+      <div class="mobile-nav-item"><a href="collections.html" class="mobile-nav-link"> Collections</a></div>
+      <div class="mobile-nav-item"><a href="guides.html" class="mobile-nav-link"> Guides</a></div>
+      <div class="mobile-nav-item"><a href="gallery.html" class="mobile-nav-link">Gallery</a></div>
+      <div class="mobile-nav-item"><a href="subscription.html" class="mobile-nav-link">Subscription </a></div>
+      <div class="mobile-nav-item"><a href="wishlist.html" class="mobile-nav-link"> Wishlist </a></div>
+      <div class="mobile-nav-item"><a href="delivery.html" class="mobile-nav-link">Delivery</a></div>
+      <div class="mobile-nav-item"><a href="contact.html" class="mobile-nav-link">Contact</a></div>
+    </nav>
+
+    <!-- Mobile Drawer Utilities -->
+    <div class="drawer-utilities">
+      <div class="mobile-toggles">
+        <button class="icon-btn" id="mobileRtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <button id="mobileThemeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="mobileThemeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="login.html" class="login-btn" id="mobileLoginBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- 1. Hero Section -->
+    <section id="about-hero" class="about-hero">
+      <div class="about-hero-card">
+        <h1>Nurturing the <span>Connection</span> with Nature</h1>
+        <p>Greenery was founded on a simple belief: that living spaces become thriving sanctuaries when enriched with plant life. We exist to bring nature closer to your home and mind.</p>
+      </div>
+    </section>
+
+    <!-- 2. Our Journey Timeline Section -->
+    <section id="about-journey" class="journey-section">
+      <div class="section-header">
+        <h2>Our Botanical Journey</h2>
+        <p>How a small glasshouse project bloomed into a nation-wide green sanctuary movement</p>
+      </div>
+      <div class="timeline">
+        <!-- Event 1: Left -->
+        <div class="timeline-container left-container">
+          <div class="timeline-card">
+            <h3>2018</h3>
+            <h4>The Seed of an Idea</h4>
+            <p>Started in a single glasshouse room in Oregon, cultivating organic soil formulas and growing hard-to-find aroids for local indoor collectors.</p>
+          </div>
+        </div>
+        <!-- Event 2: Right -->
+        <div class="timeline-container right-container">
+          <div class="timeline-card">
+            <h3>2021</h3>
+            <h4>Flagship Storefront Launch</h4>
+            <p>Opened our flagship boutique architecture greenhouse in downtown, combining rare plant retail, expert consultations, and custom potting.</p>
+          </div>
+        </div>
+        <!-- Event 3: Left -->
+        <div class="timeline-container left-container">
+          <div class="timeline-card">
+            <h3>2024</h3>
+            <h4>High-Tech Research Lab</h4>
+            <p>Inaugurated our dedicated plant pathology and propagation science laboratory to isolate pests, formulate organic feeds, and ensure zero-disease.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Our Botanical Team Section -->
+    <section id="about-team" class="team-section">
+      <div class="team-showcase">
+        <div class="team-image-wrapper">
+          <img src="./images/plant_workshop.png" alt="Horticultural team working together in the greenhouse">
+        </div>
+        <div class="team-content">
+          <div class="section-header" style="text-align: start; margin-bottom: 2rem;">
+            <h2>The Greenery Specialists</h2>
+            <p>Meet the passionate botanists, scientists, and landscape designers who nurture your flora.</p>
+          </div>
+          <div class="team-profiles">
+            <!-- Member 1 -->
+            <div class="team-member-card">
+              <div class="member-avatar"><i class="fa-solid fa-microscope"></i></div>
+              <div class="member-details">
+                <h3>Dr. Elena Vance</h3>
+                <span>Lead Horticulturist & Pathologist</span>
+                <p>Elena has spent 12 years studying tropical root structures. She leads our science lab, monitoring plant health before they arrive at your door.</p>
+              </div>
+            </div>
+            <!-- Member 2 -->
+            <div class="team-member-card">
+              <div class="member-avatar"><i class="fa-solid fa-compass-drafting"></i></div>
+              <div class="member-details">
+                <h3>Marcus Aurel</h3>
+                <span>Principal Botanical Designer</span>
+                <p>Marcus specializes in biophilic interior installations. He translates high-end spaces into rich, sustainable botanical ecosystems.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Pathology Lab Section -->
+    <section id="about-lab" class="lab-section">
+      <div class="split-section">
+        <div class="split-content">
+          <h2>State-of-the-Art Plant Pathology Lab</h2>
+          <p>We don't just ship plants; we engineer healthy lifespans. Our lab isolates micro-pests, researches light absorption metrics, and conducts soil aeration trials.</p>
+          <p>Every specimen leaves our facilities with a certified health check, ensuring it transitions perfectly to the microclimate of your indoor rooms.</p>
+          <ul class="split-list">
+            <li><i class="fa-solid fa-seedling"></i> Certified pest-free root acclimation</li>
+            <li><i class="fa-solid fa-vial"></i> In-house custom organic fertilizer testing</li>
+            <li><i class="fa-solid fa-lightbulb"></i> Custom grow light spectrum configuration</li>
+          </ul>
+        </div>
+        <div class="split-image-wrapper">
+          <img src="./images/smart_plant_sensor.png" alt="Smart plant moisture sensor and pathology testing">
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Sustainable Sourcing Section -->
+    <section id="about-sustainability" class="sustainability-section">
+      <div class="split-section" style="direction: ltr;">
+        <div class="split-image-wrapper">
+          <img src="./images/self_watering_pot.png" alt="Peat-free potting soil and biodegradable planters">
+        </div>
+        <div class="split-content">
+          <h2>100% Sustainable Green Sourcing</h2>
+          <p>Our commitment to the Earth is woven into every detail. We operate a zero-peat policy to protect valuable wetland peatlands, utilizing coconut coir and organic compost instead.</p>
+          <p>From biodegradable peat pots to energy-efficient greywater irrigation systems, we minimize environmental footprints at every growth cycle stage.</p>
+          <ul class="split-list">
+            <li><i class="fa-solid fa-recycle"></i> 100% biodegradable organic growth pots</li>
+            <li><i class="fa-solid fa-droplet"></i> Recycled greywater irrigation systems</li>
+            <li><i class="fa-solid fa-box-open"></i> Plastic-free protective shipping materials</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Community Initiatives Section -->
+    <section id="about-community" class="community-section-wrapper">
+      <div class="community-section">
+        <div class="community-content">
+          <h2>Local Greening Initiatives</h2>
+          <p>We believe botany should be shared. Through our "Grow-together" neighborhood program, we dedicate 5% of all plant yields to community gardens and public school library green spaces.</p>
+          <p>We also host weekly propagation swaps and community planting workshops, empowering urban dwellers to claim their green thumb.</p>
+          <a href="subscription.html" class="btn btn-primary" style="align-self: flex-start;">Support Our Community</a>
+        </div>
+        <div class="community-image-wrapper">
+          <img src="./images/plant_care_guide.png" alt="Propagation tools and community planting workshop flatlay">
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Flagship Greenhouse Architecture -->
+    <section id="about-location" class="location-section">
+      <div class="location-card">
+        <h2>Visit Our Flagship Glasshouse</h2>
+        <p>Come walk through our stunning architectural greenhouse storefront. Experience over 200 species of tropical foliage, consult with our botanists, and design custom planters in our open-air potting bar.</p>
+        <div class="location-meta">
+          <div class="location-meta-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>452 Leafy Way, Portland, OR</span>
+          </div>
+          <div class="location-meta-item">
+            <i class="fa-solid fa-clock"></i>
+            <span>Tue - Sun: 10:00 AM - 7:00 PM</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Core Botanical Philosophy Section -->
+    <section id="about-philosophy" class="philosophy-section">
+      <div class="section-header">
+        <h2>Our Core Philosophy</h2>
+        <p>Three simple values that guide every single leaf we grow</p>
+      </div>
+      <div class="philosophy-grid">
+        <!-- Value 1 -->
+        <div class="philosophy-card">
+          <div class="philosophy-icon"><i class="fa-solid fa-dna"></i></div>
+          <h3>Flora Biodiversity</h3>
+          <p>Preserving and propagating rare cultivars to keep domestic urban collections biologically diverse and resilient.</p>
+        </div>
+        <!-- Value 2 -->
+        <div class="philosophy-card">
+          <div class="philosophy-icon"><i class="fa-solid fa-shapes"></i></div>
+          <h3>Natural Aesthetic Design</h3>
+          <p>Integrating organic architecture into human living, balancing clean geometric structures with raw foliage.</p>
+        </div>
+        <!-- Value 3 -->
+        <div class="philosophy-card">
+          <div class="philosophy-icon"><i class="fa-solid fa-hands-holding-circle"></i></div>
+          <h3>Environmental Stewardship</h3>
+          <p>Operating greenhouses with minimum energy footprints and training the next generation of plant caretakers.</p>
+        </div>
+      </div>
+      <div class="philosophy-featured-wrapper">
+        <img src="./images/rare_albo_plant.png" alt="Variegated plant leaf detail">
+        <div class="philosophy-featured-overlay">
+          <h2>Rooted in Growth</h2>
+          <p>Every seedling we nourish is a reminder of our responsibility to the ecosystem. We grow so that your home can breathe deeper.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <!-- Footer Info Column -->
+      <div class="footer-info">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenery
+        </a>
+        <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <!-- Footer Menu Columns -->
+      <div class="footer-menu-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="plants.html" class="footer-link">Plants</a></li>
+          <li><a href="collections.html" class="footer-link">Collections</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="guides.html" class="footer-link">Guides</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+          <li><a href="delivery.html" class="footer-link">Delivery Info</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer-menu-col newsletter-col">
+        <h3>Newsletter</h3>
+        <p>Subscribe to get special offers, plant care tips, and design inspiration.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Area -->
+    <div class="footer-bottom">
+      <p>&copy; 2026 Greenery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Badge Sync & Active Nav Link Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>
+
+

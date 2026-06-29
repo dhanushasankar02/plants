@@ -1,0 +1,2162 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>One-Line Sticky Navbar</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    /* Color variables & Design System */
+    :root {
+      --primary: hsl(142, 72%, 29%);
+      --primary-hover: hsl(142, 72%, 24%);
+      --primary-light: hsl(142, 30%, 96%);
+      --accent: hsl(38, 85%, 50%);
+      --bg-color: hsl(140, 20%, 98%);
+      --text-color: hsl(210, 24%, 12%);
+      --text-muted: hsl(210, 10%, 40%);
+      --navbar-bg: rgba(255, 255, 255, 0.75);
+      --navbar-border: rgba(0, 0, 0, 0.06);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --card-bg: hsl(0, 0%, 100%);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --font-sans: 'Outfit', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --badge-bg: hsl(355, 84%, 55%);
+    }
+
+    /* Dark Mode Overrides */
+    html[data-theme="dark"] {
+      --primary: hsl(142, 60%, 45%);
+      --primary-hover: hsl(142, 60%, 55%);
+      --primary-light: hsl(142, 20%, 15%);
+      --accent: hsl(38, 90%, 60%);
+      --bg-color: hsl(220, 20%, 8%);
+      --text-color: hsl(210, 20%, 98%);
+      --text-muted: hsl(210, 10%, 70%);
+      --navbar-bg: rgba(15, 23, 42, 0.75);
+      --navbar-border: rgba(255, 255, 255, 0.08);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --card-bg: hsl(220, 20%, 13%);
+    }
+
+    /* General resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      overflow-x: clip;
+      min-height: 150vh; /* Allow scroll to test sticky behavior */
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-speed) ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* App Header & Wrapper */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navbar-border);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Scrolled state for Header */
+    .app-header.scrolled {
+      box-shadow: 0 10px 30px -10px var(--shadow-color);
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .app-header.scrolled .navbar {
+      padding-block: 0.6rem;
+    }
+
+    /* Main Navigation Bar (Clean 3-Column Grid) */
+    .navbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      transition: padding var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 1440px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    /* Logo Design - Left Column */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--primary);
+      justify-self: start;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo:hover svg {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    /* Nav Menu Desktop - Centered Column */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .nav-menu > ul {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.7rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Dropdown Menu styling (Home) */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--card-bg);
+      min-width: 160px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--navbar-border);
+      border-radius: var(--border-radius);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all var(--transition-speed) ease;
+      white-space: nowrap;
+    }
+
+    .dropdown-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding-inline-start: 1.25rem;
+    }
+
+    /* Wishlist Badge */
+    .wishlist-link {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .badge {
+      background: var(--badge-bg);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Utilities - Right Column */
+    .nav-utilities {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-self: end;
+    }
+
+    /* Clean circular icon buttons */
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--text-color);
+      font-size: 1.2rem;
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08) translateY(-1px);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--primary);
+      color: white;
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn i {
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .icon-btn:hover svg,
+    .icon-btn:hover i {
+      transform: rotate(15deg);
+    }
+
+    /* Active state indicator styles */
+    .icon-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Login pill-shaped button */
+    .login-btn {
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      padding: 0.45rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
+    html[data-theme="dark"] .login-btn:hover {
+      box-shadow: 0 4px 12px rgba(142, 60, 45, 0.3);
+    }
+
+    /* General Button Styles */
+    .btn {
+      padding: 0.8rem 2rem;
+      font-weight: 600;
+      border-radius: 30px;
+      transition: all var(--transition-speed) ease;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    /* Hamburger Toggle */
+    .hamburger-toggle {
+      display: none;
+      font-size: 1.6rem;
+      color: var(--text-color);
+      z-index: 105;
+      padding: 0.2rem;
+    }
+
+    /* Side Drawer (Mobile Nav) */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 30px var(--shadow-color);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .mobile-drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--navbar-border);
+    }
+
+    .drawer-close {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .mobile-nav-item {
+      width: 100%;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .mobile-nav-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mobile-dropdown-btn {
+      background: none;
+      border: none;
+      font-size: 0.75rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .mobile-dropdown-btn.active {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      max-height: 0;
+      overflow: hidden;
+      padding-inline-start: 1rem;
+      transition: max-height 0.3s ease-out;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      max-height: 200px;
+    }
+
+    /* Mobile Utilities inside drawer */
+    .drawer-utilities {
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .drawer-utilities .mobile-toggles {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .drawer-utilities .login-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Overlay for Mobile Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 999;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* --- RTL LAYOUT SYSTEM --- */
+    html[dir="rtl"] .dropdown-menu {
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    html[dir="rtl"] .mobile-drawer {
+      right: auto;
+      left: -320px;
+      box-shadow: 10px 0 30px var(--shadow-color);
+    }
+
+    html[dir="rtl"] .mobile-drawer.open {
+      left: 0;
+      right: auto;
+    }
+
+    html[dir="rtl"] .dropdown-link:hover {
+      padding-inline-start: 1rem;
+      padding-inline-end: 1.25rem;
+    }
+
+    html[dir="rtl"] .arrow-icon {
+      transform: scaleX(-1);
+    }
+
+    /* Responsive Breakpoint for Mobile layout */
+    @media (max-width: 1200px) {
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        padding-inline: 1.5rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .nav-utilities .icon-btn,
+      .nav-utilities .login-btn {
+        display: none;
+      }
+      .hamburger-toggle {
+        display: flex;
+      }
+    }
+
+    /* Help text style to test sticky */
+    .scroll-guide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 120vh;
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      background: radial-gradient(circle at center, var(--primary-light) 0%, var(--bg-color) 80%);
+    }
+
+    .scroll-guide-icon {
+      font-size: 3rem;
+      margin-top: 1.5rem;
+      animation: bounce 2s infinite;
+      color: var(--primary);
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-15px);
+      }
+      60% {
+        transform: translateY(-7px);
+      }
+    }
+
+    /* Footer Styling */
+    .app-footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--navbar-border);
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+      transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .footer-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-speed) ease;
+      font-size: 1rem;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-menu-col h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    html[dir="rtl"] .footer-menu-col h3::after {
+      left: auto;
+      right: 0;
+    }
+
+    .footer-menu-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .footer-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition-speed) ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    html[dir="rtl"] .footer-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .footer-bottom {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navbar-border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Footer */
+    @media (max-width: 992px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .footer-info {
+        align-items: center;
+        text-align: center;
+      }
+      .footer-description {
+        max-width: 100%;
+      }
+      .footer-menu-col {
+        text-align: center;
+      }
+      .footer-menu-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Newsletter Column Styling */
+    .newsletter-col p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border: 1px solid var(--navbar-border);
+      border-radius: 30px;
+      transition: border-color var(--transition-speed) ease;
+    }
+
+    .newsletter-form:focus-within {
+      border-color: var(--primary);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .newsletter-form button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+
+    /* ==========================================================================
+       SUBSCRIPTION PAGE SPECIFIC STYLES
+       ========================================================================== */
+
+    /* Common Section Styles */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      transition: background-color var(--transition-speed) ease;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+      margin-top: 1rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      line-height: 1.6;
+    }
+
+    .sub-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    /* 1. Subscription Hero Section */
+    .sub-hero-section {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-color) 100%);
+      padding-block: 6rem 4rem;
+    }
+
+    .sub-hero-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding-inline: 2rem;
+    }
+
+    .sub-hero-content h1 {
+      font-family: var(--font-serif);
+      font-size: 3.8rem;
+      line-height: 1.15;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .sub-hero-content h1 span {
+      color: var(--primary);
+      display: block;
+    }
+
+    .sub-hero-content p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 580px;
+    }
+
+    .sub-hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .sub-hero-image {
+      position: relative;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      height: 520px;
+    }
+
+    .sub-hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .sub-hero-image:hover img {
+      transform: scale(1.02);
+    }
+
+    /* 2. How it Works Section */
+    .sub-how-section {
+      background: var(--card-bg);
+      text-align: center;
+    }
+
+    .sub-how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 4rem;
+      padding-inline: 2rem;
+    }
+
+    .sub-how-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      position: relative;
+    }
+
+    .sub-how-step:not(:last-child)::after {
+      content: 'âž”';
+      position: absolute;
+      top: 25px;
+      right: -1.5rem;
+      color: var(--primary);
+      font-size: 1.5rem;
+      opacity: 0.5;
+    }
+
+    html[dir="rtl"] .sub-how-step:not(:last-child)::after {
+      content: 'âž”';
+      right: auto;
+      left: -1.5rem;
+      transform: rotate(180deg);
+    }
+
+    .step-num {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(20, 83, 45, 0.2);
+    }
+
+    .sub-how-step h3 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--text-color);
+    }
+
+    .sub-how-step p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 280px;
+      font-size: 0.95rem;
+    }
+
+    .sub-how-illustration {
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 380px;
+    }
+
+    .sub-how-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 3. Subscription Plans Section */
+    .sub-plans-section {
+      background: var(--bg-color);
+    }
+
+    .sub-plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      padding-inline: 2rem;
+      align-items: stretch;
+    }
+
+    .sub-plan-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--navbar-border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .sub-plan-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px var(--shadow-color);
+      border-color: var(--primary);
+    }
+
+    .sub-plan-card.featured {
+      border: 2px solid var(--primary);
+      transform: scale(1.03);
+    }
+
+    .sub-plan-card.featured:hover {
+      transform: scale(1.03) translateY(-8px);
+    }
+
+    .plan-badge-popular {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: var(--accent);
+      color: var(--text-color);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      z-index: 2;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    html[dir="rtl"] .plan-badge-popular {
+      right: auto;
+      left: 1.25rem;
+    }
+
+    .plan-img-wrapper {
+      height: 240px;
+      overflow: hidden;
+    }
+
+    .plan-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .sub-plan-card:hover .plan-img-wrapper img {
+      transform: scale(1.04);
+    }
+
+    .plan-info {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+    }
+
+    .plan-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .plan-info h3 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      color: var(--text-color);
+    }
+
+    .plan-price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-color);
+      display: flex;
+      align-items: baseline;
+    }
+
+    .plan-price span {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .plan-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-block: 1rem 1.5rem;
+      border-top: 1px solid var(--navbar-border);
+      padding-top: 1.5rem;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+      color: var(--text-color);
+    }
+
+    .plan-features li i {
+      color: var(--primary);
+    }
+
+    .plan-btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      margin-top: auto;
+    }
+
+    /* 4. What's Inside Section */
+    .sub-contents-section {
+      background: var(--card-bg);
+    }
+
+    .sub-contents-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      align-items: center;
+      gap: 4.5rem;
+      padding-inline: 2rem;
+    }
+
+    .sub-contents-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 480px;
+    }
+
+    .sub-contents-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sub-contents-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .sub-intro {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    .contents-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .contents-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+    }
+
+    .content-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    .content-text h3 {
+      font-size: 1.15rem;
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+
+    .content-text p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 5. Perks & Benefits Section */
+    .sub-perks-section {
+      background: var(--primary-light);
+    }
+
+    .sub-perks-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding-inline: 2rem;
+    }
+
+    .sub-perks-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .sub-perks-content > p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+
+    .perks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .perk-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--navbar-border);
+      box-shadow: 0 5px 15px var(--shadow-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .perk-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .perk-card i {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .perk-card h4 {
+      font-size: 1.15rem;
+      color: var(--text-color);
+    }
+
+    .perk-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .sub-perks-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 520px;
+    }
+
+    .sub-perks-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 6. Past Boxes Section */
+    .sub-past-section {
+      background: var(--card-bg);
+    }
+
+    .sub-past-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4.5rem;
+      padding-inline: 2rem;
+    }
+
+    .sub-past-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 480px;
+    }
+
+    .sub-past-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sub-past-content h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .sub-past-content > p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .past-months {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .month-item {
+      padding: 1.25rem;
+      border-left: 3px solid var(--primary);
+      background: var(--bg-color);
+      border-radius: 0 8px 8px 0;
+    }
+
+    html[dir="rtl"] .month-item {
+      border-left: none;
+      border-right: 3px solid var(--primary);
+      border-radius: 8px 0 0 8px;
+    }
+
+    .month-name {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .month-item strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--text-color);
+      margin-bottom: 0.35rem;
+    }
+
+    .month-item p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 7. Gift a Subscription Section */
+    .sub-gift-section {
+      background: var(--bg-color);
+    }
+
+    .sub-gift-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding-inline: 2rem;
+    }
+
+    .sub-gift-content h2 {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    .sub-gift-content > p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 620px;
+    }
+
+    .gift-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .gift-option {
+      background: var(--card-bg);
+      padding: 2rem 1.5rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--navbar-border);
+      text-align: center;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .gift-option:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px var(--shadow-color);
+    }
+
+    .gift-option.featured {
+      border: 2px solid var(--primary);
+    }
+
+    .gift-popular {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    .gift-option h4 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: var(--text-color);
+    }
+
+    .gift-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gift-price span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 0.15rem;
+    }
+
+    .gift-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .gift-option .btn {
+      width: 100%;
+      justify-content: center;
+      padding-block: 0.6rem;
+      font-size: 0.85rem;
+    }
+
+    .gift-footer-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      background: var(--primary-light);
+      padding: 1.25rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
+    }
+
+    html[dir="rtl"] .gift-footer-text {
+      border-left: none;
+      border-right: 4px solid var(--primary);
+    }
+
+    .gift-footer-text i {
+      color: var(--primary);
+      margin-right: 0.35rem;
+    }
+
+    html[dir="rtl"] .gift-footer-text i {
+      margin-right: 0;
+      margin-left: 0.35rem;
+    }
+
+    .sub-gift-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 480px;
+    }
+
+    .sub-gift-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 8. Frequently Asked Questions Section */
+    .sub-faq-section {
+      background: var(--bg-color);
+    }
+
+    .sub-faq-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: flex-start;
+      gap: 4.5rem;
+      padding-inline: 2rem;
+    }
+
+    .sub-faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--navbar-border);
+      padding-bottom: 1rem;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      font-family: var(--font-sans);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-color);
+      padding: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color var(--transition-speed) ease;
+    }
+
+    html[dir="rtl"] .faq-question {
+      text-align: right;
+    }
+
+    .faq-question:hover {
+      color: var(--primary);
+    }
+
+    .faq-icon {
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--primary);
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+      padding-inline-end: 2rem;
+    }
+
+    .faq-answer p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding-bottom: 1rem;
+    }
+
+    /* FAQ JS Toggle Classes */
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      transition: max-height 0.3s cubic-bezier(1, 0, 1, 0), padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .sub-faq-image {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px var(--shadow-color);
+      height: 480px;
+    }
+
+    .sub-faq-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE ADAPTATIONS
+       ========================================================================== */
+
+    @media (max-width: 1200px) {
+      .sub-hero-container,
+      .sub-contents-container,
+      .sub-perks-container,
+      .sub-past-container,
+      .sub-gift-container,
+      .sub-faq-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .sub-hero-image,
+      .sub-contents-image,
+      .sub-perks-image,
+      .sub-past-image,
+      .sub-gift-image,
+      .sub-faq-image {
+        height: 400px;
+        order: 2; /* Move images below text on mobile */
+      }
+
+      .sub-hero-content,
+      .sub-contents-content,
+      .sub-perks-content,
+      .sub-past-content,
+      .sub-gift-content,
+      .sub-faq-accordion {
+        order: 1;
+      }
+
+      .sub-how-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .sub-how-step:not(:last-child)::after {
+        content: '\25BC';
+        top: auto;
+        bottom: -1.5rem;
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      .gift-options {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .sub-plan-card.featured {
+        transform: none;
+      }
+      .sub-plan-card.featured:hover {
+        transform: translateY(-8px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sub-hero-content h1 {
+        font-size: 2.8rem;
+      }
+      .perks-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <!-- Single-Line App Header -->
+  <header id="appHeader" class="app-header">
+    <div class="navbar">
+      <!-- Logo (Column 1 - Left) -->
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Greenery
+      </a>
+
+      <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <ul>
+          <!-- Home Dropdown Link -->
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              Home <span class="arrow-icon">&#9660;</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html" class="dropdown-link active">Home 1</a></li>
+              <li><a href="home2.html" class="dropdown-link">Home 2</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="plants.html" class="nav-link">Plants</a></li>
+          <li class="nav-item"><a href="collections.html" class="nav-link"> Collections</a></li>
+          <li class="nav-item"><a href="guides.html" class="nav-link"> Guides</a></li>
+          <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="subscription.html" class="nav-link"> Subscription</a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-link"> Wishlist </a></li>
+          <li class="nav-item"><a href="delivery.html" class="nav-link">Delivery</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utilities (Column 3 - Right) -->
+      <div class="nav-utilities">
+        <!-- RTL Layout Toggle -->
+        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Login Button -->
+        <a href="login.html" class="login-btn" id="loginBtn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Login
+        </a>
+        <!-- Hamburger Menu button (Mobile) -->
+        <button id="hamburgerToggle" class="hamburger-toggle" aria-label="Open Navigation Drawer">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
+          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
+          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
+        </svg>
+        Greenery
+      </a>
+      <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
+        &times;
+      </button>
+    </div>
+
+    <!-- Mobile Navigation List -->
+    <nav class="mobile-nav-list">
+      <div class="mobile-nav-item">
+        <a href="#" class="mobile-nav-link active" id="mobileDropdownBtn">
+          Home <span class="mobile-dropdown-btn">&#9660;</span>
+        </a>
+        <ul class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <li><a href="index.html" class="mobile-nav-link active">Home 1</a></li>
+          <li><a href="home2.html" class="mobile-nav-link">Home 2</a></li>
+        </ul>
+      </div>
+      <div class="mobile-nav-item"><a href="about.html" class="mobile-nav-link">About Us</a></div>
+      <div class="mobile-nav-item"><a href="plants.html" class="mobile-nav-link">Plants</a></div>
+      <div class="mobile-nav-item"><a href="collections.html" class="mobile-nav-link"> Collections</a></div>
+      <div class="mobile-nav-item"><a href="guides.html" class="mobile-nav-link"> Guides</a></div>
+      <div class="mobile-nav-item"><a href="gallery.html" class="mobile-nav-link">Gallery</a></div>
+      <div class="mobile-nav-item"><a href="subscription.html" class="mobile-nav-link">Subscription </a></div>
+      <div class="mobile-nav-item"><a href="wishlist.html" class="mobile-nav-link"> Wishlist </a></div>
+      <div class="mobile-nav-item"><a href="delivery.html" class="mobile-nav-link">Delivery</a></div>
+      <div class="mobile-nav-item"><a href="contact.html" class="mobile-nav-link">Contact</a></div>
+    </nav>
+
+    <!-- Mobile Drawer Utilities -->
+    <div class="drawer-utilities">
+      <div class="mobile-toggles">
+        <button class="icon-btn" id="mobileRtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+        <button id="mobileThemeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
+          <i id="mobileThemeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="login.html" class="login-btn" id="mobileLoginBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main>
+    <!-- Section 1: Hero -->
+    <section id="sub-hero" class="sub-hero-section">
+      <div class="sub-hero-container">
+        <div class="sub-hero-content">
+          <span class="sub-badge">Greenery Club</span>
+          <h1>Cultivate Your Urban Jungle, <span>Delivered Monthly</span></h1>
+          <p>Choose from our beautifully curated plant subscription boxes. Hand-picked, healthy plants delivered directly to your doorstep with premium pots and expert care guides.</p>
+          <div class="sub-hero-buttons">
+            <a href="#sub-plans" class="btn btn-primary">Explore Box Plans</a>
+            <a href="#sub-gifting" class="btn btn-secondary">Gift a Subscription</a>
+          </div>
+        </div>
+        <div class="sub-hero-image">
+          <img src="images/sub_hero.png" alt="Curated plant subscription box on a table">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: How It Works -->
+    <section id="sub-how-it-works" class="sub-how-section">
+      <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Your subscription journey in three simple steps</p>
+      </div>
+      <div class="sub-how-grid">
+        <div class="sub-how-step">
+          <div class="step-num">1</div>
+          <h3>Choose Your Plan</h3>
+          <p>Select a tier that fits your style, experience level, and pet-friendly needs.</p>
+        </div>
+        <div class="sub-how-step">
+          <div class="step-num">2</div>
+          <h3>Curated with Care</h3>
+          <p>Our experts hand-pick healthy, seasonal plants and pair them with matching.</p>
+        </div>
+        <div class="sub-how-step">
+          <div class="step-num">3</div>
+          <h3>Unbox & Grow</h3>
+          <p>Receive your plant safe and sound, scan the care guide, and enjoy free shipping.</p>
+        </div>
+      </div>
+      <div class="sub-how-illustration">
+        <img src="images/sub_unboxing.png" alt="Unboxing a houseplant">
+      </div>
+    </section>
+
+    <!-- Section 3: Subscription Plans -->
+    <section id="sub-plans" class="sub-plans-section">
+      <div class="section-header">
+        <h2>Choose Your Plan</h2>
+        <p>Curated boxes designed for every level of plant parent</p>
+      </div>
+      <div class="sub-plans-grid">
+        <!-- Plan 1 -->
+        <div class="sub-plan-card">
+          <div class="plan-img-wrapper">
+            <img src="images/sub_starter.png" alt="Starter Sprout subscription plan">
+          </div>
+          <div class="plan-info">
+            <span class="plan-label">Best for Beginners</span>
+            <h3>The Starter Sprout</h3>
+            <p class="plan-price">$29<span>/month</span></p>
+            <p class="plan-desc">A small, low-maintenance easy-to-grow plant (2"-4" nursery pot) plus a decorative ceramic pot. Ideal for building your confidence.</p>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> 1 Easy-care plant monthly</li>
+              <li><i class="fa-solid fa-check"></i> Minimalist ceramic planter</li>
+              <li><i class="fa-solid fa-check"></i> Illustrated care instruction card</li>
+              <li><i class="fa-solid fa-check"></i> Free shipping included</li>
+            </ul>
+            <a href="#subscribe" class="btn btn-secondary plan-btn">Subscribe Now</a>
+          </div>
+        </div>
+        <!-- Plan 2 -->
+        <div class="sub-plan-card featured">
+          <div class="plan-badge-popular">Most Popular</div>
+          <div class="plan-img-wrapper">
+            <img src="images/sub_pet_friendly.png" alt="Pet-Friendly Jungle subscription plan">
+          </div>
+          <div class="plan-info">
+            <span class="plan-label">Safe & Non-Toxic</span>
+            <h3>The Pet-Friendly Jungle</h3>
+            <p class="plan-price">$39<span>/month</span></p>
+            <p class="plan-desc">A healthy, non-toxic pet-safe plant (4"-6" pot) plus a coordinating premium terracotta planter. Safe for curious cats and dogs.</p>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> 1 Pet-safe plant monthly</li>
+              <li><i class="fa-solid fa-check"></i> Premium terracotta planter</li>
+              <li><i class="fa-solid fa-check"></i> Cat & dog safety guide card</li>
+              <li><i class="fa-solid fa-check"></i> Free shipping + Priority support</li>
+            </ul>
+            <a href="#subscribe" class="btn btn-primary plan-btn">Subscribe Now</a>
+          </div>
+        </div>
+        <!-- Plan 3 -->
+        <div class="sub-plan-card">
+          <div class="plan-img-wrapper">
+            <img src="images/sub_rare_collector.png" alt="Rare Collector subscription plan">
+          </div>
+          <div class="plan-info">
+            <span class="plan-label">Collector's Edition</span>
+            <h3>The Rare Collector</h3>
+            <p class="plan-price">$59<span>/month</span></p>
+            <p class="plan-desc">A highly sought-after, rare, or exotic plant (4"-6" pot) plus a custom designer stoneware planter. For seasoned plant parents.</p>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> 1 Rare or exotic plant monthly</li>
+              <li><i class="fa-solid fa-check"></i> Custom designer stoneware pot</li>
+              <li><i class="fa-solid fa-check"></i> Detailed botanical history card</li>
+              <li><i class="fa-solid fa-check"></i> Free shipping + Plant Doctor hotline</li>
+            </ul>
+            <a href="#subscribe" class="btn btn-secondary plan-btn">Subscribe Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: What's Inside the Box -->
+    <section id="sub-box-contents" class="sub-contents-section">
+      <div class="sub-contents-container">
+        <div class="sub-contents-image">
+          <img src="images/sub_box_contents.png" alt="Flat lay of subscription box contents">
+        </div>
+        <div class="sub-contents-content">
+          <h2>What's Inside Your Monthly Box?</h2>
+          <p class="sub-intro">We design our boxes to give your new green roommate the perfect start. Each shipment contains premium ingredients for a happy plant home.</p>
+          <ul class="contents-list">
+            <li>
+              <div class="content-icon"><i class="fa-solid fa-leaf"></i></div>
+              <div class="content-text">
+                <h3>Healthy, Root-Established Plant</h3>
+                <p>Nursery-grown, fully rooted, and inspected by our experts before shipping.</p>
+              </div>
+            </li>
+            <li>
+              <div class="content-icon"><i class="fa-solid fa-mortar-pestle"></i></div>
+              <div class="content-text">
+                <h3>Modern Ceramic Planter</h3>
+                <p>Chic, minimalist planters featuring drainage holes and saucers for optimal root health.</p>
+              </div>
+            </li>
+            <li>
+              <div class="content-icon"><i class="fa-solid fa-address-card"></i></div>
+              <div class="content-text">
+                <h3>Illustrated Care Card</h3>
+                <p>Simple, step-by-step instructions on watering, lighting, humidity, and pet safety.</p>
+              </div>
+            </li>
+            <li>
+              <div class="content-icon"><i class="fa-solid fa-flask"></i></div>
+              <div class="content-text">
+                <h3>Surprise Member Gift</h3>
+                <p>Occasional tools, custom-formulated liquid plant food, propagation vials, or leaf-shine.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Perks & Benefits -->
+    <section id="sub-benefits" class="sub-perks-section">
+      <div class="sub-perks-container">
+        <div class="sub-perks-content">
+          <h2>Greenery Club Member Perks</h2>
+          <p>Subscribing gives you exclusive access to tools, guarantees, and premium community perks.</p>
+          <div class="perks-grid">
+            <div class="perk-card">
+              <i class="fa-solid fa-truck-fast"></i>
+              <h4>Always Free Shipping</h4>
+              <p>All subscription boxes ship completely free, and members get free shipping on store additions too.</p>
+            </div>
+            <div class="perk-card">
+              <i class="fa-solid fa-heart-pulse"></i>
+              <h4>30-Day Guarantee</h4>
+              <p>If a plant arrives damaged or dies within 30 days, we'll replace it for free. No questions asked.</p>
+            </div>
+            <div class="perk-card">
+              <i class="fa-solid fa-user-doctor"></i>
+              <h4>24/7 Plant Doctor Access</h4>
+              <p>Get priority SMS support from our horticultural experts to troubleshoot any yellowing leaf issues.</p>
+            </div>
+            <div class="perk-card">
+              <i class="fa-solid fa-arrows-spin"></i>
+              <h4>Fully Flexible Plans</h4>
+              <p>Pause, skip delivery, switch plan tiers, or cancel your subscription at any time with one click.</p>
+            </div>
+          </div>
+        </div>
+        <div class="sub-perks-image">
+          <img src="images/sub_expert.png" alt="Greenery plant care expert smiling in greenhouse">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Past Boxes Sneak Peek -->
+    <section id="sub-past-boxes" class="sub-past-section">
+      <div class="section-header">
+        <h2>Past Box Sneak Peek</h2>
+        <p>A look at some of the beautiful varieties our members received recently</p>
+      </div>
+      <div class="sub-past-container">
+        <div class="sub-past-image">
+          <img src="images/sub_past_boxes.png" alt="A collection of past monthly subscription plants">
+        </div>
+        <div class="sub-past-content">
+          <h3>A Curated Rotation of Greenery</h3>
+          <p>We work with regional nurseries to source plants that are at their peak health and beauty for the current season. You'll never get the same plant twice in a 12-month period.</p>
+          <div class="past-months">
+            <div class="month-item">
+              <span class="month-name">June Selection</span>
+              <strong>Calathea Medallion</strong>
+              <p>Shipped in a textured clay pot. Celebrated for its stunning dark pink underside patterns.</p>
+            </div>
+            <div class="month-item">
+              <span class="month-name">May Selection</span>
+              <strong>Monstera Adansonii (Swiss Cheese Plant)</strong>
+              <p>Shipped in a matte white ceramic container. Perfect for hanging or trailing from a shelf.</p>
+            </div>
+            <div class="month-item">
+              <span class="month-name">April Selection</span>
+              <strong>Variegated Peperomia</strong>
+              <p>Shipped in an ocean-blue stoneware pot. Compact, succulent-like leaves with green.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Gift a Subscription -->
+    <section id="sub-gifting" class="sub-gift-section">
+      <div class="sub-gift-container">
+        <div class="sub-gift-content">
+          <span class="sub-badge">Gift Cards & Plans</span>
+          <h2>Give the Gift of Greenery</h2>
+          <p>Plant subscriptions make the perfect gift for housewarmings, birthdays, or graduations. Choose a prepaid plan, and we'll take care of the rest.</p>
+          <div class="gift-options">
+            <div class="gift-option">
+              <h4>3-Month Plan</h4>
+              <p class="gift-price">$89 <span>($29.66/mo)</span></p>
+              <p class="gift-desc">The perfect short-term treat to start their botanical collection.</p>
+              <button class="btn btn-secondary">Select Gift</button>
+            </div>
+            <div class="gift-option featured">
+              <span class="gift-popular">Best Value</span>
+              <h4>6-Month Plan</h4>
+              <p class="gift-price">$169 <span>($28.16/mo)</span></p>
+              <p class="gift-desc">A wonderful gift that keeps on giving, introducing them.</p>
+              <button class="btn btn-primary">Select Gift</button>
+            </div>
+            <div class="gift-option">
+              <h4>12-Month Plan</h4>
+              <p class="gift-price">$319 <span>($26.58/mo)</span></p>
+              <p class="gift-desc">For the ultimate plant lover. A full year of surprises and beautiful.</p>
+              <button class="btn btn-secondary">Select Gift</button>
+            </div>
+          </div>
+          <p class="gift-footer-text"><i class="fa-solid fa-gift"></i> How gifting works: We email the recipient a redeemable voucher code on the date you choose. They specify their shipping address, select their preferred plant styles, and choose when to begin!</p>
+        </div>
+        <div class="sub-gift-image">
+          <img src="images/sub_gift.png" alt="Beautiful gift box with green sprig decoration">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Frequently Asked Questions -->
+    <section id="sub-faq" class="sub-faq-section">
+      <div class="section-header">
+        <h2>Subscription FAQ</h2>
+        <p>Everything you need to know about the Greenery Club</p>
+      </div>
+      <div class="sub-faq-container">
+        <div class="sub-faq-accordion">
+          <div class="faq-item">
+            <button class="faq-question">Can I switch plans or pause my subscription? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Yes, absolutely! You can upgrade, downgrade, pause, or skip a monthly box directly inside your account settings. Just make sure to make changes 3 days before your monthly renewal date.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">What if a plant arrives damaged or dead? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>We guarantee happy, healthy deliveries. In the rare event that your plant is damaged in transit, just email a photo to our support team within 30 days of arrival. We will ship a brand new replacement plant immediately, completely free of charge.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Are the pots included with every shipment? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Yes! Every single month you'll receive both a healthy plant and a premium ceramic, terracotta, or stoneware planter. They are custom-selected to fit the specific root size of that month's plant, so you don't need to worry about sourcing pots.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How do you ship plants safely in winter? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>We monitor weather patterns across all shipping routes. During cold months, we pack your green companions using double-walled thermal insulation wraps and include specialized 72-hour heat packs. If extreme freezing conditions occur, we may briefly delay shipment and notify you via email to keep your plants safe.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Can I customize my shipping frequency? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Yes! By default, subscriptions deliver once per month. However, from your account settings, you can customize your schedule to deliver bi-monthly (every 2 months) or quarterly (every 3 months) to pace out your plant growth.</p>
+            </div>
+          </div>
+        </div>
+        <div class="sub-faq-image">
+          <img src="images/sub_faq.png" alt="A styled botanical study with healthy houseplants">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <!-- Footer Info Column -->
+      <div class="footer-info">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenery
+        </a>
+        <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <!-- Footer Menu Columns -->
+      <div class="footer-menu-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="plants.html" class="footer-link">Plants</a></li>
+          <li><a href="collections.html" class="footer-link">Collections</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="guides.html" class="footer-link">Guides</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+          <li><a href="delivery.html" class="footer-link">Delivery Info</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer-menu-col newsletter-col">
+        <h3>Newsletter</h3>
+        <p>Subscribe to get special offers, plant care tips, and design inspiration.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Area -->
+    <div class="footer-bottom">
+      <p>&copy; 2026 Greenery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Badge Sync & Active Nav Link Script -->
+  <script src="navigation.js" defer></script>
+</body>
+</html>
+
+
