@@ -131,15 +131,17 @@
       justify-self: start;
     }
 
-    .logo svg {
-      width: 32px;
+    .logo svg, .logo-img {
       height: 32px;
-      fill: currentColor;
+      width: auto;
       transition: transform var(--transition-speed) ease;
     }
 
-    .logo:hover svg {
+    .logo:hover svg, .logo:hover .logo-img {
       transform: rotate(-10deg) scale(1.1);
+    }
+    html[data-theme="dark"] .logo-img {
+      filter: brightness(1.8) saturate(1.2);
     }
 
     /* Nav Menu Desktop - Centered Column */
@@ -1554,6 +1556,77 @@
       background: var(--primary-hover);
       transform: scale(1.05);
     }
+
+    /* 12. Catalog Hero with Background and Glassmorphic Card */
+    .catalog-hero {
+      position: relative;
+      width: 100%;
+      min-height: calc(100vh - 70px);
+      height: calc(100vh - 70px);
+      background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url('images/contact_tropical_canopy.png') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem !important;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--navbar-border);
+      max-width: none !important;
+      width: 100% !important;
+    }
+
+    .hero-glass-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 24px;
+      padding: 2.5rem 3.5rem;
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      color: white;
+    }
+
+    html[data-theme="dark"] .hero-glass-card {
+      background: rgba(15, 23, 42, 0.45);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15rem;
+      color: #4ade80;
+    }
+
+    .hero-glass-card h1 {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: white;
+      margin: 0;
+    }
+
+    .hero-glass-card h1 span {
+      color: #4ade80;
+    }
+
+    .hero-glass-card p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 650px;
+      margin: 0 auto;
+    }
   </style>
   <link rel="stylesheet" href="responsive.css">
 </head>
@@ -1562,15 +1635,7 @@
   <header id="appHeader" class="app-header">
     <div class="navbar">
       <!-- Logo (Column 1 - Left) -->
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
 
       <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
       <nav class="nav-menu" aria-label="Main Navigation">
@@ -1630,13 +1695,7 @@
   <!-- Mobile Slide-out Drawer -->
   <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
     <div class="drawer-header">
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img" style="height: 28px;"></a>
       <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
         &times;
       </button>
@@ -1686,9 +1745,12 @@
 
   <main>
     <!-- Hero Header -->
-    <header class="catalog-hero" style="padding: 3rem 2rem 1rem; max-width: 1440px; margin: 0 auto;">
-      <h1 style="font-family: var(--font-serif); font-size: 3.5rem; line-height: 1.15; color: var(--text-color); margin-bottom: 0.5rem; text-align: center;">Botanical <span>Specimen Explorer</span></h1>
-      <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 650px; line-height: 1.6; text-align: center; margin: 0 auto;">Analyze live environmental telemetry, calibrate soil mixes, and study the physiology of rare greenhouse plants.</p>
+    <header class="catalog-hero">
+      <div class="hero-glass-card">
+        <span class="hero-badge">Telemetry System</span>
+        <h1>Botanical <span>Specimen Explorer</span></h1>
+        <p>Analyze live environmental telemetry, calibrate soil mixes, and study the physiology of rare greenhouse plants.</p>
+      </div>
     </header>
 
     <div class="explorer-container">
@@ -1758,18 +1820,7 @@
           </div>
         </div>
 
-        <!-- Specimen Navigator (Specimen List Jumper) -->
-        <div class="specimen-navigator">
-          <div class="nav-heading">Specimen Logs Jumper</div>
-          <button class="nav-item-btn active" data-target="plants-hero"><i class="fa-solid fa-gauge-high"></i> Diagnostics</button>
-          <button class="nav-item-btn" data-target="plants-types"><i class="fa-solid fa-dna"></i> Species diversity</button>
-          <button class="nav-item-btn" data-target="plants-soil"><i class="fa-solid fa-layer-group"></i> Soil Mixes</button>
-          <button class="nav-item-btn" data-target="plants-watering"><i class="fa-solid fa-droplet"></i> Hydration</button>
-          <button class="nav-item-btn" data-target="plants-light"><i class="fa-solid fa-sun"></i> Photons</button>
-          <button class="nav-item-btn" data-target="plants-petsafe"><i class="fa-solid fa-shield-heart"></i> Toxicity</button>
-          <button class="nav-item-btn" data-target="plants-acclimation"><i class="fa-solid fa-temperature-half"></i> Adaptation</button>
-          <button class="nav-item-btn" data-target="plants-propagation"><i class="fa-solid fa-code-fork"></i> Propagation</button>
-        </div>
+
       </aside>
 
       <!-- RIGHT SCROLLABLE NARRATIVE PANEL (Scientific Field Notes) -->
@@ -2042,15 +2093,7 @@
     <div class="footer-container">
       <!-- Footer Info Column -->
       <div class="footer-info">
-        <a href="index.html" class="logo">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Greenery
-        </a>
+        <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
         <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
         <div class="social-links">
           <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>

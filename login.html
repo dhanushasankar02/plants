@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light" dir="ltr">
 <head>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -213,6 +213,7 @@
     .login-logo {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
       font-family: var(--font-serif);
       font-weight: 700;
@@ -226,10 +227,16 @@
       color: var(--primary-hover);
     }
 
-    .login-logo svg {
-      width: 26px; /* Reduced size */
+    .login-logo svg, .logo-img {
       height: 26px;
-      fill: currentColor;
+      width: auto;
+    }
+    html[data-theme="dark"] .logo-img {
+      filter: brightness(1.8) saturate(1.2);
+    }
+
+    .login-form-header {
+      text-align: center;
     }
 
     .login-form-header h2 {
@@ -498,26 +505,6 @@
 </head>
 <body>
 
-  <!-- Sticky Navbar Header containing only Theme/RTL toggles -->
-  <header id="appHeader" class="app-header">
-    <div class="navbar">
-      <!-- Left side empty, logo moved to form header -->
-      <div></div>
-
-      <!-- Utilities (Right - Dark mode and RTL toggles only) -->
-      <div class="nav-utilities">
-        <!-- RTL Layout Toggle -->
-        <button class="icon-btn" id="rtlToggleBtn" aria-label="Toggle Layout Direction" title="Toggle Layout Direction">
-        <i class="fas fa-exchange-alt"></i>
-      </button>
-        <!-- Dark Mode Toggle -->
-        <button id="themeToggle" class="icon-btn" aria-label="Toggle Color Theme" title="Toggle Color Theme">
-          <i id="themeIcon" class="fa-solid fa-moon"></i>
-        </button>
-      </div>
-    </div>
-  </header>
-
   <main class="login-main">
     <div class="login-card">
       <!-- Left Column (Login Form) -->
@@ -525,15 +512,7 @@
         <!-- Content wrapper centering all items and preventing vertical alignment shifts -->
         <div class="login-form-content">
           <!-- Logo placed at the top of Welcome Back -->
-          <a href="index.html" class="login-logo">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Greenery</span>
-          </a>
+          <a href="index.html" class="login-logo"><img src="images/logo.png" alt="Greenery" class="logo-img" style="height: 26px;"></a>
           <div class="login-form-header">
             <h2>Welcome Back</h2>
           </div>
@@ -601,10 +580,6 @@
     </div>
   </main>
 
-  <!-- Compact Footer -->
-  <footer class="app-footer">
-    <p>&copy; 2026 Greenery. All rights reserved.</p>
-  </footer>
   <script src="navigation.js" defer></script>
   <script>
     // Social login click simulator

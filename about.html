@@ -131,15 +131,17 @@
       justify-self: start;
     }
 
-    .logo svg {
-      width: 32px;
+    .logo svg, .logo-img {
       height: 32px;
-      fill: currentColor;
+      width: auto;
       transition: transform var(--transition-speed) ease;
     }
 
-    .logo:hover svg {
+    .logo:hover svg, .logo:hover .logo-img {
       transform: rotate(-10deg) scale(1.1);
+    }
+    html[data-theme="dark"] .logo-img {
+      filter: brightness(1.8) saturate(1.2);
     }
 
     /* Nav Menu Desktop - Centered Column */
@@ -768,7 +770,7 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 20px 40px var(--shadow-color);
-      height: 420px;
+      aspect-ratio: 4 / 3;
     }
 
     .split-image-wrapper img {
@@ -1027,10 +1029,12 @@
         gap: 2rem;
       }
       .team-image-wrapper,
-      .split-image-wrapper,
       .community-image-wrapper,
       .philosophy-featured-wrapper {
         height: 340px;
+      }
+      .split-image-wrapper {
+        height: auto;
       }
       .about-hero-card h1 {
         font-size: 2.8rem;
@@ -1321,15 +1325,7 @@
   <header id="appHeader" class="app-header">
     <div class="navbar">
       <!-- Logo (Column 1 - Left) -->
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
 
       <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
       <nav class="nav-menu" aria-label="Main Navigation">
@@ -1389,13 +1385,7 @@
   <!-- Mobile Slide-out Drawer -->
   <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
     <div class="drawer-header">
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img" style="height: 28px;"></a>
       <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
         &times;
       </button>
@@ -1490,7 +1480,7 @@
     <section id="about-team" class="team-section">
       <div class="team-showcase">
         <div class="team-image-wrapper">
-          <img src="./images/plant_workshop.png" alt="Horticultural team working together in the greenhouse">
+          <img src="./images/sub_expert.png" alt="Horticultural team working together in the greenhouse">
         </div>
         <div class="team-content">
           <div class="section-header" style="text-align: start; margin-bottom: 2rem;">
@@ -1535,7 +1525,7 @@
           </ul>
         </div>
         <div class="split-image-wrapper">
-          <img src="./images/smart_plant_sensor.png" alt="Smart plant moisture sensor and pathology testing">
+          <img src="./images/plant_care_app.png" alt="Smart plant moisture sensor and pathology testing">
         </div>
       </div>
     </section>
@@ -1544,7 +1534,7 @@
     <section id="about-sustainability" class="sustainability-section">
       <div class="split-section" style="direction: ltr;">
         <div class="split-image-wrapper">
-          <img src="./images/self_watering_pot.png" alt="Peat-free potting soil and biodegradable planters">
+          <img src="./images/gallery_terrarium.png" alt="Peat-free potting soil and biodegradable planters">
         </div>
         <div class="split-content">
           <h2>100% Sustainable Green Sourcing</h2>
@@ -1569,7 +1559,7 @@
           <a href="subscription.html" class="btn btn-primary" style="align-self: flex-start;">Support Our Community</a>
         </div>
         <div class="community-image-wrapper">
-          <img src="./images/plant_care_guide.png" alt="Propagation tools and community planting workshop flatlay">
+          <img src="./images/contact_workshop_community.png" alt="Propagation tools and community planting workshop flatlay">
         </div>
       </div>
     </section>
@@ -1619,7 +1609,7 @@
         </div>
       </div>
       <div class="philosophy-featured-wrapper">
-        <img src="./images/rare_albo_plant.png" alt="Variegated plant leaf detail">
+        <img src="./images/wish_pink_princess.png" alt="Variegated plant leaf detail">
         <div class="philosophy-featured-overlay">
           <h2>Rooted in Growth</h2>
           <p>Every seedling we nourish is a reminder of our responsibility to the ecosystem. We grow so that your home can breathe deeper.</p>
@@ -1633,15 +1623,7 @@
     <div class="footer-container">
       <!-- Footer Info Column -->
       <div class="footer-info">
-        <a href="index.html" class="logo">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Greenery
-        </a>
+        <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
         <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
         <div class="social-links">
           <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>

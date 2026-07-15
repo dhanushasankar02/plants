@@ -138,15 +138,17 @@
       justify-self: start;
     }
 
-    .logo svg {
-      width: 32px;
+    .logo svg, .logo-img {
       height: 32px;
-      fill: currentColor;
+      width: auto;
       transition: transform var(--transition-speed) ease;
     }
 
-    .logo:hover svg {
+    .logo:hover svg, .logo:hover .logo-img {
       transform: rotate(-10deg) scale(1.1);
+    }
+    html[data-theme="dark"] .logo-img {
+      filter: brightness(1.8) saturate(1.2);
     }
 
     /* Nav Menu Desktop - Centered Column */
@@ -1186,7 +1188,7 @@
     }
 
     .doctor-img-box {
-      height: 350px;
+      aspect-ratio: 4 / 3;
       overflow: hidden;
     }
 
@@ -1617,15 +1619,7 @@
   <header id="appHeader" class="app-header">
     <div class="navbar">
       <!-- Logo (Column 1 - Left) -->
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
 
       <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
       <nav class="nav-menu" aria-label="Main Navigation">
@@ -1685,13 +1679,7 @@
   <!-- Mobile Slide-out Drawer -->
   <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
     <div class="drawer-header">
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img" style="height: 28px;"></a>
       <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
         &times;
       </button>
@@ -2089,15 +2077,7 @@
     <div class="footer-container">
       <!-- Footer Info Column -->
       <div class="footer-info">
-        <a href="index.html" class="logo">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Greenery
-        </a>
+        <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
         <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
         <div class="social-links">
           <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>

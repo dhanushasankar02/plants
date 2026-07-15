@@ -125,15 +125,17 @@
       justify-self: start;
     }
 
-    .logo svg {
-      width: 32px;
+    .logo svg, .logo-img {
       height: 32px;
-      fill: currentColor;
+      width: auto;
       transition: transform var(--transition-speed) ease;
     }
 
-    .logo:hover svg {
+    .logo:hover svg, .logo:hover .logo-img {
       transform: rotate(-10deg) scale(1.1);
+    }
+    html[data-theme="dark"] .logo-img {
+      filter: brightness(1.8) saturate(1.2);
     }
 
     .nav-menu {
@@ -942,6 +944,77 @@
       background: var(--primary-hover);
       transform: scale(1.05);
     }
+
+    /* 12. Catalog Hero with Background and Glassmorphic Card */
+    .catalog-hero {
+      position: relative;
+      width: 100%;
+      min-height: calc(100vh - 70px);
+      height: calc(100vh - 70px);
+      background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url('images/contact_desert_sanctuary.png') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem !important;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--navbar-border);
+      max-width: none !important;
+      width: 100% !important;
+    }
+
+    .hero-glass-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 24px;
+      padding: 2.5rem 3.5rem;
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      color: white;
+    }
+
+    html[data-theme="dark"] .hero-glass-card {
+      background: rgba(15, 23, 42, 0.45);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15rem;
+      color: #4ade80;
+    }
+
+    .hero-glass-card h1 {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: white;
+      margin: 0;
+    }
+
+    .hero-glass-card h1 span {
+      color: #4ade80;
+    }
+
+    .hero-glass-card p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 650px;
+      margin: 0 auto;
+    }
   </style>
   <link rel="stylesheet" href="responsive.css">
 </head>
@@ -950,15 +1023,7 @@
   <header id="appHeader" class="app-header">
     <div class="navbar">
       <!-- Logo (Column 1 - Left) -->
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
 
       <!-- Desktop Navigation Menu (Column 2 - Exactly Centered) -->
       <nav class="nav-menu" aria-label="Main Navigation">
@@ -1018,13 +1083,7 @@
   <!-- Mobile Slide-out Drawer -->
   <div id="mobileDrawer" class="mobile-drawer" aria-modal="true" role="dialog">
     <div class="drawer-header">
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: currentColor;">
-          <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none"/>
-          <path d="M12 3V21" stroke-width="2" stroke="currentColor"/>
-        </svg>
-        Greenery
-      </a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img" style="height: 28px;"></a>
       <button id="drawerClose" class="drawer-close" aria-label="Close Navigation Drawer">
         &times;
       </button>
@@ -1075,52 +1134,18 @@
   <!-- Mobile Drawer Overlay -->
 
   <main>
-    <!-- Section Header Intro -->
-    <section class="section-header" style="padding-top: 4rem; padding-bottom: 1rem;">
-      <h2>Botanical Curated Collections</h2>
-      <p>Explore our scientifically categorized selections grown for home suitability and aesthetic value.</p>
-    </section>
+    <!-- Hero Header -->
+    <header class="catalog-hero">
+      <div class="hero-glass-card">
+        <span class="hero-badge">Curated Cohorts</span>
+        <h1>Botanical <span>Curated Collections</span></h1>
+        <p>Explore our scientifically categorized selections grown for home suitability and aesthetic value.</p>
+      </div>
+    </header>
 
-    <!-- Interactive Filter Deck -->
-    <div class="filter-deck">
-      <button class="filter-pill active" data-filter="all">All Specimen Groups</button>
-      <button class="filter-pill" data-filter="rare">Rare & Exotic</button>
-      <button class="filter-pill" data-filter="statement">Statement Foliage</button>
-      <button class="filter-pill" data-filter="low-light">Low-Light Survivors</button>
-      <button class="filter-pill" data-filter="desk">Desktop & Miniatures</button>
-      <button class="filter-pill" data-filter="vertical">Vertical Gardens</button>
-      <button class="filter-pill" data-filter="hydro">Smart Hydro</button>
-    </div>
 
     <!-- Collections Sections Container -->
     <div class="collections-deck">
-
-      <!-- Section 1: Hero & Intro Curation (Always visible) -->
-      <section id="collections-hero" class="collection-section" data-categories="all">
-        <div class="collection-img-column">
-          <div class="collection-img-wrapper">
-            <img class="collection-img" src="./images/hero_plants.png" alt="Introductory Botanical Showcase">
-          </div>
-        </div>
-        <div class="collection-info-column">
-          <span class="collection-category-tag">General Registry</span>
-          <h2>The Art & Science of Plant Curation</h2>
-          <p>Each cohort in our catalog has been categorized based on its light respiration demands, cellular water retention capacity, and spatial styling role. By grouping plants into structured classes, we help you establish healthy domestic microclimates.</p>
-          <div class="registry-card">
-            <div class="registry-title"><i class="fa-solid fa-address-card"></i> Cohort Statistics</div>
-            <div class="registry-grid">
-              <div class="registry-item">
-                <span class="registry-label">Total Collections:</span>
-                <span class="registry-value">7 Specialized Classes</span>
-              </div>
-              <div class="registry-item">
-                <span class="registry-label">Sourcing:</span>
-                <span class="registry-value">100% Peat-free Coir</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <!-- Section 2: Rare & Exotic Aroids -->
       <section id="exotic-aroids" class="collection-section" data-categories="rare">
@@ -1231,7 +1256,7 @@
       <section id="desktop-flora" class="collection-section" data-categories="desk">
         <div class="collection-img-column">
           <div class="collection-img-wrapper">
-            <img class="collection-img" src="./images/plant_workshop.png" alt="Petite plants and propagating tools">
+            <img class="collection-img" src="./images/gallery_slide_terrarium.png" alt="Petite plants and propagating tools">
           </div>
         </div>
         <div class="collection-info-column">
@@ -1336,7 +1361,7 @@
       <section id="curated-box" class="collection-section" data-categories="rare desk hydro">
         <div class="collection-img-column">
           <div class="collection-img-wrapper">
-            <img class="collection-img" src="./images/subscription_box.png" alt="Subscription box showing delivery plants">
+            <img class="collection-img" src="./images/sub_box_contents.png" alt="Subscription box showing delivery plants">
           </div>
         </div>
         <div class="collection-info-column">
@@ -1371,7 +1396,7 @@
       <section id="oasis-makeover" class="collection-section" data-categories="statement low-light">
         <div class="collection-img-column">
           <div class="collection-img-wrapper">
-            <img class="collection-img" src="./images/jungle_before_after.png" alt="Before and after transformation of a room with lush plants">
+            <img class="collection-img" src="./images/gallery_home_livingroom.png" alt="Before and after transformation of a room with lush plants">
           </div>
         </div>
         <div class="collection-info-column">
@@ -1406,7 +1431,7 @@
       <section id="glasshouse-cultivars" class="collection-section" data-categories="rare">
         <div class="collection-img-column">
           <div class="collection-img-wrapper">
-            <img class="collection-img" src="./images/about_plants.png" alt="Greenhouse plant nursery potting table">
+            <img class="collection-img" src="./images/contact_orchid_pavilion.png" alt="Greenhouse plant nursery potting table">
           </div>
         </div>
         <div class="collection-info-column">
@@ -1445,15 +1470,7 @@
     <div class="footer-container">
       <!-- Footer Info Column -->
       <div class="footer-info">
-        <a href="index.html" class="logo">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 8C17 12 13 21 12 21C11 21 7 12 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 3V21" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 11C13.5 10 15 10.5 16.5 10" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 15C10.5 14 9 14.5 7.5 14" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Greenery
-        </a>
+        <a href="index.html" class="logo"><img src="images/logo.png" alt="Greenery" class="logo-img"></a>
         <p class="footer-description">Bringing nature closer to your home. Explore our curated selection of indoor and rare plants, care guides, and subscriptions.</p>
         <div class="social-links">
           <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -1513,6 +1530,54 @@
 
   <!-- Badge Sync & Active Nav Link Script -->
   <script src="navigation.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterPills = document.querySelectorAll('.filter-pill');
+      const sections = document.querySelectorAll('.collection-section');
+
+      function filterSections(category) {
+        sections.forEach(section => {
+          const cats = section.getAttribute('data-categories').split(' ');
+          if (cats.includes(category)) {
+            section.classList.remove('hidden');
+            requestAnimationFrame(() => {
+              section.classList.remove('fading-out');
+            });
+          } else {
+            section.classList.add('fading-out');
+            section.addEventListener('transitionend', function handler(e) {
+              if (e.propertyName === 'opacity' && section.classList.contains('fading-out')) {
+                section.classList.add('hidden');
+              }
+              section.removeEventListener('transitionend', handler);
+            });
+          }
+        });
+      }
+
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          filterPills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          const filter = pill.getAttribute('data-filter');
+          filterSections(filter);
+        });
+      });
+
+      // Initial filter based on active pill
+      const activePill = document.querySelector('.filter-pill.active');
+      if (activePill) {
+        const initialFilter = activePill.getAttribute('data-filter');
+        sections.forEach(section => {
+          const cats = section.getAttribute('data-categories').split(' ');
+          if (!cats.includes(initialFilter)) {
+            section.classList.add('hidden');
+            section.classList.add('fading-out');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
 
